@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "comfyui-aog"
+version = "0.1.0"
+description = "CLI-first animation opening pipeline for ComfyUI, Wan 2.2, and Ace Step"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+license = { text = "MIT" }
+authors = [
+  { name = "hosung" }
+]
+dependencies = [
+  "PyYAML==6.0.3",
+  "httpx==0.28.1",
+  "Pillow==12.0.0",
+  "numpy==2.3.5",
+  "librosa==0.11.0",
+  "soundfile==0.13.1",
+  "tqdm==4.67.3",
+  "safetensors>=0.5,<1.0",
+  "av>=16.0,<17.0",
+  "accelerate>=1.11,<2.0",
+  "gguf>=0.17,<1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.2,<9.0",
+  "ruff>=0.11,<1.0",
+]
+
+[project.scripts]
+aog = "aog.cli:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["aog*"]
+
+[tool.uv]
+package = true

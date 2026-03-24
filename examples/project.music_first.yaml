@@ -1,0 +1,159 @@
+project_name: "opening_music_first_demo"
+mode: "music-first"
+duration: 18
+aspect_ratio: "16:9"
+output_format: "mp4"
+
+video:
+  i2v_model:
+    family: "wan2.2"
+    variant: "i2v"
+    format: "safetensors"
+    path_high: "/mnt/d/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/models/diffusion_models/wan2.2/DasiwaWAN22I2V14BLightspeed_synthseductionHighV9.safetensors"
+    path_low: "/mnt/d/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/models/diffusion_models/wan2.2/DasiwaWAN22I2V14BLightspeed_synthseductionLowV9.safetensors"
+    profile: "DasiwaWAN22I2V14BLightspeed_synthseductionV9"
+    runtime_backend: "comfyui"
+  bundle:
+    vae:
+      path: "/mnt/d/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/models/vae/Wan2_1_VAE_fp32.safetensors"
+      format: "safetensors"
+    text_encoders:
+      primary:
+        path: "/mnt/d/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/models/text_encoders/umt5_xxl_fp16.safetensors"
+        format: "safetensors"
+      secondary:
+        path: "/mnt/d/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/models/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors"
+        format: "safetensors"
+    clip_vision:
+      path: "/mnt/d/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/models/clip_vision/clip_vision_h.safetensors"
+      format: "safetensors"
+  s2v_model:
+    family: "wan2.2"
+    variant: "s2v"
+    format: "gguf"
+    path_high: "/mnt/d/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/models/diffusion_models/wan2.2/DasiwaWAN22I2V14BTastysinV8_q8High.gguf"
+    path_low: "/mnt/d/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/models/diffusion_models/wan2.2/DasiwaWAN22I2V14BTastysinV8_q8Low.gguf"
+    profile: "DasiwaWAN22I2V14BTastysinV8_q8"
+    runtime_backend: "comfyui"
+  chain_strategy: "last_frame"
+  use_svi_lora: true
+  svi_lora:
+    path_high: "/mnt/d/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/models/loras/wan_svi/SVI_v2_PRO_Wan2.2-I2V-A14B_HIGH_lora_rank_128_fp16.safetensors"
+    path_low: "/mnt/d/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/models/loras/wan_svi/SVI_v2_PRO_Wan2.2-I2V-A14B_LOW_lora_rank_128_fp16.safetensors"
+    strength: 0.8
+  generation:
+    fps: 24
+    base_resolution:
+      width: 1280
+      height: 720
+    guidance_scale: 6.5
+    steps: 32
+    negative_prompt: "low quality, blurry, bad hands, inconsistent face, flicker"
+  acceleration:
+    attention_backend: "sageattention"
+    sageattention_enabled: true
+    sageattention_required: false
+    fallback_attention: "sdpa"
+    require_cuda: true
+  extension:
+    enabled: true
+    max_extension_seconds_per_shot: 2.5
+    source_mode: "custom_image"
+    custom_image: "./assets/images/extension_keyframe.png"
+    apply_when:
+      - "chorus_hold"
+      - "long_note"
+
+audio:
+  engine: "ace-step"
+  bundle:
+    diffusion_model:
+      path: "/mnt/d/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/models/diffusion_models/acestep_v1.5_turbo.safetensors"
+      format: "safetensors"
+      profile: "acestep_v1.5_turbo"
+    text_encoders:
+      clip_file_1: "/mnt/d/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/models/text_encoders/qwen_0.6b_ace15.safetensors"
+      clip_file_2: "/mnt/d/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/models/text_encoders/qwen_4b_ace15.safetensors"
+      type: "ace"
+    vae:
+      path: "/mnt/d/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/models/vae/ace_1.5_vae.safetensors"
+      format: "safetensors"
+  generation_mode: "music_first"
+  output_mode: "instrumental_plus_vocal"
+  prompt: "high energy anime opening song, sharp intro, fast rhythm, memorable chorus, uplifting finish"
+  bpm_target: 142
+  structure:
+    - label: "intro_build"
+      start: 0.0
+      end: 4.0
+    - label: "lift"
+      start: 4.0
+      end: 10.0
+    - label: "chorus_climax"
+      start: 10.0
+      end: 18.0
+  instrumental:
+    enabled: true
+  vocal:
+    enabled: true
+    lyrics_mode: "manual"
+    lyrics_path: "./assets/lyrics/opening_theme_full.txt"
+    style_prompt: "confident anime pop-rock vocal, energetic hook, polished lead"
+  voice_clone:
+    enabled: true
+    clone_id: "lead_singer_v2"
+    reference_audio_dir: "./voices/lead_singer_v2"
+    mix_mode: "separate_stems"
+
+inputs:
+  source_images:
+    - "./assets/images/key_visual_main.png"
+  reference_images:
+    - "./assets/images/character_reference_group.png"
+    - "./assets/images/background_reference_city.png"
+  text_prompt: "anime opening, fast character reveals, rooftop skyline, wind, dramatic action poses, bright final chorus shot"
+  title:
+    text: "PROJECT AOG"
+    overlay_enabled: true
+    timing_seconds: 14.2
+
+planning:
+  shot_template: "music_synced_reveal"
+  target_shot_count: 6
+  beat_sync:
+    enabled: true
+    align_cut_points_to_beats: true
+    prefer_section_boundaries: true
+  shot_duration_range:
+    min: 1.5
+    max: 4.0
+  energy_curve_source: "audio"
+  allow_s2v_extension: true
+  quality_profile: "high_low_pair"
+
+postprocess:
+  upscale:
+    enabled: true
+    model_path: "/mnt/d/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/models/upscale_models/2x-AnimeSharpV4_Fast_RCAN_PU.safetensors"
+    model_format: "safetensors"
+    scale: 2
+    apply_to: "selected_final_frames"
+    fallback_method: "lanczos"
+  frame_interpolation:
+    enabled: true
+    engine: "rife"
+    model_path: "/mnt/d/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/custom_nodes/ComfyUI-VFI/rife/train_log/flownet.pkl"
+    target_fps: 48
+    apply_after_upscale: false
+    multiplier: 2
+
+output:
+  dir: "/mnt/d/Stable Diffusion/aog/opening_music_first_demo"
+  save_intermediate_shots: true
+  save_last_frames: true
+  save_music_plan: true
+  save_stems: true
+  export:
+    video_codec: "libx264"
+    audio_codec: "aac"
+    pixel_format: "yuv420p"
