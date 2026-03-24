@@ -36,6 +36,8 @@ def bootstrap_comfy_runtime(comfy_root: str | Path) -> ComfyRuntimeModules:
     if str(root) not in sys.path:
         sys.path.insert(0, str(root))
 
+    _ensure_comfy_utils_package(root)
+
     nodes = importlib.import_module("nodes")
     nodes_ace = importlib.import_module("comfy_extras.nodes_ace")
     nodes_audio = importlib.import_module("comfy_extras.nodes_audio")
@@ -57,6 +59,30 @@ def bootstrap_comfy_runtime(comfy_root: str | Path) -> ComfyRuntimeModules:
         wan_nodes=wan_nodes,
         wan_model_loading=wan_model_loading,
     )
+
+
+def _ensure_comfy_utils_package(comfy_root: Path) -> None:
+    """Ensure top-level `utils` resolves to ComfyUI's package before importing nodes."""
+    expected_utils_dir = comfy_root / "utils"
+    loaded_utils = sys.modules.get("utils")
+    if loaded_utils is not None:
+        loaded_path = getattr(loaded_utils, "__file__", None)
+        loaded_search = getattr(loaded_utils, "__path__", None)
+        is_comfy_utils = False
+        if loaded_path is not None and Path(loaded_path).resolve().is_relative_to(expected_utils_dir.resolve()):
+            is_comfy_utils = True
+        if loaded_search:
+            try:
+                first_search = Path(next(iter(loaded_search))).resolve()
+                if first_search == expected_utils_dir.resolve():
+                    is_comfy_utils = True
+            except Exception:
+                pass
+        if not is_comfy_utils:
+            sys.modules.pop("utils", None)
+            sys.modules.pop("utils.install_util", None)
+
+    importlib.import_module("utils.install_util")
 
 
 def _load_package(package_name: str, init_path: Path, package_dir: Path) -> ModuleType:

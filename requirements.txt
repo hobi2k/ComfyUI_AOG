@@ -9,3 +9,5 @@ safetensors>=0.5,<1.0
 av>=16.0,<17.0
 accelerate>=1.11,<2.0
 gguf>=0.17,<1.0
+ftfy>=6.3,<7.0
+diffusers>=0.33,<1.0

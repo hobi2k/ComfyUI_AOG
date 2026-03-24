@@ -5,9 +5,10 @@
 `ComfyUI_AOG`는 애니메이션 오프닝 전용 생성 파이프라인 프로젝트다.
 프로젝트의 기본 전략은 아래와 같다.
 
-1. 먼저 CLI 전용 파이프라인을 ComfyUI와 독립적으로 구현한다.
-2. CLI에서 검증된 데이터 계약과 생성 단계를 ComfyUI workflow로 옮긴다.
-3. 반복되거나 도메인 특화된 로직은 ComfyUI 커스텀 노드로 캡슐화한다.
+1. 먼저 Windows에 설치된 ComfyUI 폴더의 `custom_nodes/ComfyUI_AOG` 아래에서 프로젝트를 잡는다.
+2. 그 ComfyUI 설치 환경을 기준으로 런타임을 정리한다.
+3. 오프닝 전용 workflow와 커스텀 노드를 먼저 설계한다.
+4. CLI는 그 workflow/custom node를 headless로 검증하고 자동화하는 보조 층으로 둔다.
 
 이번 기획의 핵심 판단은 다음과 같다.
 
@@ -18,11 +19,12 @@
 5. 영상 먼저 생성 후 음악 생성, 또는 음악 먼저 생성 후 영상 생성 둘 다 가능한 구조로 만든다.
 6. 화면비, 출력 포맷, 모델 경로는 모두 설정 파일에서 지정 가능하게 한다.
 7. 장기적으로는 `SVI LoRA`를 사용해 1분 길이 오프닝까지 확장 가능하게 설계한다.
-8. CLI는 외부 workflow 래퍼가 아니라 독립 실행 본체로 설계한다.
+8. CLI는 완전 독립 본체가 아니라 ComfyUI 설치 환경을 보조하는 headless 실행층으로 설계한다.
 9. 비디오 런타임은 `sageattention` 사용 여부와 fallback attention 전략을 명시적으로 설정 가능해야 한다.
-10. 1차 구현의 `run` 명령은 최종적으로 local python executor를 통해 실제 모델 추론과 export까지 수행해야 한다.
+10. 1차 구현의 `run` 명령은 설치된 ComfyUI 런타임과 custom node를 직접 import해 실제 모델 추론과 export까지 수행해야 한다.
+11. 프로젝트 문서와 구현은 WSL 별도 루트보다 `Windows ComfyUI/custom_nodes/ComfyUI_AOG`를 기준 작업위치로 삼는다.
 
-구현 방향의 상세 원칙은 [CLI-First Architecture](/home/hosung/pytorch-demo/ComfyUI_AOG/docs/CLI_FIRST_ARCHITECTURE.md) 문서를 따른다.
+구현 방향의 상세 원칙은 [ComfyUI-First Architecture](/home/hosung/pytorch-demo/ComfyUI_AOG/docs/COMFYUI_FIRST_ARCHITECTURE.md) 문서를 따른다.
 
 이 문서는 "무엇을 만들 것인가"보다 "어떻게 구현할 것인가"를 중심으로 정리한다.
 
@@ -81,12 +83,12 @@
 
 ### 3.4 시스템 요구사항
 
-- CLI에서 전 과정을 headless로 실행할 수 있어야 한다.
+- ComfyUI 설치 환경 위에서 전 과정을 headless로 실행할 수 있어야 한다.
 - 같은 파이프라인을 ComfyUI workflow로 재현할 수 있어야 한다.
 - 반복 로직은 커스텀 노드로 분리해 workflow 복잡도를 줄여야 한다.
 - CLI는 node-by-node 실행 결과를 JSON manifest로 저장할 수 있어야 한다.
 - CLI는 최소한 `validate -> plan -> run` 세 단계로 분리되어야 한다.
-- `run`은 최종적으로 local python executor를 통해 실제 모델 추론과 export를 수행해야 한다.
+- `run`은 최종적으로 설치된 ComfyUI 런타임과 custom node를 직접 import하는 local runtime을 통해 실제 모델 추론과 export를 수행해야 한다.
 - manifest와 job 파일은 workflow 이식과 디버깅을 위한 보조 산출물로 유지한다.
 
 ### 3.5 예제 설정과 placeholder 자산
