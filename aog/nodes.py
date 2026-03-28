@@ -84,14 +84,10 @@ def _generate_qwenvl_authoring_text(video_batch, video_features, qwenvl_bundle, 
 
 def _draft_prompt_with_qwenvl(video_batch, video_features, qwenvl_bundle, title, theme, authoring_language):
     context = build_llm_context(video_features)
-    language_label = LANGUAGE_LABELS.get(authoring_language, authoring_language)
     custom_prompt = (
-        f"You are writing an ACE-Step music prompt for an anime opening. Respond only in {language_label} ({authoring_language}). "
+        f"You are writing an ACE-Step music prompt for an anime opening. Respond only in {authoring_language}. "
         "Return plain text only, with no markdown, no bullet list, and no explanation. "
-        f"Every sentence must be written in {language_label}. Do not use English unless the requested language is English. "
-        "Use the video itself plus the structured context below. Prioritize what is visibly present in the video over any abstract theme wording. "
-        "Do not invent settings, props, or actions that are not supported by the video evidence. "
-        "Write a concise, vivid music-generation prompt describing instrumentation, pacing, rises, drops, emotional arc, transitions, and hook moments that fit this opening exactly.\n\n"
+        "Use the video itself plus the structured context below. Write a concise, vivid music-generation prompt describing instrumentation, pacing, rises, drops, emotional arc, transitions, and hook moments that fit this opening exactly.\n\n"
         f"Title: {title}\n"
         f"Theme: {theme}\n"
         f"Structured context: {json.dumps(context, ensure_ascii=False)}"
@@ -101,16 +97,14 @@ def _draft_prompt_with_qwenvl(video_batch, video_features, qwenvl_bundle, title,
 
 def _draft_lyrics_with_qwenvl(video_batch, video_features, qwenvl_bundle, title, theme, authoring_language, lyrics_language):
     context = build_llm_context(video_features)
-    authoring_label = LANGUAGE_LABELS.get(authoring_language, authoring_language)
-    lyrics_label = LANGUAGE_LABELS.get(lyrics_language, lyrics_language)
     custom_prompt = (
-        f"You are writing singable ACE-Step lyrics for an anime opening. Respond only in {lyrics_label} ({lyrics_language}). "
+        f"You are writing singable ACE-Step lyrics for an anime opening. Respond only in {lyrics_language}. "
         "Return plain text only. Use section labels like [Verse], [Pre-Chorus], [Chorus]. "
         "Match the video's pacing, turning points, climactic rise, and visible motifs. "
-        "Prioritize the video evidence and structured context over any abstract theme wording. Do not invent events that are not supported by the video. "
-        f"Do not explain your reasoning. Every lyric line must be in {lyrics_label}. Do not use any other language.\n\n"
-        f"Authoring language: {authoring_label} ({authoring_language})\n"
-        f"Lyrics language: {lyrics_label} ({lyrics_language})\n"
+        "Do not explain your reasoning. Every lyric line must be written in the requested lyrics language. "
+        "Do not switch languages. Do not translate the title unless needed inside a lyric line.\n\n"
+        f"Authoring language: {authoring_language}\n"
+        f"Lyrics language: {lyrics_language}\n"
         f"Title: {title}\n"
         f"Theme: {theme}\n"
         f"Structured context: {json.dumps(context, ensure_ascii=False)}"
@@ -557,22 +551,22 @@ class AOGLyricsDraft:
 class AOGAceStepCompose:
     @classmethod
     def INPUT_TYPES(cls):
-        return {"required": {"model": ("MODEL",), "clip": ("CLIP",), "vae": ("VAE",), "video_features": ("AOG_VIDEO_FEATURES",), "prompt_text": ("STRING", {"multiline": True, "default": ""}), "lyrics_text": ("STRING", {"multiline": True, "default": ""}), "negative_tags": ("STRING", {"multiline": True, "default": "silence, clipping, distortion, noise"}), "seed": ("INT", {"default": 0, "min": 0, "max": 0xFFFFFFFFFFFFFFFF}), "bpm": ("INT", {"default": 120, "min": 10, "max": 300}), "duration": ("FLOAT", {"default": 8.0, "min": 0.1, "step": 0.1}), "timesignature": (["2", "3", "4", "6"], {"default": "4"}), "ace_language": (LANGUAGE_CHOICES, {"default": "ja"}), "keyscale": (KEYSCALE_CHOICES, {"default": "A minor"}), "steps": ("INT", {"default": 8, "min": 1, "max": 200}), "cfg": ("FLOAT", {"default": 1.0, "min": 0.0, "step": 0.1}), "sampler_name": (comfy.samplers.KSampler.SAMPLERS, {"default": "euler"}), "scheduler": (comfy.samplers.KSampler.SCHEDULERS, {"default": "simple"}), "denoise": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 1.0, "step": 0.01})}, "optional": {"reference_audio": ("AUDIO",)}}
+        return {"required": {"model": ("MODEL",), "clip": ("CLIP",), "vae": ("VAE",), "video_features": ("AOG_VIDEO_FEATURES",), "prompt_text": ("STRING", {"multiline": True, "default": ""}), "lyrics_text": ("STRING", {"multiline": True, "default": ""}), "negative_tags": ("STRING", {"multiline": True, "default": "silence, clipping, distortion, noise"}), "seed": ("INT", {"default": 0, "min": 0, "max": 0xFFFFFFFFFFFFFFFF}), "bpm": ("INT", {"default": 120, "min": 10, "max": 300}), "duration": ("FLOAT", {"default": 8.0, "min": 0.1, "step": 0.1}), "timesignature": (["2", "3", "4", "6"], {"default": "4"}), "ace_language": (LANGUAGE_CHOICES, {"default": "ja"}), "keyscale": (KEYSCALE_CHOICES, {"default": "A minor"}), "steps": ("INT", {"default": 8, "min": 1, "max": 200}), "cfg": ("FLOAT", {"default": 1.0, "min": 0.0, "step": 0.1}), "text_cfg_scale": ("FLOAT", {"default": 5.0, "min": 0.0, "step": 0.1}), "sampler_name": (comfy.samplers.KSampler.SAMPLERS, {"default": "euler"}), "scheduler": (comfy.samplers.KSampler.SCHEDULERS, {"default": "simple"}), "denoise": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 1.0, "step": 0.01})}, "optional": {"reference_audio": ("AUDIO",)}}
 
     RETURN_TYPES = ("AUDIO", "STRING")
     RETURN_NAMES = ("audio", "summary_json")
     FUNCTION = "compose"
     CATEGORY = "AOG/Audio"
 
-    def compose(self, model, clip, vae, video_features, prompt_text, lyrics_text, negative_tags, seed, bpm, duration, timesignature, ace_language, keyscale, steps, cfg, sampler_name, scheduler, denoise, reference_audio=None):
+    def compose(self, model, clip, vae, video_features, prompt_text, lyrics_text, negative_tags, seed, bpm, duration, timesignature, ace_language, keyscale, steps, cfg, text_cfg_scale, sampler_name, scheduler, denoise, reference_audio=None):
         actual_duration = float(video_features.get("source_duration_sec", video_features.get("duration_sec", duration)))
         conditioning_summary = video_features.get("conditioning_summary", {})
         latent_cues = video_features.get("latent_structure_cues", [])
         augmented_tags = "\n".join(filter(None, [prompt_text.strip(), build_feature_prompt(video_features), "conditioning summary: " + ", ".join(f"{key}={value}" for key, value in conditioning_summary.items()) if conditioning_summary else "", "latent structure cues: " + ", ".join(latent_cues[:4]) if latent_cues else ""]))
         use_audio_codes = reference_audio is None
-        positive_tokens = clip.tokenize(augmented_tags, lyrics=lyrics_text, bpm=bpm, duration=actual_duration, timesignature=int(timesignature), language=ace_language, keyscale=keyscale, seed=seed, generate_audio_codes=use_audio_codes, cfg_scale=cfg, temperature=0.85, top_p=0.9, top_k=0, min_p=0.0)
+        positive_tokens = clip.tokenize(augmented_tags, lyrics=lyrics_text, bpm=bpm, duration=actual_duration, timesignature=int(timesignature), language=ace_language, keyscale=keyscale, seed=seed, generate_audio_codes=use_audio_codes, cfg_scale=text_cfg_scale, temperature=0.85, top_p=0.9, top_k=0, min_p=0.0)
         positive = clip.encode_from_tokens_scheduled(positive_tokens)
-        negative_tokens = clip.tokenize(negative_tags, lyrics="", bpm=bpm, duration=actual_duration, timesignature=int(timesignature), language=ace_language, keyscale=keyscale, seed=seed, generate_audio_codes=use_audio_codes, cfg_scale=cfg, temperature=0.85, top_p=0.9, top_k=0, min_p=0.0)
+        negative_tokens = clip.tokenize(negative_tags, lyrics="", bpm=bpm, duration=actual_duration, timesignature=int(timesignature), language=ace_language, keyscale=keyscale, seed=seed, generate_audio_codes=use_audio_codes, cfg_scale=text_cfg_scale, temperature=0.85, top_p=0.9, top_k=0, min_p=0.0)
         negative = clip.encode_from_tokens_scheduled(negative_tokens)
         latent_length = round((actual_duration * 48000 / 1920))
         latent = {"samples": torch.zeros([1, 64, latent_length], device=comfy.model_management.intermediate_device()), "type": "audio"}
@@ -591,7 +585,7 @@ class AOGAceStepCompose:
             torch.cuda.empty_cache()
         audio = nodes_audio.vae_decode_audio(vae, latent_result)
         audio = normalize_audio_duration(audio, actual_duration)
-        return (audio, to_pretty_json({"prompt_text": prompt_text, "augmented_tags": augmented_tags, "duration_sec": actual_duration, "ace_language": ace_language, "bpm": bpm, "conditioning_contract": "text-conditioned ACE-Step with preserved video conditioning summary for future direct integration", "has_reference_audio": reference_audio is not None, "waveform_shape": list(audio["waveform"].shape), "sample_rate": audio["sample_rate"]}))
+        return (audio, to_pretty_json({"prompt_text": prompt_text, "augmented_tags": augmented_tags, "duration_sec": actual_duration, "ace_language": ace_language, "bpm": bpm, "text_cfg_scale": text_cfg_scale, "conditioning_contract": "text-conditioned ACE-Step with preserved video conditioning summary for future direct integration", "has_reference_audio": reference_audio is not None, "waveform_shape": list(audio["waveform"].shape), "sample_rate": audio["sample_rate"]}))
 
 
 class AOGSFXCompose:
@@ -657,14 +651,14 @@ class AOGMuxVideoAudio:
 class AOGOpeningMusicPipeline:
     @classmethod
     def INPUT_TYPES(cls):
-        return {"required": {"video_batch": ("AOG_VIDEO_BATCH",), "mmaudio_featureutils": ("MMAUDIO_FEATUREUTILS",), "model": ("MODEL",), "clip": ("CLIP",), "vae": ("VAE",), "title": ("STRING", {"default": "", "multiline": False}), "theme": ("STRING", {"default": "", "multiline": False}), "prompt_mode": (["human", "llm"], {"default": "human"}), "prompt_text": ("STRING", {"multiline": True, "default": ""}), "lyrics_mode": (["human", "llm"], {"default": "human"}), "lyrics_text": ("STRING", {"multiline": True, "default": ""}), "negative_tags": ("STRING", {"multiline": True, "default": "silence, clipping, distortion, noise"}), "seed": ("INT", {"default": 0, "min": 0, "max": 0xFFFFFFFFFFFFFFFF}), "bpm": ("INT", {"default": 120, "min": 10, "max": 300}), "timesignature": (["2", "3", "4", "6"], {"default": "4"}), "authoring_language": (LANGUAGE_CHOICES, {"default": "ja"}), "lyrics_language": (LANGUAGE_CHOICES, {"default": "ja"}), "ace_language": (LANGUAGE_CHOICES, {"default": "ja"}), "keyscale": (KEYSCALE_CHOICES, {"default": "A minor"}), "steps": ("INT", {"default": 8, "min": 1, "max": 200}), "cfg": ("FLOAT", {"default": 1.0, "min": 0.0, "step": 0.1}), "sampler_name": (comfy.samplers.KSampler.SAMPLERS, {"default": "euler"}), "scheduler": (comfy.samplers.KSampler.SCHEDULERS, {"default": "simple"}), "denoise": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 1.0, "step": 0.01}), "mask_away_clip": ("BOOLEAN", {"default": False}), "llm_provider": (["qwenvl", "local_qwen"], {"default": "qwenvl"}), "llm_model": ("STRING", {"default": "models/text_encoders/qwen_4b_ace15.safetensors", "multiline": False}), "sfx_mode": (["off", "auto"], {"default": "off"}), "sfx_prompt": ("STRING", {"multiline": True, "default": "anime opening impact swells, whooshes, risers, accent hits"}), "sfx_negative_prompt": ("STRING", {"multiline": True, "default": "spoken dialogue, vocals, muddy bass, clipping"}), "sfx_steps": ("INT", {"default": 8, "min": 1, "max": 200}), "sfx_cfg": ("FLOAT", {"default": 3.5, "min": 0.0, "step": 0.1}), "sfx_gain": ("FLOAT", {"default": 0.35, "min": 0.0, "max": 1.0, "step": 0.01}), "sfx_mask_away_clip": ("BOOLEAN", {"default": True})}, "optional": {"reference_audio": ("AUDIO",), "mmaudio_model": ("MMAUDIO_MODEL",), "qwenvl_bundle": ("AOG_QWENVL_BUNDLE",), "qwenvl_analysis_prompt": ("STRING", {"multiline": True, "default": ""})}}
+        return {"required": {"video_batch": ("AOG_VIDEO_BATCH",), "mmaudio_featureutils": ("MMAUDIO_FEATUREUTILS",), "model": ("MODEL",), "clip": ("CLIP",), "vae": ("VAE",), "title": ("STRING", {"default": "", "multiline": False}), "theme": ("STRING", {"default": "", "multiline": False}), "prompt_mode": (["human", "llm"], {"default": "human"}), "prompt_text": ("STRING", {"multiline": True, "default": ""}), "lyrics_mode": (["human", "llm"], {"default": "human"}), "lyrics_text": ("STRING", {"multiline": True, "default": ""}), "negative_tags": ("STRING", {"multiline": True, "default": "silence, clipping, distortion, noise"}), "seed": ("INT", {"default": 0, "min": 0, "max": 0xFFFFFFFFFFFFFFFF}), "bpm": ("INT", {"default": 120, "min": 10, "max": 300}), "timesignature": (["2", "3", "4", "6"], {"default": "4"}), "authoring_language": (LANGUAGE_CHOICES, {"default": "ja"}), "lyrics_language": (LANGUAGE_CHOICES, {"default": "ja"}), "ace_language": (LANGUAGE_CHOICES, {"default": "ja"}), "keyscale": (KEYSCALE_CHOICES, {"default": "A minor"}), "steps": ("INT", {"default": 8, "min": 1, "max": 200}), "cfg": ("FLOAT", {"default": 1.0, "min": 0.0, "step": 0.1}), "text_cfg_scale": ("FLOAT", {"default": 5.0, "min": 0.0, "step": 0.1}), "sampler_name": (comfy.samplers.KSampler.SAMPLERS, {"default": "euler"}), "scheduler": (comfy.samplers.KSampler.SCHEDULERS, {"default": "simple"}), "denoise": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 1.0, "step": 0.01}), "mask_away_clip": ("BOOLEAN", {"default": False}), "llm_provider": (["qwenvl", "local_qwen"], {"default": "qwenvl"}), "llm_model": ("STRING", {"default": "models/text_encoders/qwen_4b_ace15.safetensors", "multiline": False}), "sfx_mode": (["off", "auto"], {"default": "off"}), "sfx_prompt": ("STRING", {"multiline": True, "default": "anime opening impact swells, whooshes, risers, accent hits"}), "sfx_negative_prompt": ("STRING", {"multiline": True, "default": "spoken dialogue, vocals, muddy bass, clipping"}), "sfx_steps": ("INT", {"default": 8, "min": 1, "max": 200}), "sfx_cfg": ("FLOAT", {"default": 3.5, "min": 0.0, "step": 0.1}), "sfx_gain": ("FLOAT", {"default": 0.35, "min": 0.0, "max": 1.0, "step": 0.01}), "sfx_mask_away_clip": ("BOOLEAN", {"default": True})}, "optional": {"reference_audio": ("AUDIO",), "mmaudio_model": ("MMAUDIO_MODEL",), "qwenvl_bundle": ("AOG_QWENVL_BUNDLE",), "qwenvl_analysis_prompt": ("STRING", {"multiline": True, "default": ""})}}
 
     RETURN_TYPES = ("AOG_VIDEO_FEATURES", "AUDIO", "AUDIO", "AUDIO", "STRING", "STRING", "STRING")
     RETURN_NAMES = ("video_features", "final_audio", "ace_audio", "sfx_audio", "resolved_prompt", "resolved_lyrics", "summary_json")
     FUNCTION = "run_pipeline"
     CATEGORY = "AOG/Audio"
 
-    def run_pipeline(self, video_batch, mmaudio_featureutils, model, clip, vae, title, theme, prompt_mode, prompt_text, lyrics_mode, lyrics_text, negative_tags, seed, bpm, timesignature, authoring_language, lyrics_language, ace_language, keyscale, steps, cfg, sampler_name, scheduler, denoise, mask_away_clip=False, llm_provider="qwenvl", llm_model="models/text_encoders/qwen_4b_ace15.safetensors", sfx_mode="off", sfx_prompt="", sfx_negative_prompt="", sfx_steps=8, sfx_cfg=3.5, sfx_gain=0.35, sfx_mask_away_clip=True, reference_audio=None, mmaudio_model=None, qwenvl_bundle=None, qwenvl_analysis_prompt=""):
+    def run_pipeline(self, video_batch, mmaudio_featureutils, model, clip, vae, title, theme, prompt_mode, prompt_text, lyrics_mode, lyrics_text, negative_tags, seed, bpm, timesignature, authoring_language, lyrics_language, ace_language, keyscale, steps, cfg, text_cfg_scale, sampler_name, scheduler, denoise, mask_away_clip=False, llm_provider="qwenvl", llm_model="models/text_encoders/qwen_4b_ace15.safetensors", sfx_mode="off", sfx_prompt="", sfx_negative_prompt="", sfx_steps=8, sfx_cfg=3.5, sfx_gain=0.35, sfx_mask_away_clip=True, reference_audio=None, mmaudio_model=None, qwenvl_bundle=None, qwenvl_analysis_prompt=""):
         print("[AOG] pipeline: extracting MMAudio features...", flush=True)
         video_features, _ = AOGVideoFeatureExtract().extract_features(video_batch, mmaudio_featureutils, mask_away_clip)
         scene_analysis = ""
@@ -678,7 +672,7 @@ class AOGOpeningMusicPipeline:
         print("[AOG] pipeline: resolving lyrics...", flush=True)
         resolved_lyrics, lyrics_json = AOGLyricsDraft().draft(video_batch=video_batch, video_features=video_features, lyrics_mode=lyrics_mode, user_lyrics=lyrics_text, lyrics_language=lyrics_language, llm_provider=llm_provider, llm_model=llm_model, title=title, theme=theme, authoring_language=authoring_language, qwenvl_bundle=qwenvl_bundle)
         print("[AOG] pipeline: composing ACE-Step audio...", flush=True)
-        ace_audio, ace_json = AOGAceStepCompose().compose(model=model, clip=clip, vae=vae, video_features=video_features, prompt_text=resolved_prompt, lyrics_text=resolved_lyrics, negative_tags=negative_tags, seed=seed, bpm=bpm, duration=video_features["duration_sec"], timesignature=timesignature, ace_language=ace_language, keyscale=keyscale, steps=steps, cfg=cfg, sampler_name=sampler_name, scheduler=scheduler, denoise=denoise, reference_audio=reference_audio)
+        ace_audio, ace_json = AOGAceStepCompose().compose(model=model, clip=clip, vae=vae, video_features=video_features, prompt_text=resolved_prompt, lyrics_text=resolved_lyrics, negative_tags=negative_tags, seed=seed, bpm=bpm, duration=video_features["duration_sec"], timesignature=timesignature, ace_language=ace_language, keyscale=keyscale, steps=steps, cfg=cfg, text_cfg_scale=text_cfg_scale, sampler_name=sampler_name, scheduler=scheduler, denoise=denoise, reference_audio=reference_audio)
         print("[AOG] pipeline: composing SFX layer...", flush=True)
         sfx_audio, sfx_json = AOGSFXCompose().compose(video_batch=video_batch, video_features=video_features, mmaudio_featureutils=mmaudio_featureutils, sfx_mode=sfx_mode, seed=seed + 1, sfx_prompt=sfx_prompt, negative_prompt=sfx_negative_prompt, steps=sfx_steps, cfg=sfx_cfg, gain=sfx_gain, mask_away_clip=sfx_mask_away_clip, mmaudio_model=mmaudio_model)
         final_audio = mix_audio_dicts(ace_audio, sfx_audio, gain_b=sfx_gain) if sfx_mode == "auto" else ace_audio

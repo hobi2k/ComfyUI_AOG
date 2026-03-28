@@ -1,0 +1,18 @@
+{
+  "trace_id": "",
+  "provider": "qwenvl",
+  "model": "Qwen3-VL-4B-Instruct",
+  "mode": "llm",
+  "context_sha256": "",
+  "authoring_context_sha256": "",
+  "response": "Upbeat cinematic pop-rock with neon synths and driving bass, starting with a punchy intro riff that builds momentum. Verse introduces melodic hooks with syncopated drums and shimmering arpeggios. Pre-chorus swells with layered harmonies and rising tension. Chorus explodes into a full-band anthem with aggressive guitar riffs, bright synth leads, and a pulsating bassline — punctuated by sharp, rhythmic snare hits. Mid-section drop features a stripped-down, almost whispered vocal line before re-entering with full force. Outro fades with echoing synth pads and fading percussion, leaving a lingering sense of triumph. Hook moments emphasize the Ace of Spades motif — sudden staccato bursts synced to card flips — reinforcing theme and energy.",
+  "response_meta": {},
+  "meta": {
+    "title": "Neon Run",
+    "theme": "determined heroine racing through a dramatic city opening",
+    "source_video": "D:\\Stable Diffusion\\aog\\test\\test.webm",
+    "authoring_language": "en",
+    "lyrics_language": "ja",
+    "ace_language": "ja"
+  }
+}

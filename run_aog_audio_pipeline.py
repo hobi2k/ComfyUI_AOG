@@ -112,6 +112,7 @@ def _build_parser():
     parser.add_argument("--keyscale", default="A minor")
     parser.add_argument("--steps", type=int, default=8)
     parser.add_argument("--cfg", type=float, default=1.0)
+    parser.add_argument("--text-cfg-scale", type=float, default=5.0)
     parser.add_argument("--sampler-name", default="euler")
     parser.add_argument("--scheduler", default="simple")
     parser.add_argument("--max-frames", type=int, default=0)
@@ -268,6 +269,7 @@ def main():
         keyscale=args.keyscale,
         steps=args.steps,
         cfg=args.cfg,
+        text_cfg_scale=args.text_cfg_scale,
         sampler_name=args.sampler_name,
         scheduler=args.scheduler,
         denoise=1.0,
