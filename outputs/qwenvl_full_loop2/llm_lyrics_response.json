@@ -1,0 +1,18 @@
+{
+  "trace_id": "",
+  "provider": "qwenvl",
+  "model": "Qwen3-VL-4B-Instruct",
+  "mode": "llm",
+  "context_sha256": "",
+  "authoring_context_sha256": "",
+  "response": "[Verse]\nネオンの街を駆け抜ける\n心臓の鼓動が響く\nカードの裏表　運命の選択\n笑顔で勝ち取る未来\n\n[Pre-Chorus]\n光の刃で切り開く\n闇の中でも輝き続ける\n君の目には確かな答え\nここから始まる新たな戦い\n\n[Chorus]\nネオンラン！　加速する魂\nすべての夢を追いかけろ\nカードの裏表　運命の選択\n笑顔で勝ち取る未来！\n\n[Verse]\nチップが散る　光が踊る\n君の手に握ったのは未来\n一歩踏み出す　勇気の証\nこの場所で君だけの勝利\n\n[Pre-Chorus]\n光の刃で切り開く\n闇の中でも輝き続ける\n君の目には確かな答え\nここから始まる新たな戦い\n\n[Chorus]\nネオンラン！　加速する魂\nすべての夢を追いかけろ\nカードの裏表　運命の選択\n笑顔で勝ち取る未来！\n\n[Bridge]\n光の終わりは次の始まり\n君の力で世界を変える\n今こそ立ち上がれ\nネオンの夜、君の勝利！\n\n[Final Chorus]\nネオンラン！　加速する魂\nすべての夢を追いかけろ\nカードの裏表　運命の選択\n笑顔で勝ち取る未来！",
+  "response_meta": {},
+  "meta": {
+    "title": "Neon Run",
+    "theme": "determined heroine racing through a dramatic city opening",
+    "source_video": "D:\\Stable Diffusion\\aog\\test\\test.webm",
+    "authoring_language": "ja",
+    "lyrics_language": "ja",
+    "ace_language": "ja"
+  }
+}

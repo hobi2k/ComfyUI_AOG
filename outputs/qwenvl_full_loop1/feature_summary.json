@@ -1,0 +1,160 @@
+{
+  "summary": {
+    "frame_count": 502,
+    "duration_sec": 20.0625,
+    "fps_estimate": 25.021806853582554,
+    "mean_brightness": 0.3761986196041107,
+    "peak_brightness": 0.4432322084903717,
+    "motion_mean": 0.05646650120615959,
+    "motion_peak": 0.12172596901655197,
+    "motion_std": 0.02080524154007435
+  },
+  "timeline": [
+    {
+      "segment_index": 0,
+      "start_frame": 0,
+      "end_frame": 62,
+      "start_sec": 0.0,
+      "end_sec": 2.4778386454183265,
+      "duration_sec": 2.4778386454183265,
+      "mean_brightness": 0.3776744604110718,
+      "peak_brightness": 0.397552490234375,
+      "motion_mean": 0.05565851926803589,
+      "motion_peak": 0.10796064138412476
+    },
+    {
+      "segment_index": 1,
+      "start_frame": 62,
+      "end_frame": 125,
+      "start_sec": 2.4778386454183265,
+      "end_sec": 4.995642430278885,
+      "duration_sec": 2.517803784860558,
+      "mean_brightness": 0.3906369209289551,
+      "peak_brightness": 0.4265761077404022,
+      "motion_mean": 0.08256720751523972,
+      "motion_peak": 0.12172596901655197
+    },
+    {
+      "segment_index": 2,
+      "start_frame": 125,
+      "end_frame": 188,
+      "start_sec": 4.995642430278885,
+      "end_sec": 7.513446215139442,
+      "duration_sec": 2.5178037848605577,
+      "mean_brightness": 0.31975528597831726,
+      "peak_brightness": 0.3739953935146332,
+      "motion_mean": 0.04180372133851051,
+      "motion_peak": 0.07370398938655853
+    },
+    {
+      "segment_index": 3,
+      "start_frame": 188,
+      "end_frame": 251,
+      "start_sec": 7.513446215139442,
+      "end_sec": 10.03125,
+      "duration_sec": 2.5178037848605577,
+      "mean_brightness": 0.37224942445755005,
+      "peak_brightness": 0.37904733419418335,
+      "motion_mean": 0.045100726187229156,
+      "motion_peak": 0.07596366107463837
+    },
+    {
+      "segment_index": 4,
+      "start_frame": 251,
+      "end_frame": 313,
+      "start_sec": 10.03125,
+      "end_sec": 12.509088645418327,
+      "duration_sec": 2.477838645418327,
+      "mean_brightness": 0.3874465227127075,
+      "peak_brightness": 0.4349781274795532,
+      "motion_mean": 0.060808952897787094,
+      "motion_peak": 0.11385064572095871
+    },
+    {
+      "segment_index": 5,
+      "start_frame": 313,
+      "end_frame": 376,
+      "start_sec": 12.509088645418327,
+      "end_sec": 15.026892430278885,
+      "duration_sec": 2.5178037848605577,
+      "mean_brightness": 0.4155123829841614,
+      "peak_brightness": 0.4432322084903717,
+      "motion_mean": 0.06654832512140274,
+      "motion_peak": 0.10918385535478592
+    },
+    {
+      "segment_index": 6,
+      "start_frame": 376,
+      "end_frame": 439,
+      "start_sec": 15.026892430278885,
+      "end_sec": 17.544696215139442,
+      "duration_sec": 2.5178037848605577,
+      "mean_brightness": 0.3640872538089752,
+      "peak_brightness": 0.3823963403701782,
+      "motion_mean": 0.04157085344195366,
+      "motion_peak": 0.06998666375875473
+    },
+    {
+      "segment_index": 7,
+      "start_frame": 439,
+      "end_frame": 502,
+      "start_sec": 17.544696215139442,
+      "end_sec": 20.0625,
+      "duration_sec": 2.5178037848605577,
+      "mean_brightness": 0.38242819905281067,
+      "peak_brightness": 0.4047241508960724,
+      "motion_mean": 0.058410681784152985,
+      "motion_peak": 0.09340859204530716
+    }
+  ],
+  "semantic_cues": [
+    "long-form opening pacing",
+    "strong visual climax",
+    "high-energy motion profile",
+    "balanced visual mood",
+    "energy ramps upward over time",
+    "climax near segment 2",
+    "quietest segment 7"
+  ],
+  "conditioning_summary": {
+    "clip_shape": [
+      1,
+      160,
+      1024
+    ],
+    "clip_mean_norm": 1.0,
+    "clip_seq_len": 160,
+    "sync_shape": [
+      1,
+      488,
+      768
+    ],
+    "sync_mean_norm": 814.5,
+    "sync_seq_len": 488,
+    "requested_duration_sec": 20.08,
+    "mmaudio_condition_duration_sec": 20.08,
+    "source_duration_sec": 20.0625,
+    "loaded_duration_sec": 20.08,
+    "duration_preserved": true
+  },
+  "latent_structure_cues": [
+    "conditioning payload reserved for future direct music-model integration",
+    "song sections: intro, verse, pre-chorus, chorus, outro",
+    "loaded video duration 20.08s",
+    "mmaudio conditioning span 20.08s",
+    "highest kinetic emphasis near 2.48-5.00s"
+  ],
+  "duration_sec": 20.0625,
+  "source_duration_sec": 20.0625,
+  "loaded_duration_sec": 20.08,
+  "mmaudio_condition_duration_sec": 20.08,
+  "frame_count": 502,
+  "fps": 25.0,
+  "source_fps": 32.0,
+  "loaded_fps": 25.0,
+  "source_path": "D:\\Stable Diffusion\\aog\\test\\test.webm",
+  "feature_contract": "rich summary + timeline + semantic cues + conditioning payload summary only",
+  "analysis_only": true,
+  "qwenvl_scene_analysis": "青い髪のアニメキャラクターがポーカーテーブルに座り、ピンクと青の光の下でカードを手に取る。カメラは彼女の顔に近づき、表情が明るく笑う。背景には飛ぶカードとチップがあり、賭博の雰囲気が漂う。動きはスムーズで、視覚的なインパクトを強調する。感情は自信と楽しさを含み、リズミカルな音楽との相性が良い。繰り返されるモチーフはカードと光の演出であり、歌詞やメロディーに「勝ち負け」や「夢」のようなテーマを入れやすい。オープニングの音楽はダイナミックで、ビジュアルと同期して節奏を整えるべき。",
+  "qwenvl_analysis_language": "ja"
+}

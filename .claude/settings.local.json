@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:github.com)",
+      "WebSearch",
+      "WebFetch(domain:so-vits-svc-fork.readthedocs.io)",
+      "Bash(curl -s \"https://raw.githubusercontent.com/yxlllc/DDSP-SVC/master/README.md\")",
+      "Bash(curl:*)",
+      "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); [print\\(x[''''path'''']\\) for x in data.get\\(''''tree'''',[]\\) if x[''''type'''']==''''blob'''']\")",
+      "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); [print\\(c[''''commit''''][''''committer''''][''''date''''], c[''''commit''''][''''message''''][:80]\\) for c in data]\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(''''Stars:'''', d.get\\(''''stargazers_count''''\\)\\); print\\(''''Forks:'''', d.get\\(''''forks_count''''\\)\\); print\\(''''Created:'''', d.get\\(''''created_at''''\\)\\); print\\(''''Updated:'''', d.get\\(''''updated_at''''\\)\\); print\\(''''License:'''', d.get\\(''''license''''\\)\\); print\\(''''Description:'''', d.get\\(''''description''''\\)\\)\")",
+      "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); [print\\(i[''''number''''], i[''''state''''], i[''''title''''][:80]\\) for i in data]\")",
+      "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); [print\\(f[''''type''''], f[''''name'''']\\) for f in data]\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(''''Stars:'''', d.get\\(''''stargazers_count''''\\)\\); print\\(''''Created:'''', d.get\\(''''created_at''''\\)\\); print\\(''''Description:'''', d.get\\(''''description''''\\)\\); print\\(''''License:'''', d.get\\(''''license''''\\)\\)\")",
+      "Bash(python3 -c \"import json,sys; tree=json.load\\(sys.stdin\\); [print\\(i[''''path'''']\\) for i in tree.get\\(''''tree'''',[]\\) if i[''''type'''']==''''blob'''']\")",
+      "WebFetch(domain:deepwiki.com)",
+      "WebFetch(domain:comfyai.run)",
+      "Read(//d//**)",
+      "WebFetch(domain:docs.applio.org)",
+      "Bash(python3 -c \"import sys,json; [print\\(x[''''name''''], x[''''type'''']\\) for x in json.load\\(sys.stdin\\)]\")",
+      "WebFetch(domain:api.github.com)",
+      "Bash(gh auth:*)",
+      "Bash(git config:*)"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "trace_id": "",
+  "provider": "qwenvl",
+  "model": "Qwen3-VL-4B-Instruct",
+  "mode": "llm",
+  "context_sha256": "",
+  "authoring_context_sha256": "",
+  "response": "Electronic pulse with driving bassline, syncopated hi-hats, and shimmering synth arpeggios. Start with a bright, playful beat that builds momentum—rising from soft chime to explosive drop at 2.5s. Add layered vocal chops with rising pitch and rhythmic punch. Mid-section (4.9s) introduces a melodic hook with airy pads and claps, then intensifies into a full chorus with distorted guitar stabs and crowd-like percussion. Climax at 7.5s features a sudden silence before a thunderous re-entry of the main motif. Outro fades with echoing echoes and fading synths, leaving a lingering sense of energy.",
+  "response_meta": {},
+  "meta": {
+    "title": "Neon Run",
+    "theme": "determined heroine racing through a dramatic city opening",
+    "source_video": "D:\\Stable Diffusion\\aog\\test\\test.webm",
+    "authoring_language": "ja",
+    "lyrics_language": "ja",
+    "ace_language": "ja"
+  }
+}

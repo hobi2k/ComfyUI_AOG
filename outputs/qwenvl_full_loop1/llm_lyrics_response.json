@@ -1,0 +1,18 @@
+{
+  "trace_id": "",
+  "provider": "qwenvl",
+  "model": "Qwen3-VL-4B-Instruct",
+  "mode": "llm",
+  "context_sha256": "",
+  "authoring_context_sha256": "",
+  "response": "[Verse]\nネオンの街を駆け抜ける\n心臓の鼓動が響く\nカードの裏側に隠された運命\n今、その時が訪れる\n\n[Pre-Chorus]\n笑顔で挑む　このゲーム\nすべてを賭けた　一歩前へ\n光の刃で切り裂く\n闇を破る　私の力\n\n[Chorus]\nネオンラン！　勝利の瞬間\n手にしたカード　信じて進もう\n誰もが見逃す　あの夜の輝き\n私だけの勝利　ここに誓う！\n\n[Verse]\nテーブルの上　チップが散る\n瞳に映る　未来の光\n涙さえも　笑顔に変わる\n君の声が　私の勇気\n\n[Pre-Chorus]\n再び立ち上がれ　この場所\nすべてを賭けた　最後の一撃\n光の刃で切り裂く\n闇を破る　私の力\n\n[Chorus]\nネオンラン！　勝利の瞬間\n手にしたカード　信じて進もう\n誰もが見逃す　あの夜の輝き\n私だけの勝利　ここに誓う！\n\n[Bridge]\nカードの裏側に隠された運命\n今、その時が訪れる\n笑顔で挑む　このゲーム\nすべてを賭けた　一歩前へ\n\n[Final Chorus]\nネオンラン！　勝利の瞬間\n手にしたカード　信じて進もう\n誰もが見逃す　あの夜の輝き\n私だけの勝利　ここに誓う！\n\n[Outro]\n光の刃で切り裂く\n闇を破る　私の力\nネオンラン！　永遠に続く…",
+  "response_meta": {},
+  "meta": {
+    "title": "Neon Run",
+    "theme": "determined heroine racing through a dramatic city opening",
+    "source_video": "D:\\Stable Diffusion\\aog\\test\\test.webm",
+    "authoring_language": "ja",
+    "lyrics_language": "ja",
+    "ace_language": "ja"
+  }
+}

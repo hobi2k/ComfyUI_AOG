@@ -1,0 +1,18 @@
+{
+  "trace_id": "",
+  "provider": "qwenvl",
+  "model": "Qwen3-VL-4B-Instruct",
+  "mode": "llm",
+  "context_sha256": "",
+  "authoring_context_sha256": "",
+  "response": "Neon Run - アニメオープニング・テーマ：決意したヒロインがネオン都市を駆け抜ける\n\nインストゥルメンタル：電子音楽ベースに、キラキラするシンセサイザーとドラムのリズムが躍動感を生む。序盤はサウンドが穏やかに始まり、徐々にテンポが上がり、中盤ではギターコアとハープのエレガントなラインが加わり、ドラマチックなピークを迎える。副歌ではビートが加速し、ファンファーレのように響くサウンドが視覚的クライマックスと同期。最後のアウトロでは、静かなピアノと電子音が残響を残す。\n\n感情の流れ：前半は冷静さと期待感から始まり、中盤で緊張感とエネルギーが高まり、副歌では爆発的な喜びと自信へと昇華。最終的に静寂と余韻を残すことで、次の冒険への期待を誘う。\n\nトーン・テンポ：軽快かつ力強いリズム。段階的にスピードが増し、最高潮では160BPMを超える。クライマックスの瞬間には、短いドロップと再起動の構造で視聴者の心を掴む。\n\nハーフ・ハーフ・ハーフ：序盤（0-5秒）→ 中盤（5-15秒）→ 最終章（15-20秒）\n\nハーフ・ハーフ・ハーフ：序盤（0-5秒）→ 中盤（5-15秒）→ 最終章（15-20秒）",
+  "response_meta": {},
+  "meta": {
+    "title": "Neon Run",
+    "theme": "determined heroine racing through a dramatic city opening",
+    "source_video": "D:\\Stable Diffusion\\aog\\test\\test.webm",
+    "authoring_language": "ja",
+    "lyrics_language": "ja",
+    "ace_language": "ja"
+  }
+}
