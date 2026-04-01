@@ -1,0 +1,10 @@
+{
+  "source_path": "D:\\Stable Diffusion\\StabilityMatrix-win-x64\\Data\\Packages\\ComfyUI\\output\\WAN\\04-01\\120752-01_00001.webm",
+  "frame_count": 384,
+  "source_fps": 30.0,
+  "source_duration_sec": 15.366666666666667,
+  "loaded_fps": 25.0,
+  "loaded_duration_sec": 15.36,
+  "height": 368,
+  "width": 640
+}

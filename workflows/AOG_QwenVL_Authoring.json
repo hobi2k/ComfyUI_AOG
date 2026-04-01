@@ -6,140 +6,1575 @@
   "nodes": [
     {
       "id": 1,
-      "type": "AOG Load Video Frames",
-      "pos": [-1150, -120],
-      "size": [360, 170],
-      "flags": {},
+      "type": "MarkdownNote",
+      "pos": [
+        -1600,
+        -300
+      ],
+      "size": [
+        560,
+        240
+      ],
       "order": 0,
       "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {"name": "video_batch", "type": "AOG_VIDEO_BATCH", "links": [1, 3, 5, 6]},
-        {"name": "images", "type": "IMAGE", "links": []},
-        {"name": "summary_json", "type": "STRING", "links": []}
+      "title": "Workflow Guide",
+      "widgets_values": [
+        "This example highlights the QwenVL analysis, Prompt Draft, and Lyrics Draft nodes, while still staying queueable by rendering a final preview with ACE-Step."
       ],
-      "properties": {"Node name for S&R": "AOG Load Video Frames"},
-      "widgets_values": ["D:\\Stable Diffusion\\aog\\test\\test.webm", 0, 25, 640]
+      "color": "#432",
+      "bgcolor": "#653"
     },
     {
       "id": 2,
-      "type": "AOG MMAudio Feature Bundle",
-      "pos": [-1150, 140],
-      "size": [420, 160],
-      "flags": {},
+      "type": "MarkdownNote",
+      "pos": [
+        -980,
+        -300
+      ],
+      "size": [
+        620,
+        260
+      ],
       "order": 1,
       "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {"name": "mmaudio_featureutils", "type": "MMAUDIO_FEATUREUTILS", "links": [2]}
+      "title": "Option Meaning",
+      "widgets_values": [
+        "- Inspect nodes 11, 13, and 15 first\n- Prompt defaults to English\n- Lyrics and ACE language default to Japanese\n- SFX stays off here so authoring output is easier to hear"
       ],
-      "properties": {"Node name for S&R": "AOG MMAudio Feature Bundle"},
-      "widgets_values": ["mmaudio_vae_44k_fp16.safetensors", "mmaudio_synchformer_fp16.safetensors", "apple_DFN5B-CLIP-ViT-H-14-384_fp16.safetensors", "fp16", "44k", null]
+      "color": "#234",
+      "bgcolor": "#456"
     },
     {
       "id": 3,
-      "type": "AOG QwenVL Bundle",
-      "pos": [-1150, 360],
-      "size": [390, 250],
-      "flags": {},
+      "type": "VHS_LoadVideo",
+      "title": "1. Load Source Video",
+      "pos": [
+        -1500,
+        40
+      ],
+      "size": [
+        260,
+        460
+      ],
       "order": 2,
       "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {"name": "qwenvl_bundle", "type": "AOG_QWENVL_BUNDLE", "links": [4, 7, 8]}
+      "inputs": [
+        {
+          "name": "meta_batch",
+          "type": "VHS_BatchManager",
+          "link": null
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": null
+        }
       ],
-      "properties": {"Node name for S&R": "AOG QwenVL Bundle"},
-      "widgets_values": ["Qwen3-VL-4B-Instruct", "None (FP16)", "auto", 8, 512, 0.4, 0.9, 1, 1.1, false, 1]
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            1
+          ],
+          "slot_index": 0,
+          "shape": 3
+        },
+        {
+          "name": "frame_count",
+          "type": "INT",
+          "links": [
+            2
+          ],
+          "shape": 3
+        },
+        {
+          "name": "audio",
+          "type": "VHS_AUDIO",
+          "links": null,
+          "shape": 3
+        },
+        {
+          "name": "video_info",
+          "type": "VHS_VIDEOINFO",
+          "links": [
+            3,
+            4
+          ],
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VHS_LoadVideo"
+      },
+      "widgets_values": {
+        "video": "",
+        "force_rate": 8,
+        "force_size": "Disabled",
+        "custom_width": 0,
+        "custom_height": 0,
+        "frame_load_cap": 0,
+        "skip_first_frames": 0,
+        "select_every_nth": 1,
+        "choose video to upload": "image",
+        "videopreview": {
+          "hidden": false,
+          "paused": false,
+          "params": {
+            "frame_load_cap": 0,
+            "skip_first_frames": 0,
+            "force_rate": 0,
+            "filename": "",
+            "type": "input",
+            "format": "video/mp4",
+            "force_size": "Disabled",
+            "select_every_nth": 1
+          }
+        }
+      }
     },
     {
       "id": 4,
+      "type": "AOG VHS Video Batch Adapter",
+      "title": "AOG VHS Video Batch Adapter",
+      "pos": [
+        -1120,
+        120
+      ],
+      "size": [
+        320,
+        150
+      ],
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 1
+        },
+        {
+          "name": "frame_count",
+          "type": "INT",
+          "link": 2
+        },
+        {
+          "name": "video_info",
+          "type": "VHS_VIDEOINFO",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "video_batch",
+          "type": "AOG_VIDEO_BATCH",
+          "links": [
+            5,
+            9,
+            42
+          ]
+        },
+        {
+          "name": "summary_json",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AOG VHS Video Batch Adapter"
+      }
+    },
+    {
+      "id": 5,
+      "type": "AOG Pipeline Toggles",
+      "title": "AOG Pipeline Toggles",
+      "pos": [
+        -720,
+        20
+      ],
+      "size": [
+        360,
+        180
+      ],
+      "order": 4,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "pipeline_toggles",
+          "type": "AOG_PIPELINE_TOGGLES",
+          "links": [
+            7,
+            8,
+            14,
+            21,
+            28
+          ]
+        },
+        {
+          "name": "enable_ace_step",
+          "type": "BOOLEAN",
+          "links": null
+        },
+        {
+          "name": "enable_mmaudio_features",
+          "type": "BOOLEAN",
+          "links": null
+        },
+        {
+          "name": "enable_qwenvl_analysis",
+          "type": "BOOLEAN",
+          "links": null
+        },
+        {
+          "name": "enable_prompt_authoring",
+          "type": "BOOLEAN",
+          "links": null
+        },
+        {
+          "name": "enable_lyrics_authoring",
+          "type": "BOOLEAN",
+          "links": null
+        },
+        {
+          "name": "enable_sfx",
+          "type": "BOOLEAN",
+          "links": null
+        },
+        {
+          "name": "summary_json",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AOG Pipeline Toggles"
+      },
+      "widgets_values": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ]
+    },
+    {
+      "id": 6,
+      "type": "AOG Quality Preset",
+      "title": "AOG Quality Preset",
+      "pos": [
+        -320,
+        20
+      ],
+      "size": [
+        320,
+        110
+      ],
+      "order": 5,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "quality_settings",
+          "type": "AOG_QUALITY_SETTINGS",
+          "links": null
+        },
+        {
+          "name": "ace_steps",
+          "type": "INT",
+          "links": [
+            39
+          ]
+        },
+        {
+          "name": "ace_cfg",
+          "type": "FLOAT",
+          "links": [
+            40
+          ]
+        },
+        {
+          "name": "text_cfg_scale",
+          "type": "FLOAT",
+          "links": [
+            41
+          ]
+        },
+        {
+          "name": "sfx_steps",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "name": "sfx_cfg",
+          "type": "FLOAT",
+          "links": null
+        },
+        {
+          "name": "summary_json",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AOG Quality Preset"
+      },
+      "widgets_values": [
+        "balanced",
+        true
+      ]
+    },
+    {
+      "id": 7,
+      "type": "AOG MMAudio Feature Bundle",
+      "title": "AOG MMAudio Feature Bundle",
+      "pos": [
+        -1120,
+        360
+      ],
+      "size": [
+        380,
+        180
+      ],
+      "order": 6,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "mmaudio_featureutils",
+          "type": "MMAUDIO_FEATUREUTILS",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AOG MMAudio Feature Bundle"
+      },
+      "widgets_values": [
+        "mmaudio_vae_44k_fp16.safetensors",
+        "mmaudio_synchformer_fp16.safetensors",
+        "apple_DFN5B-CLIP-ViT-H-14-384_fp16.safetensors",
+        "44k",
+        "fp16"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "AOG QwenVL Bundle",
+      "title": "AOG QwenVL Bundle",
+      "pos": [
+        -1120,
+        590
+      ],
+      "size": [
+        380,
+        250
+      ],
+      "order": 7,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "qwenvl_bundle",
+          "type": "AOG_QWENVL_BUNDLE",
+          "links": [
+            11
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AOG QwenVL Bundle"
+      },
+      "widgets_values": [
+        "Qwen3-VL-4B-Instruct",
+        "None (FP16)",
+        "auto",
+        8,
+        512,
+        0.4,
+        0.9,
+        1,
+        1.1,
+        false,
+        1
+      ]
+    },
+    {
+      "id": 9,
       "type": "AOG Video Feature Extract",
-      "pos": [-700, -40],
-      "size": [390, 120],
+      "title": "AOG Video Feature Extract",
+      "pos": [
+        -700,
+        280
+      ],
+      "size": [
+        360,
+        120
+      ],
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video_batch",
+          "type": "AOG_VIDEO_BATCH",
+          "link": 5
+        },
+        {
+          "name": "mmaudio_featureutils",
+          "type": "MMAUDIO_FEATUREUTILS",
+          "link": 6
+        },
+        {
+          "name": "pipeline_toggles",
+          "type": "AOG_PIPELINE_TOGGLES",
+          "link": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "video_features",
+          "type": "AOG_VIDEO_FEATURES",
+          "links": [
+            10,
+            35
+          ]
+        },
+        {
+          "name": "summary_json",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AOG Video Feature Extract"
+      },
+      "widgets_values": [
+        true,
+        false
+      ]
+    },
+    {
+      "id": 10,
+      "type": "AOG QwenVL Branch Gate",
+      "title": "AOG QwenVL Branch Gate",
+      "pos": [
+        -220,
+        520
+      ],
+      "size": [
+        320,
+        120
+      ],
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "pipeline_toggles",
+          "type": "AOG_PIPELINE_TOGGLES",
+          "link": 8
+        },
+        {
+          "name": "video_batch",
+          "type": "AOG_VIDEO_BATCH",
+          "link": 9
+        },
+        {
+          "name": "video_features",
+          "type": "AOG_VIDEO_FEATURES",
+          "link": 10
+        },
+        {
+          "name": "qwenvl_bundle",
+          "type": "AOG_QWENVL_BUNDLE",
+          "link": 11
+        }
+      ],
+      "outputs": [
+        {
+          "name": "video_batch",
+          "type": "AOG_VIDEO_BATCH",
+          "links": [
+            12,
+            15,
+            22
+          ]
+        },
+        {
+          "name": "video_features",
+          "type": "AOG_VIDEO_FEATURES",
+          "links": [
+            16,
+            23
+          ]
+        },
+        {
+          "name": "qwenvl_bundle",
+          "type": "AOG_QWENVL_BUNDLE",
+          "links": [
+            13,
+            17,
+            24
+          ]
+        },
+        {
+          "name": "summary_json",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AOG QwenVL Branch Gate"
+      }
+    },
+    {
+      "id": 11,
+      "type": "AOG QwenVL Semantic Extract",
+      "title": "AOG QwenVL Semantic Extract",
+      "pos": [
+        160,
+        520
+      ],
+      "size": [
+        380,
+        160
+      ],
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video_batch",
+          "type": "AOG_VIDEO_BATCH",
+          "link": 12
+        },
+        {
+          "name": "qwenvl_bundle",
+          "type": "AOG_QWENVL_BUNDLE",
+          "link": 13
+        }
+      ],
+      "outputs": [
+        {
+          "name": "scene_analysis",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "summary_json",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AOG QwenVL Semantic Extract"
+      },
+      "widgets_values": [
+        true,
+        "en",
+        ""
+      ]
+    },
+    {
+      "id": 12,
+      "type": "AOG Prompt Stage Gate",
+      "title": "AOG Prompt Stage Gate",
+      "pos": [
+        -220,
+        730
+      ],
+      "size": [
+        320,
+        120
+      ],
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "pipeline_toggles",
+          "type": "AOG_PIPELINE_TOGGLES",
+          "link": 14
+        },
+        {
+          "name": "video_batch",
+          "type": "AOG_VIDEO_BATCH",
+          "link": 15
+        },
+        {
+          "name": "video_features",
+          "type": "AOG_VIDEO_FEATURES",
+          "link": 16
+        },
+        {
+          "name": "qwenvl_bundle",
+          "type": "AOG_QWENVL_BUNDLE",
+          "link": 17
+        }
+      ],
+      "outputs": [
+        {
+          "name": "video_batch",
+          "type": "AOG_VIDEO_BATCH",
+          "links": [
+            18
+          ]
+        },
+        {
+          "name": "video_features",
+          "type": "AOG_VIDEO_FEATURES",
+          "links": [
+            19
+          ]
+        },
+        {
+          "name": "qwenvl_bundle",
+          "type": "AOG_QWENVL_BUNDLE",
+          "links": [
+            20
+          ]
+        },
+        {
+          "name": "summary_json",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AOG Prompt Stage Gate"
+      }
+    },
+    {
+      "id": 13,
+      "type": "AOG Prompt Draft",
+      "title": "AOG Prompt Draft",
+      "pos": [
+        160,
+        730
+      ],
+      "size": [
+        420,
+        220
+      ],
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video_batch",
+          "type": "AOG_VIDEO_BATCH",
+          "link": 18
+        },
+        {
+          "name": "video_features",
+          "type": "AOG_VIDEO_FEATURES",
+          "link": 19
+        },
+        {
+          "name": "qwenvl_bundle",
+          "type": "AOG_QWENVL_BUNDLE",
+          "link": 20
+        }
+      ],
+      "outputs": [
+        {
+          "name": "prompt_text",
+          "type": "STRING",
+          "links": [
+            36
+          ]
+        },
+        {
+          "name": "summary_json",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AOG Prompt Draft"
+      },
+      "widgets_values": [
+        true,
+        "llm",
+        "",
+        "qwenvl",
+        "en"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "AOG Lyrics Stage Gate",
+      "title": "AOG Lyrics Stage Gate",
+      "pos": [
+        -220,
+        990
+      ],
+      "size": [
+        320,
+        120
+      ],
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "pipeline_toggles",
+          "type": "AOG_PIPELINE_TOGGLES",
+          "link": 21
+        },
+        {
+          "name": "video_batch",
+          "type": "AOG_VIDEO_BATCH",
+          "link": 22
+        },
+        {
+          "name": "video_features",
+          "type": "AOG_VIDEO_FEATURES",
+          "link": 23
+        },
+        {
+          "name": "qwenvl_bundle",
+          "type": "AOG_QWENVL_BUNDLE",
+          "link": 24
+        }
+      ],
+      "outputs": [
+        {
+          "name": "video_batch",
+          "type": "AOG_VIDEO_BATCH",
+          "links": [
+            25
+          ]
+        },
+        {
+          "name": "video_features",
+          "type": "AOG_VIDEO_FEATURES",
+          "links": [
+            26
+          ]
+        },
+        {
+          "name": "qwenvl_bundle",
+          "type": "AOG_QWENVL_BUNDLE",
+          "links": [
+            27
+          ]
+        },
+        {
+          "name": "summary_json",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AOG Lyrics Stage Gate"
+      }
+    },
+    {
+      "id": 15,
+      "type": "AOG Lyrics Draft",
+      "title": "AOG Lyrics Draft",
+      "pos": [
+        160,
+        990
+      ],
+      "size": [
+        420,
+        220
+      ],
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video_batch",
+          "type": "AOG_VIDEO_BATCH",
+          "link": 25
+        },
+        {
+          "name": "video_features",
+          "type": "AOG_VIDEO_FEATURES",
+          "link": 26
+        },
+        {
+          "name": "qwenvl_bundle",
+          "type": "AOG_QWENVL_BUNDLE",
+          "link": 27
+        }
+      ],
+      "outputs": [
+        {
+          "name": "lyrics_text",
+          "type": "STRING",
+          "links": [
+            37
+          ]
+        },
+        {
+          "name": "summary_json",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AOG Lyrics Draft"
+      },
+      "widgets_values": [
+        true,
+        "llm",
+        "",
+        "ja",
+        "qwenvl",
+        "en"
+      ]
+    },
+    {
+      "id": 16,
+      "type": "UNETLoader",
+      "title": "8A. ACE UNET",
+      "pos": [
+        640,
+        90
+      ],
+      "size": [
+        320,
+        80
+      ],
+      "order": 15,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            29
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UNETLoader"
+      },
+      "widgets_values": [
+        "acestep_v1.5_turbo.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 17,
+      "type": "DualCLIPLoader",
+      "title": "8B. ACE Text Encoders",
+      "pos": [
+        640,
+        210
+      ],
+      "size": [
+        320,
+        100
+      ],
+      "order": 16,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            30
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DualCLIPLoader"
+      },
+      "widgets_values": [
+        "qwen_0.6b_ace15.safetensors",
+        "qwen_4b_ace15.safetensors",
+        "ace",
+        "default"
+      ]
+    },
+    {
+      "id": 18,
+      "type": "VAELoader",
+      "title": "8C. ACE VAE",
+      "pos": [
+        640,
+        350
+      ],
+      "size": [
+        320,
+        60
+      ],
+      "order": 17,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            31
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "ace_1.5_vae.safetensors"
+      ]
+    },
+    {
+      "id": 19,
+      "type": "AOG ACE Stage Gate",
+      "title": "AOG ACE Stage Gate",
+      "pos": [
+        1040,
+        150
+      ],
+      "size": [
+        320,
+        120
+      ],
+      "order": 18,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "pipeline_toggles",
+          "type": "AOG_PIPELINE_TOGGLES",
+          "link": 28
+        },
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 29
+        },
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 30
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 31
+        }
+      ],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "links": [
+            32
+          ]
+        },
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "links": [
+            33
+          ]
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "links": [
+            34
+          ]
+        },
+        {
+          "name": "summary_json",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AOG ACE Stage Gate"
+      }
+    },
+    {
+      "id": 20,
+      "type": "AOG ACE-Step Compose",
+      "title": "AOG ACE-Step Compose",
+      "pos": [
+        1420,
+        120
+      ],
+      "size": [
+        520,
+        330
+      ],
+      "order": 19,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 32
+        },
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 33
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 34
+        },
+        {
+          "name": "video_features",
+          "type": "AOG_VIDEO_FEATURES",
+          "link": 35
+        },
+        {
+          "name": "prompt_text",
+          "type": "STRING",
+          "link": 36
+        },
+        {
+          "name": "lyrics_text",
+          "type": "STRING",
+          "link": 37
+        },
+        {
+          "name": "steps",
+          "type": "INT",
+          "link": 39
+        },
+        {
+          "name": "cfg",
+          "type": "FLOAT",
+          "link": 40
+        },
+        {
+          "name": "text_cfg_scale",
+          "type": "FLOAT",
+          "link": 41
+        }
+      ],
+      "outputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [
+            43
+          ]
+        },
+        {
+          "name": "summary_json",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AOG ACE-Step Compose"
+      },
+      "widgets_values": [
+        true,
+        "",
+        "",
+        "silence, clipping, distortion, noise",
+        0,
+        120,
+        0,
+        "4",
+        "ja",
+        "A minor",
+        8,
+        1.0,
+        5.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 21,
+      "type": "AOG Preview Video Combine",
+      "title": "AOG Preview Video Combine",
+      "pos": [
+        1980,
+        140
+      ],
+      "size": [
+        430,
+        220
+      ],
+      "order": 20,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video_batch",
+          "type": "AOG_VIDEO_BATCH",
+          "link": 42
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 43
+        }
+      ],
+      "outputs": [
+        {
+          "name": "filenames",
+          "type": "VHS_FILENAMES",
+          "links": null
+        },
+        {
+          "name": "summary_json",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AOG Preview Video Combine"
+      },
+      "widgets_values": [
+        true,
+        "AOG/qwenvl_authoring_preview",
+        "video/mp4",
+        true,
+        false,
+        0
+      ]
+    },
+    {
+      "id": 22,
+      "type": "VHS_VideoInfo",
+      "pos": [
+        -1110,
+        530
+      ],
+      "size": [
+        262,
+        206
+      ],
       "flags": {},
       "order": 3,
       "mode": 0,
       "inputs": [
-        {"name": "video_batch", "type": "AOG_VIDEO_BATCH", "link": 1},
-        {"name": "mmaudio_featureutils", "type": "MMAUDIO_FEATUREUTILS", "link": 2}
+        {
+          "localized_name": "video_info",
+          "name": "video_info",
+          "type": "VHS_VIDEOINFO",
+          "link": 4
+        }
       ],
       "outputs": [
-        {"name": "video_features", "type": "AOG_VIDEO_FEATURES", "links": [9, 10]},
-        {"name": "summary_json", "type": "STRING", "links": []}
+        {
+          "localized_name": "source_fps🟨",
+          "name": "source_fps🟨",
+          "type": "FLOAT",
+          "links": null
+        },
+        {
+          "localized_name": "source_frame_count🟨",
+          "name": "source_frame_count🟨",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "localized_name": "source_duration🟨",
+          "name": "source_duration🟨",
+          "type": "FLOAT",
+          "links": null
+        },
+        {
+          "localized_name": "source_width🟨",
+          "name": "source_width🟨",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "localized_name": "source_height🟨",
+          "name": "source_height🟨",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "localized_name": "loaded_fps🟦",
+          "name": "loaded_fps🟦",
+          "type": "FLOAT",
+          "slot_index": 5,
+          "links": null
+        },
+        {
+          "localized_name": "loaded_frame_count🟦",
+          "name": "loaded_frame_count🟦",
+          "type": "INT",
+          "slot_index": 6,
+          "links": null
+        },
+        {
+          "localized_name": "loaded_duration🟦",
+          "name": "loaded_duration🟦",
+          "type": "FLOAT",
+          "slot_index": 7,
+          "links": [
+            38
+          ]
+        },
+        {
+          "localized_name": "loaded_width🟦",
+          "name": "loaded_width🟦",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "localized_name": "loaded_height🟦",
+          "name": "loaded_height🟦",
+          "type": "INT",
+          "links": null
+        }
       ],
-      "properties": {"Node name for S&R": "AOG Video Feature Extract"},
-      "widgets_values": [false]
-    },
-    {
-      "id": 5,
-      "type": "AOG QwenVL Semantic Extract",
-      "pos": [-700, 180],
-      "size": [420, 140],
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [
-        {"name": "video_batch", "type": "AOG_VIDEO_BATCH", "link": 3},
-        {"name": "qwenvl_bundle", "type": "AOG_QWENVL_BUNDLE", "link": 4}
-      ],
-      "outputs": [
-        {"name": "analysis_text", "type": "STRING", "links": []},
-        {"name": "summary_json", "type": "STRING", "links": []}
-      ],
-      "properties": {"Node name for S&R": "AOG QwenVL Semantic Extract"},
-      "widgets_values": ["en", ""]
-    },
-    {
-      "id": 6,
-      "type": "AOG Prompt Draft",
-      "pos": [-180, 0],
-      "size": [430, 190],
-      "flags": {},
-      "order": 5,
-      "mode": 0,
-      "inputs": [
-        {"name": "video_batch", "type": "AOG_VIDEO_BATCH", "link": 5},
-        {"name": "video_features", "type": "AOG_VIDEO_FEATURES", "link": 9},
-        {"name": "qwenvl_bundle", "type": "AOG_QWENVL_BUNDLE", "link": 7}
-      ],
-      "outputs": [
-        {"name": "prompt_text", "type": "STRING", "links": []},
-        {"name": "summary_json", "type": "STRING", "links": []}
-      ],
-      "properties": {"Node name for S&R": "AOG Prompt Draft"},
-      "widgets_values": ["llm", "", "qwenvl", "models/text_encoders/qwen_4b_ace15.safetensors", "Neon Run", "determined heroine racing through a dramatic city opening", "en"]
-    },
-    {
-      "id": 7,
-      "type": "AOG Lyrics Draft",
-      "pos": [-180, 240],
-      "size": [430, 210],
-      "flags": {},
-      "order": 6,
-      "mode": 0,
-      "inputs": [
-        {"name": "video_batch", "type": "AOG_VIDEO_BATCH", "link": 6},
-        {"name": "video_features", "type": "AOG_VIDEO_FEATURES", "link": 10},
-        {"name": "qwenvl_bundle", "type": "AOG_QWENVL_BUNDLE", "link": 8}
-      ],
-      "outputs": [
-        {"name": "lyrics_text", "type": "STRING", "links": []},
-        {"name": "summary_json", "type": "STRING", "links": []}
-      ],
-      "properties": {"Node name for S&R": "AOG Lyrics Draft"},
-      "widgets_values": ["llm", "", "ja", "qwenvl", "models/text_encoders/qwen_4b_ace15.safetensors", "Neon Run", "determined heroine racing through a dramatic city opening", "en"]
+      "properties": {
+        "cnr_id": "comfyui-videohelpersuite",
+        "ver": "449839959f0153fb8a57211a9364c55163935ca9",
+        "Node name for S&R": "VHS_VideoInfo",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.7",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": {}
     }
   ],
   "links": [
-    [1, 1, 0, 4, 0, "AOG_VIDEO_BATCH"],
-    [2, 2, 0, 4, 1, "MMAUDIO_FEATUREUTILS"],
-    [3, 1, 0, 5, 0, "AOG_VIDEO_BATCH"],
-    [4, 3, 0, 5, 1, "AOG_QWENVL_BUNDLE"],
-    [5, 1, 0, 6, 0, "AOG_VIDEO_BATCH"],
-    [6, 1, 0, 7, 0, "AOG_VIDEO_BATCH"],
-    [7, 3, 0, 6, 2, "AOG_QWENVL_BUNDLE"],
-    [8, 3, 0, 7, 2, "AOG_QWENVL_BUNDLE"],
-    [9, 4, 0, 6, 1, "AOG_VIDEO_FEATURES"],
-    [10, 4, 0, 7, 1, "AOG_VIDEO_FEATURES"]
+    [
+      1,
+      3,
+      0,
+      4,
+      0,
+      "IMAGE"
+    ],
+    [
+      2,
+      3,
+      1,
+      4,
+      1,
+      "INT"
+    ],
+    [
+      3,
+      3,
+      3,
+      4,
+      2,
+      "VHS_VIDEOINFO"
+    ],
+    [
+      4,
+      3,
+      3,
+      22,
+      0,
+      "VHS_VIDEOINFO"
+    ],
+    [
+      5,
+      4,
+      0,
+      9,
+      1,
+      "AOG_VIDEO_BATCH"
+    ],
+    [
+      6,
+      7,
+      0,
+      9,
+      2,
+      "MMAUDIO_FEATUREUTILS"
+    ],
+    [
+      7,
+      5,
+      0,
+      9,
+      4,
+      "AOG_PIPELINE_TOGGLES"
+    ],
+    [
+      8,
+      5,
+      0,
+      10,
+      0,
+      "AOG_PIPELINE_TOGGLES"
+    ],
+    [
+      9,
+      4,
+      0,
+      10,
+      1,
+      "AOG_VIDEO_BATCH"
+    ],
+    [
+      10,
+      9,
+      0,
+      10,
+      2,
+      "AOG_VIDEO_FEATURES"
+    ],
+    [
+      11,
+      8,
+      0,
+      10,
+      3,
+      "AOG_QWENVL_BUNDLE"
+    ],
+    [
+      12,
+      10,
+      0,
+      11,
+      1,
+      "AOG_VIDEO_BATCH"
+    ],
+    [
+      13,
+      10,
+      2,
+      11,
+      2,
+      "AOG_QWENVL_BUNDLE"
+    ],
+    [
+      14,
+      5,
+      0,
+      12,
+      0,
+      "AOG_PIPELINE_TOGGLES"
+    ],
+    [
+      15,
+      10,
+      0,
+      12,
+      1,
+      "AOG_VIDEO_BATCH"
+    ],
+    [
+      16,
+      10,
+      1,
+      12,
+      2,
+      "AOG_VIDEO_FEATURES"
+    ],
+    [
+      17,
+      10,
+      2,
+      12,
+      3,
+      "AOG_QWENVL_BUNDLE"
+    ],
+    [
+      18,
+      12,
+      0,
+      13,
+      1,
+      "AOG_VIDEO_BATCH"
+    ],
+    [
+      19,
+      12,
+      1,
+      13,
+      2,
+      "AOG_VIDEO_FEATURES"
+    ],
+    [
+      20,
+      12,
+      2,
+      13,
+      7,
+      "AOG_QWENVL_BUNDLE"
+    ],
+    [
+      21,
+      5,
+      0,
+      14,
+      0,
+      "AOG_PIPELINE_TOGGLES"
+    ],
+    [
+      22,
+      10,
+      0,
+      14,
+      1,
+      "AOG_VIDEO_BATCH"
+    ],
+    [
+      23,
+      10,
+      1,
+      14,
+      2,
+      "AOG_VIDEO_FEATURES"
+    ],
+    [
+      24,
+      10,
+      2,
+      14,
+      3,
+      "AOG_QWENVL_BUNDLE"
+    ],
+    [
+      25,
+      14,
+      0,
+      15,
+      1,
+      "AOG_VIDEO_BATCH"
+    ],
+    [
+      26,
+      14,
+      1,
+      15,
+      2,
+      "AOG_VIDEO_FEATURES"
+    ],
+    [
+      27,
+      14,
+      2,
+      15,
+      8,
+      "AOG_QWENVL_BUNDLE"
+    ],
+    [
+      28,
+      5,
+      0,
+      19,
+      0,
+      "AOG_PIPELINE_TOGGLES"
+    ],
+    [
+      29,
+      16,
+      0,
+      19,
+      1,
+      "MODEL"
+    ],
+    [
+      30,
+      17,
+      0,
+      19,
+      2,
+      "CLIP"
+    ],
+    [
+      31,
+      18,
+      0,
+      19,
+      3,
+      "VAE"
+    ],
+    [
+      32,
+      19,
+      0,
+      20,
+      1,
+      "MODEL"
+    ],
+    [
+      33,
+      19,
+      1,
+      20,
+      2,
+      "CLIP"
+    ],
+    [
+      34,
+      19,
+      2,
+      20,
+      3,
+      "VAE"
+    ],
+    [
+      35,
+      9,
+      0,
+      20,
+      4,
+      "AOG_VIDEO_FEATURES"
+    ],
+    [
+      36,
+      13,
+      0,
+      20,
+      5,
+      "STRING"
+    ],
+    [
+      37,
+      15,
+      0,
+      20,
+      6,
+      "STRING"
+    ],
+    [
+      38,
+      22,
+      7,
+      20,
+      10,
+      "FLOAT"
+    ],
+    [
+      39,
+      6,
+      1,
+      20,
+      14,
+      "INT"
+    ],
+    [
+      40,
+      6,
+      2,
+      20,
+      15,
+      "FLOAT"
+    ],
+    [
+      41,
+      6,
+      3,
+      20,
+      16,
+      "FLOAT"
+    ],
+    [
+      42,
+      4,
+      0,
+      21,
+      1,
+      "AOG_VIDEO_BATCH"
+    ],
+    [
+      43,
+      20,
+      0,
+      21,
+      2,
+      "AUDIO"
+    ]
   ]
 }

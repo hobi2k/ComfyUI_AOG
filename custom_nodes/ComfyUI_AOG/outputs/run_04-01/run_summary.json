@@ -1,0 +1,545 @@
+{
+  "video_summary": {
+    "frame_count": 384,
+    "duration_sec": 15.366666666666667,
+    "fps_estimate": 24.989154013015185,
+    "mean_brightness": 0.34782636165618896,
+    "peak_brightness": 0.4073946177959442,
+    "motion_mean": 0.050185974687337875,
+    "motion_peak": 0.19739116728305817,
+    "motion_std": 0.03160832077264786
+  },
+  "timeline": [
+    {
+      "segment_index": 0,
+      "start_frame": 0,
+      "end_frame": 48,
+      "start_sec": 0.0,
+      "end_sec": 1.9208333333333334,
+      "duration_sec": 1.9208333333333334,
+      "mean_brightness": 0.3914865255355835,
+      "peak_brightness": 0.4073946177959442,
+      "motion_mean": 0.054313380271196365,
+      "motion_peak": 0.08128240704536438
+    },
+    {
+      "segment_index": 1,
+      "start_frame": 48,
+      "end_frame": 96,
+      "start_sec": 1.9208333333333334,
+      "end_sec": 3.841666666666667,
+      "duration_sec": 1.9208333333333334,
+      "mean_brightness": 0.36967989802360535,
+      "peak_brightness": 0.3827979862689972,
+      "motion_mean": 0.025308208540081978,
+      "motion_peak": 0.06462046504020691
+    },
+    {
+      "segment_index": 2,
+      "start_frame": 96,
+      "end_frame": 144,
+      "start_sec": 3.841666666666667,
+      "end_sec": 5.7625,
+      "duration_sec": 1.9208333333333334,
+      "mean_brightness": 0.34775814414024353,
+      "peak_brightness": 0.3656094968318939,
+      "motion_mean": 0.03716659918427467,
+      "motion_peak": 0.07754311710596085
+    },
+    {
+      "segment_index": 3,
+      "start_frame": 144,
+      "end_frame": 192,
+      "start_sec": 5.7625,
+      "end_sec": 7.683333333333334,
+      "duration_sec": 1.9208333333333334,
+      "mean_brightness": 0.3281298577785492,
+      "peak_brightness": 0.3339155912399292,
+      "motion_mean": 0.05852299556136131,
+      "motion_peak": 0.10618206858634949
+    },
+    {
+      "segment_index": 4,
+      "start_frame": 192,
+      "end_frame": 240,
+      "start_sec": 7.683333333333334,
+      "end_sec": 9.604166666666668,
+      "duration_sec": 1.9208333333333343,
+      "mean_brightness": 0.3138401210308075,
+      "peak_brightness": 0.32647886872291565,
+      "motion_mean": 0.040645334869623184,
+      "motion_peak": 0.08266737312078476
+    },
+    {
+      "segment_index": 5,
+      "start_frame": 240,
+      "end_frame": 288,
+      "start_sec": 9.604166666666668,
+      "end_sec": 11.525,
+      "duration_sec": 1.9208333333333325,
+      "mean_brightness": 0.3116306960582733,
+      "peak_brightness": 0.35749390721321106,
+      "motion_mean": 0.045716650784015656,
+      "motion_peak": 0.11105985939502716
+    },
+    {
+      "segment_index": 6,
+      "start_frame": 288,
+      "end_frame": 336,
+      "start_sec": 11.525,
+      "end_sec": 13.445833333333333,
+      "duration_sec": 1.9208333333333325,
+      "mean_brightness": 0.36396539211273193,
+      "peak_brightness": 0.3819282352924347,
+      "motion_mean": 0.06120281666517258,
+      "motion_peak": 0.15374019742012024
+    },
+    {
+      "segment_index": 7,
+      "start_frame": 336,
+      "end_frame": 384,
+      "start_sec": 13.445833333333333,
+      "end_sec": 15.366666666666667,
+      "duration_sec": 1.9208333333333343,
+      "mean_brightness": 0.35612034797668457,
+      "peak_brightness": 0.3685957193374634,
+      "motion_mean": 0.07949806749820709,
+      "motion_peak": 0.19739116728305817
+    }
+  ],
+  "semantic_cues": [
+    "standard opening pacing",
+    "strong visual climax",
+    "high-energy motion profile",
+    "balanced visual mood",
+    "energy ramps upward over time",
+    "climax near segment 8",
+    "quietest segment 2"
+  ],
+  "qwenvl_scene_analysis": "青い髪とピンクの瞳を持つアニメキャラクターが、賭博のテーブルに座っている。背景はピンクと紫の光で、カードやチップが舞う。カメラはキャラクターを正面から捉え、徐々に近づき、表情が明確になる。キャラクターは自信満々に微笑み、手を腰に当ててポーズを取る。動きは静的だが、周囲のカードやチップの飛ぶ様子で活気がある。感情は挑戦的で、魅力的。繰り返されるモチーフは「賭け」や「勝利」という概念であり、歌詞には「勝ち抜く」「闘う」「輝く」などのキーワードが自然に組み込まれる。オープニングメロディは、ダイナミックな鼓動とピアノのリズムで始まり、キャラクターの表情と動きに合わせてテンポが変化する。",
+  "qwenvl_analysis_language": "ja",
+  "conditioning_summary": {
+    "clip_shape": [
+      1,
+      122,
+      1024
+    ],
+    "clip_mean_norm": 1.0,
+    "clip_seq_len": 122,
+    "sync_shape": [
+      1,
+      376,
+      768
+    ],
+    "sync_mean_norm": 810.5,
+    "sync_seq_len": 376,
+    "mmaudio_enabled": true,
+    "requested_duration_sec": 15.36,
+    "mmaudio_condition_duration_sec": 15.36,
+    "source_duration_sec": 15.366666666666667,
+    "loaded_duration_sec": 15.36,
+    "duration_preserved": true
+  },
+  "latent_structure_cues": [
+    "conditioning payload reserved for future direct music-model integration",
+    "song sections: intro, verse, pre-chorus, chorus, outro",
+    "loaded video duration 15.36s",
+    "mmaudio conditioning span 15.36s",
+    "highest kinetic emphasis near 13.45-15.37s"
+  ],
+  "prompt_mode": "llm",
+  "lyrics_mode": "llm",
+  "authoring_language": "ja",
+  "lyrics_language": "ja",
+  "ace_language": "ja",
+  "llm_provider": "qwenvl",
+  "sfx_mode": "off",
+  "prompt_summary": {
+    "prompt_mode": "llm",
+    "resolved_prompt": "激しいドラムとピアノのリズムで始まるオープニング。前半は落ち着いたテンポで、キャラクターの表情と動きに合わせて旋律が浮かび上がる。中盤ではエネルギーが増し、鼓動的なビートが強調され、視覚的にも動きが活発になる。後半は最高潮に達し、キャラクターの笑顔とポーズに合わせてメロディがピークを迎え、最後に静かに収束する。感情は挑戦的かつ魅惑的で、勝利への決意と輝きを表現する。",
+    "llm_info": {
+      "provider": "qwenvl",
+      "mode": "llm",
+      "model": "Qwen3-VL-4B-Instruct",
+      "request": {
+        "authoring_language": "ja",
+        "custom_prompt": "You are writing an ACE-Step music prompt for an anime opening. Respond only in ja. Return plain text only, with no markdown, no bullet list, and no explanation. Use the video itself plus the structured context below. Write a concise, vivid music-generation prompt describing instrumentation, pacing, rises, drops, emotional arc, transitions, and hook moments that fit this opening exactly.\n\nStructured context: {\"summary\": {\"frame_count\": 384, \"duration_sec\": 15.366666666666667, \"fps_estimate\": 24.989154013015185, \"mean_brightness\": 0.34782636165618896, \"peak_brightness\": 0.4073946177959442, \"motion_mean\": 0.050185974687337875, \"motion_peak\": 0.19739116728305817, \"motion_std\": 0.03160832077264786}, \"timeline\": [{\"segment_index\": 0, \"start_frame\": 0, \"end_frame\": 48, \"start_sec\": 0.0, \"end_sec\": 1.9208333333333334, \"duration_sec\": 1.9208333333333334, \"mean_brightness\": 0.3914865255355835, \"peak_brightness\": 0.4073946177959442, \"motion_mean\": 0.054313380271196365, \"motion_peak\": 0.08128240704536438}, {\"segment_index\": 1, \"start_frame\": 48, \"end_frame\": 96, \"start_sec\": 1.9208333333333334, \"end_sec\": 3.841666666666667, \"duration_sec\": 1.9208333333333334, \"mean_brightness\": 0.36967989802360535, \"peak_brightness\": 0.3827979862689972, \"motion_mean\": 0.025308208540081978, \"motion_peak\": 0.06462046504020691}, {\"segment_index\": 2, \"start_frame\": 96, \"end_frame\": 144, \"start_sec\": 3.841666666666667, \"end_sec\": 5.7625, \"duration_sec\": 1.9208333333333334, \"mean_brightness\": 0.34775814414024353, \"peak_brightness\": 0.3656094968318939, \"motion_mean\": 0.03716659918427467, \"motion_peak\": 0.07754311710596085}, {\"segment_index\": 3, \"start_frame\": 144, \"end_frame\": 192, \"start_sec\": 5.7625, \"end_sec\": 7.683333333333334, \"duration_sec\": 1.9208333333333334, \"mean_brightness\": 0.3281298577785492, \"peak_brightness\": 0.3339155912399292, \"motion_mean\": 0.05852299556136131, \"motion_peak\": 0.10618206858634949}, {\"segment_index\": 4, \"start_frame\": 192, \"end_frame\": 240, \"start_sec\": 7.683333333333334, \"end_sec\": 9.604166666666668, \"duration_sec\": 1.9208333333333343, \"mean_brightness\": 0.3138401210308075, \"peak_brightness\": 0.32647886872291565, \"motion_mean\": 0.040645334869623184, \"motion_peak\": 0.08266737312078476}, {\"segment_index\": 5, \"start_frame\": 240, \"end_frame\": 288, \"start_sec\": 9.604166666666668, \"end_sec\": 11.525, \"duration_sec\": 1.9208333333333325, \"mean_brightness\": 0.3116306960582733, \"peak_brightness\": 0.35749390721321106, \"motion_mean\": 0.045716650784015656, \"motion_peak\": 0.11105985939502716}, {\"segment_index\": 6, \"start_frame\": 288, \"end_frame\": 336, \"start_sec\": 11.525, \"end_sec\": 13.445833333333333, \"duration_sec\": 1.9208333333333325, \"mean_brightness\": 0.36396539211273193, \"peak_brightness\": 0.3819282352924347, \"motion_mean\": 0.06120281666517258, \"motion_peak\": 0.15374019742012024}, {\"segment_index\": 7, \"start_frame\": 336, \"end_frame\": 384, \"start_sec\": 13.445833333333333, \"end_sec\": 15.366666666666667, \"duration_sec\": 1.9208333333333343, \"mean_brightness\": 0.35612034797668457, \"peak_brightness\": 0.3685957193374634, \"motion_mean\": 0.07949806749820709, \"motion_peak\": 0.19739116728305817}], \"semantic_cues\": [\"standard opening pacing\", \"strong visual climax\", \"high-energy motion profile\", \"balanced visual mood\", \"energy ramps upward over time\", \"climax near segment 8\", \"quietest segment 2\"], \"qwenvl_scene_analysis\": \"青い髪とピンクの瞳を持つアニメキャラクターが、賭博のテーブルに座っている。背景はピンクと紫の光で、カードやチップが舞う。カメラはキャラクターを正面から捉え、徐々に近づき、表情が明確になる。キャラクターは自信満々に微笑み、手を腰に当ててポーズを取る。動きは静的だが、周囲のカードやチップの飛ぶ様子で活気がある。感情は挑戦的で、魅力的。繰り返されるモチーフは「賭け」や「勝利」という概念であり、歌詞には「勝ち抜く」「闘う」「輝く」などのキーワードが自然に組み込まれる。オープニングメロディは、ダイナミックな鼓動とピアノのリズムで始まり、キャラクターの表情と動きに合わせてテンポが変化する。\", \"qwenvl_analysis_language\": \"ja\", \"conditioning_summary\": {\"clip_shape\": [1, 122, 1024], \"clip_mean_norm\": 1.0, \"clip_seq_len\": 122, \"sync_shape\": [1, 376, 768], \"sync_mean_norm\": 810.5, \"sync_seq_len\": 376, \"mmaudio_enabled\": true, \"requested_duration_sec\": 15.36, \"mmaudio_condition_duration_sec\": 15.36, \"source_duration_sec\": 15.366666666666667, \"loaded_duration_sec\": 15.36, \"duration_preserved\": true}, \"latent_structure_cues\": [\"conditioning payload reserved for future direct music-model integration\", \"song sections: intro, verse, pre-chorus, chorus, outro\", \"loaded video duration 15.36s\", \"mmaudio conditioning span 15.36s\", \"highest kinetic emphasis near 13.45-15.37s\"], \"source_duration_sec\": 15.366666666666667, \"loaded_duration_sec\": 15.36, \"mmaudio_condition_duration_sec\": 15.36, \"feature_contract\": \"rich summary + timeline + semantic cues + conditioning payload summary only\", \"source_path\": \"D:\\\\Stable Diffusion\\\\StabilityMatrix-win-x64\\\\Data\\\\Packages\\\\ComfyUI\\\\output\\\\WAN\\\\04-01\\\\120752-01_00001.webm\", \"context_version\": \"aog.llm_context.v2\", \"context_sha256\": \"9db59626e65454fab2deb5020f4be3a2c0f42d9f088964b99850a978aa5355e2\"}",
+        "frame_count": 8,
+        "max_tokens": 512,
+        "temperature": 0.4,
+        "top_p": 0.9,
+        "num_beams": 1,
+        "repetition_penalty": 1.1
+      },
+      "response": "激しいドラムとピアノのリズムで始まるオープニング。前半は落ち着いたテンポで、キャラクターの表情と動きに合わせて旋律が浮かび上がる。中盤ではエネルギーが増し、鼓動的なビートが強調され、視覚的にも動きが活発になる。後半は最高潮に達し、キャラクターの笑顔とポーズに合わせてメロディがピークを迎え、最後に静かに収束する。感情は挑戦的かつ魅惑的で、勝利への決意と輝きを表現する。",
+      "context": {
+        "summary": {
+          "frame_count": 384,
+          "duration_sec": 15.366666666666667,
+          "fps_estimate": 24.989154013015185,
+          "mean_brightness": 0.34782636165618896,
+          "peak_brightness": 0.4073946177959442,
+          "motion_mean": 0.050185974687337875,
+          "motion_peak": 0.19739116728305817,
+          "motion_std": 0.03160832077264786
+        },
+        "timeline": [
+          {
+            "segment_index": 0,
+            "start_frame": 0,
+            "end_frame": 48,
+            "start_sec": 0.0,
+            "end_sec": 1.9208333333333334,
+            "duration_sec": 1.9208333333333334,
+            "mean_brightness": 0.3914865255355835,
+            "peak_brightness": 0.4073946177959442,
+            "motion_mean": 0.054313380271196365,
+            "motion_peak": 0.08128240704536438
+          },
+          {
+            "segment_index": 1,
+            "start_frame": 48,
+            "end_frame": 96,
+            "start_sec": 1.9208333333333334,
+            "end_sec": 3.841666666666667,
+            "duration_sec": 1.9208333333333334,
+            "mean_brightness": 0.36967989802360535,
+            "peak_brightness": 0.3827979862689972,
+            "motion_mean": 0.025308208540081978,
+            "motion_peak": 0.06462046504020691
+          },
+          {
+            "segment_index": 2,
+            "start_frame": 96,
+            "end_frame": 144,
+            "start_sec": 3.841666666666667,
+            "end_sec": 5.7625,
+            "duration_sec": 1.9208333333333334,
+            "mean_brightness": 0.34775814414024353,
+            "peak_brightness": 0.3656094968318939,
+            "motion_mean": 0.03716659918427467,
+            "motion_peak": 0.07754311710596085
+          },
+          {
+            "segment_index": 3,
+            "start_frame": 144,
+            "end_frame": 192,
+            "start_sec": 5.7625,
+            "end_sec": 7.683333333333334,
+            "duration_sec": 1.9208333333333334,
+            "mean_brightness": 0.3281298577785492,
+            "peak_brightness": 0.3339155912399292,
+            "motion_mean": 0.05852299556136131,
+            "motion_peak": 0.10618206858634949
+          },
+          {
+            "segment_index": 4,
+            "start_frame": 192,
+            "end_frame": 240,
+            "start_sec": 7.683333333333334,
+            "end_sec": 9.604166666666668,
+            "duration_sec": 1.9208333333333343,
+            "mean_brightness": 0.3138401210308075,
+            "peak_brightness": 0.32647886872291565,
+            "motion_mean": 0.040645334869623184,
+            "motion_peak": 0.08266737312078476
+          },
+          {
+            "segment_index": 5,
+            "start_frame": 240,
+            "end_frame": 288,
+            "start_sec": 9.604166666666668,
+            "end_sec": 11.525,
+            "duration_sec": 1.9208333333333325,
+            "mean_brightness": 0.3116306960582733,
+            "peak_brightness": 0.35749390721321106,
+            "motion_mean": 0.045716650784015656,
+            "motion_peak": 0.11105985939502716
+          },
+          {
+            "segment_index": 6,
+            "start_frame": 288,
+            "end_frame": 336,
+            "start_sec": 11.525,
+            "end_sec": 13.445833333333333,
+            "duration_sec": 1.9208333333333325,
+            "mean_brightness": 0.36396539211273193,
+            "peak_brightness": 0.3819282352924347,
+            "motion_mean": 0.06120281666517258,
+            "motion_peak": 0.15374019742012024
+          },
+          {
+            "segment_index": 7,
+            "start_frame": 336,
+            "end_frame": 384,
+            "start_sec": 13.445833333333333,
+            "end_sec": 15.366666666666667,
+            "duration_sec": 1.9208333333333343,
+            "mean_brightness": 0.35612034797668457,
+            "peak_brightness": 0.3685957193374634,
+            "motion_mean": 0.07949806749820709,
+            "motion_peak": 0.19739116728305817
+          }
+        ],
+        "semantic_cues": [
+          "standard opening pacing",
+          "strong visual climax",
+          "high-energy motion profile",
+          "balanced visual mood",
+          "energy ramps upward over time",
+          "climax near segment 8",
+          "quietest segment 2"
+        ],
+        "qwenvl_scene_analysis": "青い髪とピンクの瞳を持つアニメキャラクターが、賭博のテーブルに座っている。背景はピンクと紫の光で、カードやチップが舞う。カメラはキャラクターを正面から捉え、徐々に近づき、表情が明確になる。キャラクターは自信満々に微笑み、手を腰に当ててポーズを取る。動きは静的だが、周囲のカードやチップの飛ぶ様子で活気がある。感情は挑戦的で、魅力的。繰り返されるモチーフは「賭け」や「勝利」という概念であり、歌詞には「勝ち抜く」「闘う」「輝く」などのキーワードが自然に組み込まれる。オープニングメロディは、ダイナミックな鼓動とピアノのリズムで始まり、キャラクターの表情と動きに合わせてテンポが変化する。",
+        "qwenvl_analysis_language": "ja",
+        "conditioning_summary": {
+          "clip_shape": [
+            1,
+            122,
+            1024
+          ],
+          "clip_mean_norm": 1.0,
+          "clip_seq_len": 122,
+          "sync_shape": [
+            1,
+            376,
+            768
+          ],
+          "sync_mean_norm": 810.5,
+          "sync_seq_len": 376,
+          "mmaudio_enabled": true,
+          "requested_duration_sec": 15.36,
+          "mmaudio_condition_duration_sec": 15.36,
+          "source_duration_sec": 15.366666666666667,
+          "loaded_duration_sec": 15.36,
+          "duration_preserved": true
+        },
+        "latent_structure_cues": [
+          "conditioning payload reserved for future direct music-model integration",
+          "song sections: intro, verse, pre-chorus, chorus, outro",
+          "loaded video duration 15.36s",
+          "mmaudio conditioning span 15.36s",
+          "highest kinetic emphasis near 13.45-15.37s"
+        ],
+        "source_duration_sec": 15.366666666666667,
+        "loaded_duration_sec": 15.36,
+        "mmaudio_condition_duration_sec": 15.36,
+        "feature_contract": "rich summary + timeline + semantic cues + conditioning payload summary only",
+        "source_path": "D:\\Stable Diffusion\\StabilityMatrix-win-x64\\Data\\Packages\\ComfyUI\\output\\WAN\\04-01\\120752-01_00001.webm",
+        "context_version": "aog.llm_context.v2",
+        "context_sha256": "9db59626e65454fab2deb5020f4be3a2c0f42d9f088964b99850a978aa5355e2"
+      }
+    }
+  },
+  "lyrics_summary": {
+    "lyrics_mode": "llm",
+    "lyrics_language": "ja",
+    "resolved_lyrics": "[Verse]\n黒いドレスに輝く瞳\n賭けのテーブル、心臓の鼓動\nカードが舞う、運命の瞬間\n\n[Pre-Chorus]\n笑顔で挑む、この夜の終わり\n誰もが見逃せない、煌めく未来\n\n[Chorus]\n勝ち抜こう！闘うんだ！\n光を纏って、君を照らす\nピンクの光の中で、我慢しないで\n輝くまで、君の夢を信じて！\n\n[Outro]\nチップが散る、その瞬間に\nすべてが変わる、もう一度！",
+    "llm_info": {
+      "provider": "qwenvl",
+      "mode": "llm",
+      "model": "Qwen3-VL-4B-Instruct",
+      "request": {
+        "authoring_language": "ja",
+        "custom_prompt": "You are writing singable ACE-Step lyrics for an anime opening. Respond only in ja. Return plain text only. Use section labels like [Verse], [Pre-Chorus], [Chorus]. Match the video's pacing, turning points, climactic rise, and visible motifs. Do not explain your reasoning. Every lyric line must be written in the requested lyrics language. Do not switch languages. Do not translate the title unless needed inside a lyric line.\n\nAuthoring language: ja\nLyrics language: ja\nStructured context: {\"summary\": {\"frame_count\": 384, \"duration_sec\": 15.366666666666667, \"fps_estimate\": 24.989154013015185, \"mean_brightness\": 0.34782636165618896, \"peak_brightness\": 0.4073946177959442, \"motion_mean\": 0.050185974687337875, \"motion_peak\": 0.19739116728305817, \"motion_std\": 0.03160832077264786}, \"timeline\": [{\"segment_index\": 0, \"start_frame\": 0, \"end_frame\": 48, \"start_sec\": 0.0, \"end_sec\": 1.9208333333333334, \"duration_sec\": 1.9208333333333334, \"mean_brightness\": 0.3914865255355835, \"peak_brightness\": 0.4073946177959442, \"motion_mean\": 0.054313380271196365, \"motion_peak\": 0.08128240704536438}, {\"segment_index\": 1, \"start_frame\": 48, \"end_frame\": 96, \"start_sec\": 1.9208333333333334, \"end_sec\": 3.841666666666667, \"duration_sec\": 1.9208333333333334, \"mean_brightness\": 0.36967989802360535, \"peak_brightness\": 0.3827979862689972, \"motion_mean\": 0.025308208540081978, \"motion_peak\": 0.06462046504020691}, {\"segment_index\": 2, \"start_frame\": 96, \"end_frame\": 144, \"start_sec\": 3.841666666666667, \"end_sec\": 5.7625, \"duration_sec\": 1.9208333333333334, \"mean_brightness\": 0.34775814414024353, \"peak_brightness\": 0.3656094968318939, \"motion_mean\": 0.03716659918427467, \"motion_peak\": 0.07754311710596085}, {\"segment_index\": 3, \"start_frame\": 144, \"end_frame\": 192, \"start_sec\": 5.7625, \"end_sec\": 7.683333333333334, \"duration_sec\": 1.9208333333333334, \"mean_brightness\": 0.3281298577785492, \"peak_brightness\": 0.3339155912399292, \"motion_mean\": 0.05852299556136131, \"motion_peak\": 0.10618206858634949}, {\"segment_index\": 4, \"start_frame\": 192, \"end_frame\": 240, \"start_sec\": 7.683333333333334, \"end_sec\": 9.604166666666668, \"duration_sec\": 1.9208333333333343, \"mean_brightness\": 0.3138401210308075, \"peak_brightness\": 0.32647886872291565, \"motion_mean\": 0.040645334869623184, \"motion_peak\": 0.08266737312078476}, {\"segment_index\": 5, \"start_frame\": 240, \"end_frame\": 288, \"start_sec\": 9.604166666666668, \"end_sec\": 11.525, \"duration_sec\": 1.9208333333333325, \"mean_brightness\": 0.3116306960582733, \"peak_brightness\": 0.35749390721321106, \"motion_mean\": 0.045716650784015656, \"motion_peak\": 0.11105985939502716}, {\"segment_index\": 6, \"start_frame\": 288, \"end_frame\": 336, \"start_sec\": 11.525, \"end_sec\": 13.445833333333333, \"duration_sec\": 1.9208333333333325, \"mean_brightness\": 0.36396539211273193, \"peak_brightness\": 0.3819282352924347, \"motion_mean\": 0.06120281666517258, \"motion_peak\": 0.15374019742012024}, {\"segment_index\": 7, \"start_frame\": 336, \"end_frame\": 384, \"start_sec\": 13.445833333333333, \"end_sec\": 15.366666666666667, \"duration_sec\": 1.9208333333333343, \"mean_brightness\": 0.35612034797668457, \"peak_brightness\": 0.3685957193374634, \"motion_mean\": 0.07949806749820709, \"motion_peak\": 0.19739116728305817}], \"semantic_cues\": [\"standard opening pacing\", \"strong visual climax\", \"high-energy motion profile\", \"balanced visual mood\", \"energy ramps upward over time\", \"climax near segment 8\", \"quietest segment 2\"], \"qwenvl_scene_analysis\": \"青い髪とピンクの瞳を持つアニメキャラクターが、賭博のテーブルに座っている。背景はピンクと紫の光で、カードやチップが舞う。カメラはキャラクターを正面から捉え、徐々に近づき、表情が明確になる。キャラクターは自信満々に微笑み、手を腰に当ててポーズを取る。動きは静的だが、周囲のカードやチップの飛ぶ様子で活気がある。感情は挑戦的で、魅力的。繰り返されるモチーフは「賭け」や「勝利」という概念であり、歌詞には「勝ち抜く」「闘う」「輝く」などのキーワードが自然に組み込まれる。オープニングメロディは、ダイナミックな鼓動とピアノのリズムで始まり、キャラクターの表情と動きに合わせてテンポが変化する。\", \"qwenvl_analysis_language\": \"ja\", \"conditioning_summary\": {\"clip_shape\": [1, 122, 1024], \"clip_mean_norm\": 1.0, \"clip_seq_len\": 122, \"sync_shape\": [1, 376, 768], \"sync_mean_norm\": 810.5, \"sync_seq_len\": 376, \"mmaudio_enabled\": true, \"requested_duration_sec\": 15.36, \"mmaudio_condition_duration_sec\": 15.36, \"source_duration_sec\": 15.366666666666667, \"loaded_duration_sec\": 15.36, \"duration_preserved\": true}, \"latent_structure_cues\": [\"conditioning payload reserved for future direct music-model integration\", \"song sections: intro, verse, pre-chorus, chorus, outro\", \"loaded video duration 15.36s\", \"mmaudio conditioning span 15.36s\", \"highest kinetic emphasis near 13.45-15.37s\"], \"source_duration_sec\": 15.366666666666667, \"loaded_duration_sec\": 15.36, \"mmaudio_condition_duration_sec\": 15.36, \"feature_contract\": \"rich summary + timeline + semantic cues + conditioning payload summary only\", \"source_path\": \"D:\\\\Stable Diffusion\\\\StabilityMatrix-win-x64\\\\Data\\\\Packages\\\\ComfyUI\\\\output\\\\WAN\\\\04-01\\\\120752-01_00001.webm\", \"context_version\": \"aog.llm_context.v2\", \"context_sha256\": \"9db59626e65454fab2deb5020f4be3a2c0f42d9f088964b99850a978aa5355e2\"}",
+        "frame_count": 8,
+        "max_tokens": 512,
+        "temperature": 0.4,
+        "top_p": 0.9,
+        "num_beams": 1,
+        "repetition_penalty": 1.1
+      },
+      "response": "[Verse]\n黒いドレスに輝く瞳\n賭けのテーブル、心臓の鼓動\nカードが舞う、運命の瞬間\n\n[Pre-Chorus]\n笑顔で挑む、この夜の終わり\n誰もが見逃せない、煌めく未来\n\n[Chorus]\n勝ち抜こう！闘うんだ！\n光を纏って、君を照らす\nピンクの光の中で、我慢しないで\n輝くまで、君の夢を信じて！\n\n[Outro]\nチップが散る、その瞬間に\nすべてが変わる、もう一度！",
+      "context": {
+        "summary": {
+          "frame_count": 384,
+          "duration_sec": 15.366666666666667,
+          "fps_estimate": 24.989154013015185,
+          "mean_brightness": 0.34782636165618896,
+          "peak_brightness": 0.4073946177959442,
+          "motion_mean": 0.050185974687337875,
+          "motion_peak": 0.19739116728305817,
+          "motion_std": 0.03160832077264786
+        },
+        "timeline": [
+          {
+            "segment_index": 0,
+            "start_frame": 0,
+            "end_frame": 48,
+            "start_sec": 0.0,
+            "end_sec": 1.9208333333333334,
+            "duration_sec": 1.9208333333333334,
+            "mean_brightness": 0.3914865255355835,
+            "peak_brightness": 0.4073946177959442,
+            "motion_mean": 0.054313380271196365,
+            "motion_peak": 0.08128240704536438
+          },
+          {
+            "segment_index": 1,
+            "start_frame": 48,
+            "end_frame": 96,
+            "start_sec": 1.9208333333333334,
+            "end_sec": 3.841666666666667,
+            "duration_sec": 1.9208333333333334,
+            "mean_brightness": 0.36967989802360535,
+            "peak_brightness": 0.3827979862689972,
+            "motion_mean": 0.025308208540081978,
+            "motion_peak": 0.06462046504020691
+          },
+          {
+            "segment_index": 2,
+            "start_frame": 96,
+            "end_frame": 144,
+            "start_sec": 3.841666666666667,
+            "end_sec": 5.7625,
+            "duration_sec": 1.9208333333333334,
+            "mean_brightness": 0.34775814414024353,
+            "peak_brightness": 0.3656094968318939,
+            "motion_mean": 0.03716659918427467,
+            "motion_peak": 0.07754311710596085
+          },
+          {
+            "segment_index": 3,
+            "start_frame": 144,
+            "end_frame": 192,
+            "start_sec": 5.7625,
+            "end_sec": 7.683333333333334,
+            "duration_sec": 1.9208333333333334,
+            "mean_brightness": 0.3281298577785492,
+            "peak_brightness": 0.3339155912399292,
+            "motion_mean": 0.05852299556136131,
+            "motion_peak": 0.10618206858634949
+          },
+          {
+            "segment_index": 4,
+            "start_frame": 192,
+            "end_frame": 240,
+            "start_sec": 7.683333333333334,
+            "end_sec": 9.604166666666668,
+            "duration_sec": 1.9208333333333343,
+            "mean_brightness": 0.3138401210308075,
+            "peak_brightness": 0.32647886872291565,
+            "motion_mean": 0.040645334869623184,
+            "motion_peak": 0.08266737312078476
+          },
+          {
+            "segment_index": 5,
+            "start_frame": 240,
+            "end_frame": 288,
+            "start_sec": 9.604166666666668,
+            "end_sec": 11.525,
+            "duration_sec": 1.9208333333333325,
+            "mean_brightness": 0.3116306960582733,
+            "peak_brightness": 0.35749390721321106,
+            "motion_mean": 0.045716650784015656,
+            "motion_peak": 0.11105985939502716
+          },
+          {
+            "segment_index": 6,
+            "start_frame": 288,
+            "end_frame": 336,
+            "start_sec": 11.525,
+            "end_sec": 13.445833333333333,
+            "duration_sec": 1.9208333333333325,
+            "mean_brightness": 0.36396539211273193,
+            "peak_brightness": 0.3819282352924347,
+            "motion_mean": 0.06120281666517258,
+            "motion_peak": 0.15374019742012024
+          },
+          {
+            "segment_index": 7,
+            "start_frame": 336,
+            "end_frame": 384,
+            "start_sec": 13.445833333333333,
+            "end_sec": 15.366666666666667,
+            "duration_sec": 1.9208333333333343,
+            "mean_brightness": 0.35612034797668457,
+            "peak_brightness": 0.3685957193374634,
+            "motion_mean": 0.07949806749820709,
+            "motion_peak": 0.19739116728305817
+          }
+        ],
+        "semantic_cues": [
+          "standard opening pacing",
+          "strong visual climax",
+          "high-energy motion profile",
+          "balanced visual mood",
+          "energy ramps upward over time",
+          "climax near segment 8",
+          "quietest segment 2"
+        ],
+        "qwenvl_scene_analysis": "青い髪とピンクの瞳を持つアニメキャラクターが、賭博のテーブルに座っている。背景はピンクと紫の光で、カードやチップが舞う。カメラはキャラクターを正面から捉え、徐々に近づき、表情が明確になる。キャラクターは自信満々に微笑み、手を腰に当ててポーズを取る。動きは静的だが、周囲のカードやチップの飛ぶ様子で活気がある。感情は挑戦的で、魅力的。繰り返されるモチーフは「賭け」や「勝利」という概念であり、歌詞には「勝ち抜く」「闘う」「輝く」などのキーワードが自然に組み込まれる。オープニングメロディは、ダイナミックな鼓動とピアノのリズムで始まり、キャラクターの表情と動きに合わせてテンポが変化する。",
+        "qwenvl_analysis_language": "ja",
+        "conditioning_summary": {
+          "clip_shape": [
+            1,
+            122,
+            1024
+          ],
+          "clip_mean_norm": 1.0,
+          "clip_seq_len": 122,
+          "sync_shape": [
+            1,
+            376,
+            768
+          ],
+          "sync_mean_norm": 810.5,
+          "sync_seq_len": 376,
+          "mmaudio_enabled": true,
+          "requested_duration_sec": 15.36,
+          "mmaudio_condition_duration_sec": 15.36,
+          "source_duration_sec": 15.366666666666667,
+          "loaded_duration_sec": 15.36,
+          "duration_preserved": true
+        },
+        "latent_structure_cues": [
+          "conditioning payload reserved for future direct music-model integration",
+          "song sections: intro, verse, pre-chorus, chorus, outro",
+          "loaded video duration 15.36s",
+          "mmaudio conditioning span 15.36s",
+          "highest kinetic emphasis near 13.45-15.37s"
+        ],
+        "source_duration_sec": 15.366666666666667,
+        "loaded_duration_sec": 15.36,
+        "mmaudio_condition_duration_sec": 15.36,
+        "feature_contract": "rich summary + timeline + semantic cues + conditioning payload summary only",
+        "source_path": "D:\\Stable Diffusion\\StabilityMatrix-win-x64\\Data\\Packages\\ComfyUI\\output\\WAN\\04-01\\120752-01_00001.webm",
+        "context_version": "aog.llm_context.v2",
+        "context_sha256": "9db59626e65454fab2deb5020f4be3a2c0f42d9f088964b99850a978aa5355e2"
+      }
+    }
+  },
+  "ace_summary": {
+    "prompt_text": "激しいドラムとピアノのリズムで始まるオープニング。前半は落ち着いたテンポで、キャラクターの表情と動きに合わせて旋律が浮かび上がる。中盤ではエネルギーが増し、鼓動的なビートが強調され、視覚的にも動きが活発になる。後半は最高潮に達し、キャラクターの笑顔とポーズに合わせてメロディがピークを迎え、最後に静かに収束する。感情は挑戦的かつ魅惑的で、勝利への決意と輝きを表現する。",
+    "augmented_tags": "激しいドラムとピアノのリズムで始まるオープニング。前半は落ち着いたテンポで、キャラクターの表情と動きに合わせて旋律が浮かび上がる。中盤ではエネルギーが増し、鼓動的なビートが強調され、視覚的にも動きが活発になる。後半は最高潮に達し、キャラクターの笑顔とポーズに合わせてメロディがピークを迎え、最後に静かに収束する。感情は挑戦的かつ魅惑的で、勝利への決意と輝きを表現する。\nvideo energy 0.0502, motion peak 0.1974, brightness 0.3478, duration 15.37s, visual climax around 13.45-15.37s, cues: standard opening pacing, strong visual climax, high-energy motion profile, balanced visual mood, energy ramps upward over time, climax near segment 8\nconditioning summary: clip_shape=[1, 122, 1024], clip_mean_norm=1.0, clip_seq_len=122, sync_shape=[1, 376, 768], sync_mean_norm=810.5, sync_seq_len=376, mmaudio_enabled=True, requested_duration_sec=15.36, mmaudio_condition_duration_sec=15.36, source_duration_sec=15.366666666666667, loaded_duration_sec=15.36, duration_preserved=True\nlatent structure cues: conditioning payload reserved for future direct music-model integration, song sections: intro, verse, pre-chorus, chorus, outro, loaded video duration 15.36s, mmaudio conditioning span 15.36s",
+    "duration_sec": 15.366666666666667,
+    "ace_language": "ja",
+    "bpm": 120,
+    "text_cfg_scale": 5.0,
+    "conditioning_contract": "text-conditioned ACE-Step with preserved video conditioning summary for future direct integration",
+    "has_reference_audio": false,
+    "waveform_shape": [
+      1,
+      2,
+      737600
+    ],
+    "sample_rate": 48000
+  },
+  "sfx_summary": {
+    "enabled": true,
+    "sfx_mode": "off",
+    "generated": false,
+    "duration_sec": 15.366666666666667
+  },
+  "authoring_artifacts": {
+    "authoring_context_path": "custom_nodes\\ComfyUI_AOG\\outputs\\run_04-01\\authoring_context.json",
+    "qwenvl_analysis_path": "custom_nodes\\ComfyUI_AOG\\outputs\\run_04-01\\qwenvl_analysis.json",
+    "prompt_request_path": "custom_nodes\\ComfyUI_AOG\\outputs\\run_04-01\\llm_prompt_request.json",
+    "prompt_response_path": "custom_nodes\\ComfyUI_AOG\\outputs\\run_04-01\\llm_prompt_response.json",
+    "lyrics_request_path": "custom_nodes\\ComfyUI_AOG\\outputs\\run_04-01\\llm_lyrics_request.json",
+    "lyrics_response_path": "custom_nodes\\ComfyUI_AOG\\outputs\\run_04-01\\llm_lyrics_response.json",
+    "prompt_trace_id": "",
+    "lyrics_trace_id": "",
+    "context_sha256": "9db59626e65454fab2deb5020f4be3a2c0f42d9f088964b99850a978aa5355e2"
+  }
+}

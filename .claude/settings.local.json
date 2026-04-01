@@ -21,7 +21,8 @@
       "Bash(python3 -c \"import sys,json; [print\\(x[''''name''''], x[''''type'''']\\) for x in json.load\\(sys.stdin\\)]\")",
       "WebFetch(domain:api.github.com)",
       "Bash(gh auth:*)",
-      "Bash(git config:*)"
+      "Bash(git config:*)",
+      "Bash(python:*)"
     ]
   }
 }

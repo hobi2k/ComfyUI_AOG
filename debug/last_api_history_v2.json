@@ -1,0 +1,295 @@
+{
+  "prompt": [
+    0,
+    "30a5f8cb-dad9-48a5-a3b0-c40ac48a1e04",
+    {
+      "1": {
+        "class_type": "AOG Load Video Frames",
+        "inputs": {
+          "video_path": "D:\\Stable Diffusion\\aog\\test\\test2.mp4",
+          "max_frames": 0,
+          "force_rate": 8.0,
+          "analysis_width": 640
+        }
+      },
+      "2": {
+        "class_type": "AOG MMAudio Feature Bundle",
+        "inputs": {
+          "vae_model": "mmaudio_vae_44k_fp16.safetensors",
+          "synchformer_model": "mmaudio_synchformer_fp16.safetensors",
+          "clip_model": "apple_DFN5B-CLIP-ViT-H-14-384_fp16.safetensors",
+          "mode": "44k",
+          "precision": "fp16"
+        }
+      },
+      "3": {
+        "class_type": "AOG Video Feature Extract",
+        "inputs": {
+          "enabled": true,
+          "video_batch": [
+            "1",
+            0
+          ],
+          "mmaudio_featureutils": [
+            "2",
+            0
+          ],
+          "mask_away_clip": false
+        }
+      },
+      "4": {
+        "class_type": "AOG QwenVL Bundle",
+        "inputs": {
+          "model_name": "Qwen3-VL-4B-Instruct",
+          "quantization": "None (FP16)",
+          "attention_mode": "auto",
+          "frame_count": 8,
+          "max_tokens": 512,
+          "temperature": 0.4,
+          "top_p": 0.9,
+          "num_beams": 1,
+          "repetition_penalty": 1.1,
+          "keep_model_loaded": false,
+          "seed": 1
+        }
+      },
+      "5": {
+        "class_type": "AOG Prompt Draft",
+        "inputs": {
+          "enabled": true,
+          "video_batch": [
+            "1",
+            0
+          ],
+          "video_features": [
+            "3",
+            0
+          ],
+          "prompt_mode": "llm",
+          "user_prompt": "",
+          "llm_provider": "qwenvl",
+          "authoring_language": "en",
+          "qwenvl_bundle": [
+            "4",
+            0
+          ]
+        }
+      },
+      "6": {
+        "class_type": "AOG Lyrics Draft",
+        "inputs": {
+          "enabled": true,
+          "video_batch": [
+            "1",
+            0
+          ],
+          "video_features": [
+            "3",
+            0
+          ],
+          "lyrics_mode": "llm",
+          "user_lyrics": "",
+          "lyrics_language": "ja",
+          "llm_provider": "qwenvl",
+          "authoring_language": "en",
+          "qwenvl_bundle": [
+            "4",
+            0
+          ]
+        }
+      },
+      "7": {
+        "class_type": "UNETLoader",
+        "inputs": {
+          "unet_name": "acestep_v1.5_turbo.safetensors",
+          "weight_dtype": "default"
+        }
+      },
+      "8": {
+        "class_type": "DualCLIPLoader",
+        "inputs": {
+          "clip_name1": "qwen_0.6b_ace15.safetensors",
+          "clip_name2": "qwen_4b_ace15.safetensors",
+          "type": "ace",
+          "device": "default"
+        }
+      },
+      "9": {
+        "class_type": "VAELoader",
+        "inputs": {
+          "vae_name": "ace_1.5_vae.safetensors"
+        }
+      },
+      "10": {
+        "class_type": "AOG ACE-Step Compose",
+        "inputs": {
+          "enabled": true,
+          "model": [
+            "7",
+            0
+          ],
+          "clip": [
+            "8",
+            0
+          ],
+          "vae": [
+            "9",
+            0
+          ],
+          "video_features": [
+            "3",
+            0
+          ],
+          "prompt_text": [
+            "5",
+            0
+          ],
+          "lyrics_text": [
+            "6",
+            0
+          ],
+          "negative_tags": "silence, clipping, distortion, noise",
+          "seed": 0,
+          "bpm": 120,
+          "duration": 28.8125,
+          "timesignature": "4",
+          "ace_language": "ja",
+          "keyscale": "A minor",
+          "steps": 8,
+          "cfg": 1.0,
+          "text_cfg_scale": 5.0,
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "denoise": 1.0
+        }
+      },
+      "11": {
+        "class_type": "AOG Preview Video Combine",
+        "inputs": {
+          "enabled": true,
+          "video_batch": [
+            "1",
+            0
+          ],
+          "audio": [
+            "10",
+            0
+          ],
+          "filename_prefix": "AOG/api_music_only_full_v2",
+          "format": "video/mp4",
+          "save_output": true,
+          "pingpong": false,
+          "loop_count": 0
+        }
+      }
+    },
+    {
+      "client_id": "ea7b4e8a-2f5c-4be3-b2f8-f9ceba6aa0f2",
+      "create_time": 1775039224265
+    },
+    [
+      "11"
+    ]
+  ],
+  "outputs": {},
+  "status": {
+    "status_str": "error",
+    "completed": false,
+    "messages": [
+      [
+        "execution_start",
+        {
+          "prompt_id": "30a5f8cb-dad9-48a5-a3b0-c40ac48a1e04",
+          "timestamp": 1775039224267
+        }
+      ],
+      [
+        "execution_cached",
+        {
+          "nodes": [],
+          "prompt_id": "30a5f8cb-dad9-48a5-a3b0-c40ac48a1e04",
+          "timestamp": 1775039224359
+        }
+      ],
+      [
+        "execution_error",
+        {
+          "prompt_id": "30a5f8cb-dad9-48a5-a3b0-c40ac48a1e04",
+          "node_id": "11",
+          "node_type": "AOG Preview Video Combine",
+          "executed": [
+            "7",
+            "1",
+            "8",
+            "5",
+            "6",
+            "2",
+            "9",
+            "10",
+            "3",
+            "4"
+          ],
+          "exception_message": "0\n",
+          "exception_type": "KeyError",
+          "traceback": [
+            "  File \"D:\\Stable Diffusion\\StabilityMatrix-win-x64\\Data\\Packages\\ComfyUI\\execution.py\", line 525, in execute\n    output_data, output_ui, has_subgraph, has_pending_tasks = await get_output_data(prompt_id, unique_id, obj, input_data_all, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)\n                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\Stable Diffusion\\StabilityMatrix-win-x64\\Data\\Packages\\ComfyUI\\execution.py\", line 334, in get_output_data\n    return_values = await _async_map_node_over_list(prompt_id, unique_id, obj, input_data_all, obj.FUNCTION, allow_interrupt=True, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"D:\\Stable Diffusion\\StabilityMatrix-win-x64\\Data\\Packages\\ComfyUI\\execution.py\", line 308, in _async_map_node_over_list\n    await process_inputs(input_dict, i)\n",
+            "  File \"D:\\Stable Diffusion\\StabilityMatrix-win-x64\\Data\\Packages\\ComfyUI\\execution.py\", line 296, in process_inputs\n    result = f(**inputs)\n             ^^^^^^^^^^^\n",
+            "  File \"D:\\Stable Diffusion\\StabilityMatrix-win-x64\\Data\\Packages\\ComfyUI\\custom_nodes\\ComfyUI_AOG\\aog\\nodes.py\", line 1130, in combine\n    filenames = vhs_module.VideoCombine().combine_video(\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n"
+          ],
+          "current_inputs": {
+            "enabled": [
+              true
+            ],
+            "video_batch": [
+              "{'images': tensor([[[[0.0522, 0.0483, 0.0679],\n          [0.0522, 0.0483, 0.0679],\n          [0.0522, 0.0483, 0.0679],\n          ...,\n          [0.0745, 0.0706, 0.0980],\n          [0.0745, 0.0706, 0.0980],\n          [0.0745, 0.0706, 0.0980]],\n\n         [[0.0606, 0.0567, 0.0763],\n          [0.0606, 0.0567, 0.0763],\n          [0.0606, 0.0567, 0.0763],\n          ...,\n          [0.0745, 0.0706, 0.0980],\n          [0.0745, 0.0706, 0.0980],\n          [0.0745, 0.0706, 0.0980]],\n\n         [[0.0627, 0.0588, 0.0784],\n          [0.0627, 0.0588, 0.0784],\n          [0.0627, 0.0588, 0.0784],\n          ...,\n          [0.0745, 0.0706, 0.0980],\n          [0.0745, 0.0706, 0.0980],\n          [0.0745, 0.0706, 0.0980]],\n\n         ...,\n\n         [[0.7589, 0.4491, 0.6569],\n          [0.7528, 0.4483, 0.6543],\n          [0.7423, 0.4443, 0.6482],\n          ...,\n          [0.1159, 0.1355, 0.3198],\n          [0.0756, 0.0888, 0.2752],\n          [0.0762, 0.0840, 0.2722]],\n\n         [[0.7334, 0.4364, 0.6400],\n          [0.7266, 0.4320, 0.6348],\n          [0.7160, 0.4244, 0.6262],\n          ...,\n          [0.1760, 0.1977, 0.3820],\n          [0.2067, 0.2243, 0.4096],\n          [0.2056, 0.2198, 0.4059]],\n\n         [[0.7038, 0.4175, 0.6175],\n          [0.6987, 0.4124, 0.6124],\n          [0.6956, 0.4093, 0.6093],\n          ...,\n          [0.2888, 0.3123, 0.4967],\n          [0.2642, 0.2855, 0.4699],\n          [0.2653, 0.2849, 0.4692]]],\n\n\n        [[[0.0627, 0.0588, 0.0784],\n          [0.0627, 0.0588, 0.0784],\n          [0.0627, 0.0588, 0.0784],\n          ...,\n          [0.0667, 0.0627, 0.0902],\n          [0.0667, 0.0627, 0.0902],\n          [0.0667, 0.0627, 0.0902]],\n\n         [[0.0645, 0.0606, 0.0802],\n          [0.0645, 0.0606, 0.0802],\n          [0.0645, 0.0606, 0.0802],\n          ...,\n          [0.0685, 0.0645, 0.0920],\n          [0.0685, 0.0645, 0.0920],\n          [0.0685, 0.0645, 0.0920]],\n\n         [[0.0667, 0.0627, 0.0824],\n          [0.0667, 0.0627, 0.0824],\n          [0.0667, 0.0627, 0.0824],\n          ...,\n          [0.0706, 0.0667, 0.0941],\n          [0.0706, 0.0667, 0.0941],\n          [0.0706, 0.0667, 0.0941]],\n\n         ...,\n\n         [[0.7707, 0.4530, 0.6609],\n          [0.7645, 0.4504, 0.6583],\n          [0.7541, 0.4443, 0.6521],\n          ...,\n          [0.0789, 0.0868, 0.2750],\n          [0.0783, 0.0818, 0.2700],\n          [0.1010, 0.1010, 0.2892]],\n\n         [[0.7477, 0.4407, 0.6464],\n          [0.7417, 0.4363, 0.6420],\n          [0.7315, 0.4281, 0.6338],\n          ...,\n          [0.1748, 0.1891, 0.3752],\n          [0.1447, 0.1535, 0.3407],\n          [0.1314, 0.1357, 0.3239]],\n\n         [[0.7262, 0.4281, 0.6321],\n          [0.7228, 0.4248, 0.6287],\n          [0.7192, 0.4212, 0.6251],\n          ...,\n          [0.1584, 0.1780, 0.3623],\n          [0.1820, 0.1952, 0.3816],\n          [0.2028, 0.2107, 0.3989]]],\n\n\n        [[[0.0667, 0.0627, 0.0824],\n          [0.0667, 0.0627, 0.0824],\n          [0.0667, 0.0627, 0.0824],\n          ...,\n          [0.0706, 0.0667, 0.0941],\n          [0.0727, 0.0645, 0.0941],\n          [0.0778, 0.0661, 0.0975]],\n\n         [[0.0667, 0.0627, 0.0824],\n          [0.0667, 0.0627, 0.0824],\n          [0.0667, 0.0627, 0.0824],\n          ...,\n          [0.0706, 0.0667, 0.0941],\n          [0.0727, 0.0645, 0.0941],\n          [0.0778, 0.0661, 0.0975]],\n\n         [[0.0667, 0.0627, 0.0824],\n          [0.0667, 0.0627, 0.0824],\n          [0.0667, 0.0627, 0.0824],\n          ...,\n          [0.0706, 0.0667, 0.0941],\n          [0.0727, 0.0645, 0.0941],\n          [0.0778, 0.0661, 0.0975]],\n\n         ...,\n\n         [[0.7755, 0.4500, 0.6618],\n          [0.7720, 0.4500, 0.6600],\n          [0.7670, 0.4493, 0.6572],\n          ...,\n          [0.1001, 0.1001, 0.2805],\n          [0.1277, 0.1212, 0.3038],\n          [0.1452, 0.1335, 0.3178]],\n\n         [[0.7576, 0.4471, 0.6546],\n          [0.7531, 0.4442, 0.6509],\n          [0.7447, 0.4377, 0.6434],\n          ...,\n          [0.1261, 0.1368, 0.3150],\n          [0.0994, 0.1036, 0.2840],\n          [0.1050, 0.1039, 0.2860]],\n\n         [[0.7280, 0.4299, 0.6339],\n          [0.7228, 0.4248, 0.6287],\n          [0.7146, 0.4166, 0.6205],\n          ...,\n          [0.1537, 0.1733, 0.3497],\n          [0.1617, 0.1748, 0.3534],\n          [0.1530, 0.1609, 0.3413]]],\n\n\n        ...,\n\n\n        [[[0.0033, 0.0033, 0.0033],\n          [0.0018, 0.0018, 0.0018],\n          [0.0010, 0.0010, 0.0010],\n          ...,\n          [0.6507, 0.2820, 0.5173],\n          [0.6793, 0.3193, 0.5524],\n          [0.7187, 0.3657, 0.5971]],\n\n         [[0.0033, 0.0033, 0.0033],\n          [0.0018, 0.0018, 0.0018],\n          [0.0010, 0.0010, 0.0010],\n          ...,\n          [0.7209, 0.3755, 0.6108],\n          [0.7482, 0.4095, 0.6437],\n          [0.7735, 0.4402, 0.6734]],\n\n         [[0.0033, 0.0033, 0.0033],\n          [0.0018, 0.0018, 0.0018],\n          [0.0032, 0.0032, 0.0032],\n          ...,\n          [0.7488, 0.4311, 0.6664],\n          [0.7524, 0.4391, 0.6744],\n          [0.7583, 0.4485, 0.6838]],\n\n         ...,\n\n         [[0.0902, 0.0000, 0.0784],\n          [0.0902, 0.0000, 0.0784],\n          [0.0902, 0.0000, 0.0784],\n          ...,\n          [0.7965, 0.1652, 0.4907],\n          [0.8012, 0.1699, 0.4954],\n          [0.8039, 0.1725, 0.4980]],\n\n         [[0.0902, 0.0000, 0.0784],\n          [0.0902, 0.0000, 0.0784],\n          [0.0902, 0.0000, 0.0784],\n          ...,\n          [0.7970, 0.1699, 0.4911],\n          [0.7997, 0.1725, 0.4938],\n          [0.7997, 0.1725, 0.4938]],\n\n         [[0.0902, 0.0000, 0.0784],\n          [0.0902, 0.0000, 0.0784],\n          [0.0902, 0.0000, 0.0784],\n          ...,\n          [0.7969, 0.1734, 0.4910],\n          [0.7994, 0.1759, 0.4935],\n          [0.7994, 0.1759, 0.4935]]],\n\n\n        [[[0.0033, 0.0033, 0.0033],\n          [0.0000, 0.0000, 0.0000],\n          [0.0000, 0.0000, 0.0000],\n          ...,\n          [0.7502, 0.4169, 0.6561],\n          [0.7492, 0.4245, 0.6551],\n          [0.7439, 0.4263, 0.6498]],\n\n         [[0.0033, 0.0033, 0.0033],\n          [0.0000, 0.0000, 0.0000],\n          [0.0000, 0.0000, 0.0000],\n          ...,\n          [0.7367, 0.4051, 0.6497],\n          [0.7357, 0.4089, 0.6488],\n          [0.7367, 0.4137, 0.6498]],\n\n         [[0.0033, 0.0033, 0.0033],\n          [0.0000, 0.0000, 0.0000],\n          [0.0022, 0.0022, 0.0022],\n          ...,\n          [0.7225, 0.3931, 0.6441],\n          [0.7230, 0.3936, 0.6446],\n          [0.7250, 0.3956, 0.6466]],\n\n         ...,\n\n         [[0.0863, 0.0000, 0.0784],\n          [0.0863, 0.0000, 0.0784],\n          [0.0863, 0.0000, 0.0784],\n          ...,\n          [0.7885, 0.1493, 0.4787],\n          [0.7908, 0.1516, 0.4810],\n          [0.7922, 0.1529, 0.4824]],\n\n         [[0.0863, 0.0000, 0.0784],\n          [0.0863, 0.0000, 0.0784],\n          [0.0863, 0.0000, 0.0784],\n          ...,\n          [0.7844, 0.1537, 0.4767],\n          [0.7858, 0.1551, 0.4781],\n          [0.7858, 0.1551, 0.4781]],\n\n         [[0.0863, 0.0000, 0.0784],\n          [0.0863, 0.0000, 0.0784],\n          [0.0863, 0.0000, 0.0784],\n          ...,\n          [0.7812, 0.1577, 0.4753],\n          [0.7837, 0.1602, 0.4778],\n          [0.7837, 0.1602, 0.4778]]],\n\n\n        [[[0.0033, 0.0033, 0.0033],\n          [0.0018, 0.0018, 0.0018],\n          [0.0010, 0.0010, 0.0010],\n          ...,\n          [0.7213, 0.3527, 0.5997],\n          [0.7195, 0.3509, 0.5979],\n          [0.7180, 0.3494, 0.5964]],\n\n         [[0.0033, 0.0033, 0.0033],\n          [0.0018, 0.0018, 0.0018],\n          [0.0023, 0.0023, 0.0023],\n          ...,\n          [0.6940, 0.3200, 0.5635],\n          [0.6937, 0.3197, 0.5631],\n          [0.6945, 0.3205, 0.5639]],\n\n         [[0.0033, 0.0033, 0.0033],\n          [0.0018, 0.0018, 0.0018],\n          [0.0039, 0.0039, 0.0039],\n          ...,\n          [0.6840, 0.3036, 0.5428],\n          [0.6838, 0.3034, 0.5426],\n          [0.6842, 0.3038, 0.5431]],\n\n         ...,\n\n         [[0.1020, 0.0000, 0.0667],\n          [0.0892, 0.0000, 0.0733],\n          [0.0750, 0.0000, 0.0828],\n          ...,\n          [0.7813, 0.1421, 0.4715],\n          [0.7830, 0.1438, 0.4732],\n          [0.7851, 0.1459, 0.4753]],\n\n         [[0.1016, 0.0000, 0.0706],\n          [0.0895, 0.0000, 0.0770],\n          [0.0813, 0.0000, 0.0912],\n          ...,\n          [0.7822, 0.1472, 0.4745],\n          [0.7834, 0.1484, 0.4757],\n          [0.7858, 0.1509, 0.4782]],\n\n         [[0.1019, 0.0000, 0.0744],\n          [0.0943, 0.0000, 0.0845],\n          [0.0936, 0.0050, 0.1054],\n          ...,\n          [0.7837, 0.1523, 0.4778],\n          [0.7840, 0.1527, 0.4782],\n          [0.7843, 0.1529, 0.4784]]]]), 'frame_count': 230, 'fps': 8.0, 'duration_sec': 28.75, 'source_fps': 16.0, 'source_duration_sec': 28.8125, 'loaded_fps': 8.0, 'loaded_duration_sec': 28.75, 'source_path': 'D:\\\\Stable Diffusion\\\\aog\\\\test\\\\test2.mp4', 'video_info': {'source_fps': 16.0, 'source_frame_count': 461, 'source_duration': 28.8125, 'source_width': 640, 'source_height': 368, 'loaded_fps': 8.0, 'loaded_frame_count': 230, 'loaded_duration': 28.75, 'loaded_width': 640, 'loaded_height': 368}}"
+            ],
+            "audio": [
+              "{'waveform': tensor([[[0.0315, 0.0391, 0.0264,  ..., 0.0000, 0.0000, 0.0000],\n         [0.0313, 0.0384, 0.0255,  ..., 0.0000, 0.0000, 0.0000]]]), 'sample_rate': 48000}"
+            ],
+            "filename_prefix": [
+              "AOG/api_music_only_full_v2"
+            ],
+            "format": [
+              "video/mp4"
+            ],
+            "save_output": [
+              true
+            ],
+            "pingpong": [
+              false
+            ],
+            "loop_count": [
+              0
+            ],
+            "prompt": [
+              "{'1': {'class_type': 'AOG Load Video Frames', 'inputs': {'video_path': 'D:\\\\Stable Diffusion\\\\aog\\\\test\\\\test2.mp4', 'max_frames': 0, 'force_rate': 8.0, 'analysis_width': 640}}, '2': {'class_type': 'AOG MMAudio Feature Bundle', 'inputs': {'vae_model': 'mmaudio_vae_44k_fp16.safetensors', 'synchformer_model': 'mmaudio_synchformer_fp16.safetensors', 'clip_model': 'apple_DFN5B-CLIP-ViT-H-14-384_fp16.safetensors', 'mode': '44k', 'precision': 'fp16'}}, '3': {'class_type': 'AOG Video Feature Extract', 'inputs': {'enabled': True, 'video_batch': ['1', 0], 'mmaudio_featureutils': ['2', 0], 'mask_away_clip': False}}, '4': {'class_type': 'AOG QwenVL Bundle', 'inputs': {'model_name': 'Qwen3-VL-4B-Instruct', 'quantization': 'None (FP16)', 'attention_mode': 'auto', 'frame_count': 8, 'max_tokens': 512, 'temperature': 0.4, 'top_p': 0.9, 'num_beams': 1, 'repetition_penalty': 1.1, 'keep_model_loaded': False, 'seed': 1}}, '5': {'class_type': 'AOG Prompt Draft', 'inputs': {'enabled': True, 'video_batch': ['1', 0], 'video_features': ['3', 0], 'prompt_mode': 'llm', 'user_prompt': '', 'llm_provider': 'qwenvl', 'authoring_language': 'en', 'qwenvl_bundle': ['4', 0]}}, '6': {'class_type': 'AOG Lyrics Draft', 'inputs': {'enabled': True, 'video_batch': ['1', 0], 'video_features': ['3', 0], 'lyrics_mode': 'llm', 'user_lyrics': '', 'lyrics_language': 'ja', 'llm_provider': 'qwenvl', 'authoring_language': 'en', 'qwenvl_bundle': ['4', 0]}}, '7': {'class_type': 'UNETLoader', 'inputs': {'unet_name': 'acestep_v1.5_turbo.safetensors', 'weight_dtype': 'default'}}, '8': {'class_type': 'DualCLIPLoader', 'inputs': {'clip_name1': 'qwen_0.6b_ace15.safetensors', 'clip_name2': 'qwen_4b_ace15.safetensors', 'type': 'ace', 'device': 'default'}}, '9': {'class_type': 'VAELoader', 'inputs': {'vae_name': 'ace_1.5_vae.safetensors'}}, '10': {'class_type': 'AOG ACE-Step Compose', 'inputs': {'enabled': True, 'model': ['7', 0], 'clip': ['8', 0], 'vae': ['9', 0], 'video_features': ['3', 0], 'prompt_text': ['5', 0], 'lyrics_text': ['6', 0], 'negative_tags': 'silence, clipping, distortion, noise', 'seed': 0, 'bpm': 120, 'duration': 28.8125, 'timesignature': '4', 'ace_language': 'ja', 'keyscale': 'A minor', 'steps': 8, 'cfg': 1.0, 'text_cfg_scale': 5.0, 'sampler_name': 'euler', 'scheduler': 'simple', 'denoise': 1.0}}, '11': {'class_type': 'AOG Preview Video Combine', 'inputs': {'enabled': True, 'video_batch': ['1', 0], 'audio': ['10', 0], 'filename_prefix': 'AOG/api_music_only_full_v2', 'format': 'video/mp4', 'save_output': True, 'pingpong': False, 'loop_count': 0}}}"
+            ],
+            "extra_pnginfo": [
+              null
+            ],
+            "unique_id": [
+              "11"
+            ]
+          },
+          "current_outputs": [
+            "7",
+            "1",
+            "8",
+            "11",
+            "5",
+            "6",
+            "2",
+            "9",
+            "10",
+            "3",
+            "4"
+          ],
+          "timestamp": 1775040000673
+        }
+      ]
+    ]
+  },
+  "meta": {}
+}

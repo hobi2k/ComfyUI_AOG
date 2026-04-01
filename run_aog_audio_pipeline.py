@@ -204,43 +204,44 @@ def main():
             top_p=args.qwenvl_top_p,
             num_beams=args.qwenvl_num_beams,
             repetition_penalty=args.qwenvl_repetition_penalty,
-            keep_model_loaded=args.qwenvl_keep_model_loaded,
-            seed=max(1, args.seed + 7),
+            keep_model_loaded=True,  # always keep loaded across multi-step pipeline; unload_all_models() before ACE-Step handles cleanup
+            analysis_seed=max(1, args.seed + 7),
         )[0]
     ace_reference_audio = _load_audio_file(args.ace_reference_audio) if args.ace_reference_audio.strip() else None
     print("[AOG] extracting video features...", flush=True)
-    video_features, _ = aog_nodes.AOGVideoFeatureExtract().extract_features(video_batch, mmaudio_featureutils, False)
+    video_features, _ = aog_nodes.AOGVideoFeatureExtract().extract_features(True, video_batch, mmaudio_featureutils, False)
     if qwenvl_bundle is not None:
         print("[AOG] generating QwenVL scene analysis...", flush=True)
-        scene_analysis, _ = aog_nodes.AOGQwenVLSemanticExtract().extract(video_batch, qwenvl_bundle, authoring_language, args.qwenvl_analysis_prompt)
+        scene_analysis, _ = aog_nodes.AOGQwenVLSemanticExtract().extract(True, video_batch, qwenvl_bundle, authoring_language, args.qwenvl_analysis_prompt)
         video_features["qwenvl_scene_analysis"] = scene_analysis
         video_features["qwenvl_analysis_language"] = authoring_language
+    # Build a final-step bundle that unloads QwenVL after the last call so VRAM is
+    # free before ACE-Step models load.  All earlier calls use keep_model_loaded=True.
+    qwenvl_bundle_final = dict(qwenvl_bundle) if qwenvl_bundle is not None else None
+    if qwenvl_bundle_final is not None:
+        qwenvl_bundle_final["keep_model_loaded"] = False
     print("[AOG] generating prompt...", flush=True)
     resolved_prompt, prompt_json = aog_nodes.AOGPromptDraft().draft(
+        enabled=True,
         video_batch=video_batch,
         video_features=video_features,
         prompt_mode=args.prompt_mode,
         user_prompt=args.tags,
         llm_provider=args.llm_provider,
-        llm_model=args.llm_model,
-        title=args.title,
-        theme=args.theme,
         authoring_language=authoring_language,
         qwenvl_bundle=qwenvl_bundle,
     )
     print("[AOG] generating lyrics...", flush=True)
     resolved_lyrics, lyrics_json = aog_nodes.AOGLyricsDraft().draft(
+        enabled=True,
         video_batch=video_batch,
         video_features=video_features,
         lyrics_mode=args.lyrics_mode,
         user_lyrics=lyrics,
         lyrics_language=lyrics_language,
         llm_provider=args.llm_provider,
-        llm_model=args.llm_model,
-        title=args.title,
-        theme=args.theme,
         authoring_language=authoring_language,
-        qwenvl_bundle=qwenvl_bundle,
+        qwenvl_bundle=qwenvl_bundle_final,
     )
     comfy.model_management.unload_all_models()
     comfy.model_management.soft_empty_cache(True)
@@ -254,6 +255,7 @@ def main():
     ace_vae = nodes.VAELoader().load_vae(args.ace_vae)[0]
     print("[AOG] composing ACE-Step audio...", flush=True)
     ace_audio, ace_json = aog_nodes.AOGAceStepCompose().compose(
+        enabled=True,
         model=ace_model,
         clip=ace_clip,
         vae=ace_vae,
@@ -261,7 +263,7 @@ def main():
         prompt_text=resolved_prompt,
         lyrics_text=resolved_lyrics,
         negative_tags=args.negative_tags,
-        seed=args.seed,
+        music_seed=args.seed,
         bpm=args.bpm,
         duration=video_features["duration_sec"],
         timesignature=args.timesignature,
@@ -285,11 +287,12 @@ def main():
         mmaudio_model = aog_nodes.AOGMMAudioSFXBundle().load_bundle(mmaudio_model=args.mmaudio_model, base_precision=args.mmaudio_precision)[0]
     print("[AOG] composing SFX audio...", flush=True)
     sfx_audio, sfx_json = aog_nodes.AOGSFXCompose().compose(
+        enabled=True,
         video_batch=video_batch,
         video_features=video_features,
         mmaudio_featureutils=mmaudio_featureutils,
         sfx_mode=args.sfx_mode,
-        seed=args.seed + 1,
+        sfx_seed=args.seed + 1,
         sfx_prompt=args.sfx_prompt,
         negative_prompt=args.sfx_negative_prompt,
         steps=args.sfx_steps,

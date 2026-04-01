@@ -49,6 +49,11 @@ if (-not (Test-Path (Join-Path $CustomNodes "ComfyUI-MMAudio"))) {
 } else {
     Write-Host "[skip] repo exists: $(Join-Path $CustomNodes 'ComfyUI-MMAudio')"
 }
+if (-not (Test-Path (Join-Path $CustomNodes "ComfyUI-VideoHelperSuite"))) {
+    Write-Host "[warn] ComfyUI-VideoHelperSuite is missing. Install it manually if this environment does not already provide it."
+} else {
+    Write-Host "[skip] repo exists: $(Join-Path $CustomNodes 'ComfyUI-VideoHelperSuite')"
+}
 
 Write-Host "[step] ensuring QwenVL models"
 Ensure-Dir (Join-Path $Models "LLM\Qwen-VL")

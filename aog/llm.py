@@ -121,8 +121,6 @@ def generate_prompt(
     user_prompt: str,
     provider: str,
     model: str = "",
-    title: str = "",
-    theme: str = "",
     language: str = "",
 ) -> tuple[str, dict[str, Any]]:
     if provider == "human":
@@ -142,8 +140,6 @@ def generate_prompt(
     )
     user_prompt_text = (
         f"Language: {language}\n"
-        f"Title: {title}\n"
-        f"Theme: {theme}\n"
         f"Video context: {json.dumps(context, ensure_ascii=False)}"
     )
     text, info = _generate_local_text(
@@ -165,8 +161,6 @@ def generate_lyrics(
     language: str,
     provider: str,
     model: str = "",
-    title: str = "",
-    theme: str = "",
     authoring_language: str = "",
 ) -> tuple[str, dict[str, Any]]:
     if provider == "human":
@@ -187,8 +181,6 @@ def generate_lyrics(
     )
     user_prompt_text = (
         f"Language: {authoring_language or language}\n"
-        f"Title: {title}\n"
-        f"Theme: {theme}\n"
         f"Video context: {json.dumps(context, ensure_ascii=False)}"
     )
     text, info = _generate_local_text(

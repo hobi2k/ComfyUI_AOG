@@ -12,7 +12,8 @@
   - `ComfyUI-QwenVL` is the preferred video-semantic-analysis reference for prompt and lyric authoring
 - Current implementation is summary and derived-cue driven. Highest-tier direct conditioning remains a target.
 - Practical core path:
-  - use MMAudio-derived latent structure to produce better ACE-Step prompts and lyrics through real LLM authoring
+  - use QwenVL as the primary video-semantic analysis layer
+  - optionally use MMAudio-derived latent structure to produce better ACE-Step prompts and lyrics through real LLM authoring
   - do not downgrade latent information into simplistic rules or heuristics
 - MMAudio extracts two different kinds of outputs:
   - machine-oriented latent and embedding features for music and SFX conditioning
@@ -22,7 +23,8 @@
     - semantic scene cues
 - Highest-tier target: ACE-Step-adjacent generation uses:
   - text inputs
-  - MMAudio analysis outputs
+  - QwenVL scene analysis
+  - optional MMAudio analysis outputs
 - Current implementation path:
   - ACE-Step receives text and metadata informed by video analysis
   - raw MMAudio payloads are not kept in the runtime contract
@@ -42,7 +44,7 @@
   - do not route raw MMAudio latent tensors into QwenVL
   - instead, combine:
     - QwenVL visual-semantic analysis
-    - MMAudio-derived timing, rhythm, and structure cues
+    - optional MMAudio-derived timing, rhythm, and structure cues
   - then resolve ACE-Step prompt and lyrics from that merged authoring contract
 
 ## Current Validation Status
@@ -67,6 +69,17 @@
   - semantic cues
   - conditioning summary
   - latent-derived structure cues
+
+## Workflow UX Contract
+
+- Upload-first workflows must not require a manual `source_path`.
+- `VHS_LoadVideo -> AOG VHS Video Batch Adapter` is the authoritative upload path.
+- `title` and `theme` are not part of the canvas authoring contract.
+- Example workflows should be queueable after video upload without extra path editing.
+- Seed-like user controls in saved workflows must avoid the literal input name `seed`.
+  - use `music_seed` for ACE-Step
+  - use `sfx_seed` for MMAudio SFX
+  - reason: ComfyUI injects a special frontend widget for `seed`, which can corrupt saved widget ordering
 
 ## Feature Roles
 
@@ -161,13 +174,13 @@ These should drive:
 
 1. External SVI workflow renders the video clip.
 2. `AOG Load Video Frames` or `AOG Workflow Video Batch Adapter` converts that output into `AOG_VIDEO_BATCH`.
-3. `AOG MMAudio Feature Bundle` loads MMAudio feature utilities.
-4. `AOG Video Feature Extract` produces:
+3. `AOG MMAudio Feature Bundle` loads MMAudio feature utilities when MMAudio-derived cues are enabled.
+4. `AOG Video Feature Extract` optionally produces:
    - analysis-side conditioning summaries derived from latent and embedding analysis
    - reduced summary payloads
    - structured timeline payloads
    - semantic cue payloads
-5. `QwenVL` analyzes the same video frames to produce richer scene-aware authoring context.
+5. `QwenVL` analyzes the same video frames to produce the primary scene-aware authoring context.
 6. Prompt and lyric inputs are resolved in one of two ways:
    - human-written
    - LLM-generated from:
@@ -180,7 +193,7 @@ These should drive:
    QwenVL does not require raw MMAudio latent tensors as input.
    The authoring layer should merge:
    - QwenVL video-semantic analysis
-   - MMAudio-derived summary, timeline, and latent-derived structure cues
+   - optional MMAudio-derived summary, timeline, and latent-derived structure cues
    This is the main practical path for improving ACE-Step alignment today.
    Current practical implementation:
    use `ComfyUI-QwenVL` with `Qwen3-VL-4B-Instruct` as the authoring runtime.
@@ -215,10 +228,10 @@ These should drive:
 - lyrics source: LLM
 - lyrics language: explicitly selected
 - drafting inputs:
-  - video summary
-  - structured timeline
-  - semantic scene cues
-  - latent-derived rhythm and structure cues
+  - QwenVL video-semantic analysis
+  - optional video summary
+  - optional structured timeline
+  - optional latent-derived rhythm and structure cues
 - music conditioning source: video analysis outputs, with authoring driven by summary, timeline, semantic cues, and latent-derived cues
 
 ### Mode 3: Optional SFX Layer
@@ -235,12 +248,15 @@ These should drive:
 - `AOG MMAudio Feature Bundle`
 - `AOG Load Video Frames`
 - `AOG Workflow Video Batch Adapter`
+- `AOG VHS Video Batch Adapter`
 - `AOG Video Feature Extract`
+- `AOG QwenVL Semantic Extract`
 - `AOG Prompt Draft`
 - `AOG Lyrics Draft`
 - `AOG ACE-Step Compose`
 - `AOG SFX Compose`
 - `AOG Mux Video Audio`
+- `AOG Preview Video Combine`
 - `AOG Opening Music Pipeline`
 
 `AOG Prompt Draft`, `AOG Lyrics Draft`, and `AOG SFX Compose` represent the target-tier interface. Some implementations may still expose only a subset of that contract.
@@ -328,7 +344,7 @@ Before the final system can be considered complete, the following must exist:
   - `AOGSFXCompose`
   - final mix normalization
   - final `ffmpeg` mux without `-shortest`
-- Verified local LLM runtime is `Ollama + qwen3:4b`.
+- Verified local LLM runtime is `ComfyUI-QwenVL + Qwen3-VL-4B-Instruct`.
 - Verified artifact chain is:
   - `authoring_context.json`
   - `llm_prompt_request/response.json`
@@ -336,6 +352,9 @@ Before the final system can be considered complete, the following must exist:
   - `resolved_prompt.txt`
   - `resolved_lyrics.txt`
   - `run_summary.json`
+- CLI end-to-end run verified 2026-04-01 against `120752-01_00001.webm` with `--prompt-mode llm --lyrics-mode llm --sfx-mode off`.
+  Output: `ace_audio.wav`, `final_mix.wav`, `opening_final.mp4` confirmed present.
+- CLI QwenVL reload cost reduced: `keep_model_loaded=True` is now forced in the bundle for multi-step runs.
 
 ## Current Verified Limits
 
