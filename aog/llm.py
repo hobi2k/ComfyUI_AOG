@@ -1,4 +1,7 @@
+"""AOG의 프롬프트, 가사, 음악 메타데이터 생성을 담당하는 LLM 유틸리티."""
+
 import json
+import re
 import types
 from functools import lru_cache
 from pathlib import Path
@@ -8,6 +11,7 @@ from .helpers import build_llm_context
 
 
 class LLMGenerationError(RuntimeError):
+    """LLM 호출과 응답 파싱 과정에서 발생하는 예외."""
     pass
 
 
@@ -19,6 +23,14 @@ DEFAULT_QWEN_TOKENIZER_PATH = COMFY_DIR / "comfy" / "text_encoders" / "qwen25_to
 
 @lru_cache(maxsize=1)
 def _load_local_qwen_runtime(model_path: str) -> tuple[Any, Any, str]:
+    """로컬 Qwen 체크포인트와 토크나이저를 로드해 재사용한다.
+
+    Args:
+        model_path: 로드할 safetensors 체크포인트 경로.
+
+    Returns:
+        `(model, tokenizer, resolved_model_path)` 튜플.
+    """
     import torch
     import comfy.model_management
     import comfy.ops
@@ -56,6 +68,20 @@ def _generate_local_text(
     temperature: float,
     top_p: float,
 ) -> tuple[str, dict[str, Any]]:
+    """로컬 Qwen을 호출해 단일 텍스트 응답과 디버그 정보를 반환한다.
+
+    Args:
+        system_prompt: 시스템 프롬프트.
+        user_prompt: 사용자 프롬프트.
+        model_path: 사용할 로컬 Qwen 모델 경로.
+        max_new_tokens: 최대 생성 토큰 수.
+        seed: 생성 시드.
+        temperature: 샘플링 temperature.
+        top_p: nucleus sampling 비율.
+
+    Returns:
+        `(text, info)` 튜플. `text`는 생성 결과, `info`는 요청/응답 메타데이터.
+    """
     import torch
     import comfy.model_management
 
@@ -116,6 +142,33 @@ def _generate_local_text(
     }
 
 
+def _extract_json_object(text: str) -> dict[str, Any]:
+    """LLM 응답 본문에서 첫 번째 JSON 객체를 찾아 파싱한다.
+
+    Args:
+        text: LLM이 반환한 원문.
+
+    Returns:
+        파싱된 JSON 객체 딕셔너리.
+    """
+    try:
+        payload = json.loads(text)
+        if isinstance(payload, dict):
+            return payload
+    except json.JSONDecodeError:
+        pass
+    match = re.search(r"\{.*\}", text, flags=re.DOTALL)
+    if not match:
+        raise LLMGenerationError("LLM response did not contain a JSON object.")
+    try:
+        payload = json.loads(match.group(0))
+    except json.JSONDecodeError as exc:
+        raise LLMGenerationError(f"Failed to parse LLM JSON response: {exc}") from exc
+    if not isinstance(payload, dict):
+        raise LLMGenerationError("Parsed LLM response was not a JSON object.")
+    return payload
+
+
 def generate_prompt(
     video_features: dict[str, Any],
     user_prompt: str,
@@ -123,6 +176,18 @@ def generate_prompt(
     model: str = "",
     language: str = "",
 ) -> tuple[str, dict[str, Any]]:
+    """영상 컨텍스트를 바탕으로 ACE-Step용 프롬프트를 생성한다.
+
+    Args:
+        video_features: AOG video feature contract 딕셔너리.
+        user_prompt: 사람이 직접 작성한 프롬프트.
+        provider: `human` 또는 `local_qwen`.
+        model: 로컬 Qwen 모델 경로.
+        language: 작성 언어.
+
+    Returns:
+        `(prompt_text, info)` 튜플.
+    """
     if provider == "human":
         prompt = user_prompt.strip()
         if not prompt:
@@ -163,6 +228,19 @@ def generate_lyrics(
     model: str = "",
     authoring_language: str = "",
 ) -> tuple[str, dict[str, Any]]:
+    """영상 컨텍스트를 바탕으로 ACE-Step용 가사를 생성한다.
+
+    Args:
+        video_features: AOG video feature contract 딕셔너리.
+        user_lyrics: 사람이 직접 작성한 가사.
+        language: 최종 가사 언어.
+        provider: `human` 또는 `local_qwen`.
+        model: 로컬 Qwen 모델 경로.
+        authoring_language: LLM이 분석/작성에 사용할 언어.
+
+    Returns:
+        `(lyrics_text, info)` 튜플.
+    """
     if provider == "human":
         lyrics = user_lyrics.strip()
         if not lyrics:
@@ -193,4 +271,171 @@ def generate_lyrics(
         top_p=0.92,
     )
     info.update({"mode": "llm", "lyrics_language": language, "context": context})
+    return text, info
+
+
+def generate_music_plan(
+    video_features: dict[str, Any],
+    *,
+    provider: str,
+    model: str = "",
+    authoring_language: str = "",
+    lyrics_language: str = "",
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """영상 컨텍스트를 바탕으로 BPM/박자/조성/가창 언어를 계획한다.
+
+    Args:
+        video_features: AOG video feature contract 딕셔너리.
+        provider: 현재는 `local_qwen`만 지원한다.
+        model: 로컬 Qwen 모델 경로.
+        authoring_language: 분석/설명 언어.
+        lyrics_language: 요청된 가사 언어.
+
+    Returns:
+        `(plan, info)` 튜플. `plan`에는 bpm, timesignature, keyscale, ace_language가 포함된다.
+    """
+    if provider != "local_qwen":
+        raise LLMGenerationError(f"Unsupported llm provider: {provider}")
+
+    context = build_llm_context(video_features)
+    system_prompt = (
+        "You are an anime opening music planner for ACE-Step. "
+        "Given the video context, choose musically appropriate metadata for the song. "
+        "Return JSON only with keys: bpm, timesignature, keyscale, ace_language, rationale. "
+        "Rules: bpm must be an integer between 60 and 210. "
+        "timesignature must be one of 2, 3, 4, 6 as a string. "
+        "keyscale must be one of common major/minor musical keys such as A minor or C major. "
+        "ace_language must be the singing language and should normally match the requested lyrics language."
+    )
+    user_prompt_text = (
+        f"Authoring language: {authoring_language}\n"
+        f"Requested lyrics language: {lyrics_language}\n"
+        f"Video context: {json.dumps(context, ensure_ascii=False)}"
+    )
+    raw_text, info = _generate_local_text(
+        system_prompt=system_prompt,
+        user_prompt=user_prompt_text,
+        model_path=model,
+        max_new_tokens=120,
+        seed=2,
+        temperature=0.4,
+        top_p=0.9,
+    )
+    payload = _extract_json_object(raw_text)
+    try:
+        plan = {
+            "bpm": int(payload["bpm"]),
+            "timesignature": str(payload["timesignature"]),
+            "keyscale": str(payload["keyscale"]),
+            "ace_language": str(payload.get("ace_language") or lyrics_language),
+            "rationale": str(payload.get("rationale", "")).strip(),
+        }
+    except Exception as exc:
+        raise LLMGenerationError(f"LLM music plan response missing required fields: {exc}") from exc
+    info.update({"mode": "llm", "context": context, "response_json": payload})
+    return plan, info
+
+
+def generate_sfx_prompt(
+    video_features: dict[str, Any],
+    user_prompt: str,
+    provider: str,
+    model: str = "",
+    authoring_language: str = "",
+) -> tuple[str, dict[str, Any]]:
+    """영상 특징을 바탕으로 MMAudio SFX 프롬프트를 생성한다.
+
+    Args:
+        video_features: AOG video feature contract 딕셔너리.
+        user_prompt: 사람이 직접 작성한 SFX 프롬프트.
+        provider: `human` 또는 `local_qwen`.
+        model: 로컬 Qwen 모델 경로.
+        authoring_language: 분석 및 작성에 사용할 언어.
+
+    Returns:
+        `(sfx_prompt, info)` 튜플.
+    """
+    if provider == "human":
+        prompt = user_prompt.strip()
+        if not prompt:
+            raise LLMGenerationError("sfx_prompt_mode=human requires a non-empty SFX prompt.")
+        return prompt, {"provider": "human", "mode": "human", "request": None, "response": prompt}
+
+    if provider != "local_qwen":
+        raise LLMGenerationError(f"Unsupported llm provider: {provider}")
+
+    context = build_llm_context(video_features)
+    system_prompt = (
+        "You write concise MMAudio SFX prompts for anime openings. "
+        "Focus on transition hits, whooshes, risers, impacts, swells, accent moments, and motion-synced effects. "
+        "Do not describe a music bed. Do not request vocals or dialogue. "
+        "Return plain text only in the requested language."
+    )
+    user_prompt_text = (
+        f"Authoring language: {authoring_language}\n"
+        f"Video context: {json.dumps(context, ensure_ascii=False)}"
+    )
+    text, info = _generate_local_text(
+        system_prompt=system_prompt,
+        user_prompt=user_prompt_text,
+        model_path=model,
+        max_new_tokens=96,
+        seed=3,
+        temperature=0.6,
+        top_p=0.9,
+    )
+    info.update({"mode": "llm", "context": context})
+    return text, info
+
+
+def generate_sfx_prompt(
+    video_features: dict[str, Any],
+    user_prompt: str,
+    *,
+    provider: str,
+    model: str = "",
+    authoring_language: str = "",
+) -> tuple[str, dict[str, Any]]:
+    """영상 컨텍스트를 바탕으로 MMAudio용 SFX 프롬프트를 생성한다.
+
+    Args:
+        video_features: AOG video feature contract 딕셔너리.
+        user_prompt: 사람이 직접 작성한 SFX 프롬프트.
+        provider: `human` 또는 `local_qwen`.
+        model: 로컬 Qwen 모델 경로.
+        authoring_language: LLM이 분석/작성에 사용할 언어.
+
+    Returns:
+        `(sfx_prompt, info)` 튜플.
+    """
+    if provider == "human":
+        prompt = user_prompt.strip()
+        if not prompt:
+            raise LLMGenerationError("sfx_prompt_mode=human requires a non-empty SFX prompt.")
+        return prompt, {"provider": "human", "mode": "human", "request": None, "response": prompt}
+
+    if provider != "local_qwen":
+        raise LLMGenerationError(f"Unsupported llm provider: {provider}")
+
+    context = build_llm_context(video_features)
+    system_prompt = (
+        "You write concise MMAudio SFX prompts for anime opening videos. "
+        "Describe only non-musical cinematic sound design cues such as risers, whooshes, impacts, sweeps, hit accents, "
+        "transition swells, glitch accents, and motion-synced texture layers. "
+        "Do not mention vocals or dialogue. Return plain text only."
+    )
+    user_prompt_text = (
+        f"Language: {authoring_language or 'en'}\n"
+        f"Video context: {json.dumps(context, ensure_ascii=False)}"
+    )
+    text, info = _generate_local_text(
+        system_prompt=system_prompt,
+        user_prompt=user_prompt_text,
+        model_path=model,
+        max_new_tokens=96,
+        seed=3,
+        temperature=0.6,
+        top_p=0.9,
+    )
+    info.update({"mode": "llm", "context": context})
     return text, info

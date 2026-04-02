@@ -1,3 +1,5 @@
+"""ComfyUI_AOG 패키지의 공개 노드 매핑 진입점."""
+
 from .nodes import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
 
 __all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]

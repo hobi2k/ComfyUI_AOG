@@ -172,7 +172,8 @@
             5,
             9,
             45,
-            54
+            54,
+            56
           ]
         },
         {
@@ -385,7 +386,9 @@
           "name": "qwenvl_bundle",
           "type": "AOG_QWENVL_BUNDLE",
           "links": [
-            11
+            11,
+            58,
+            71
           ]
         }
       ],
@@ -444,7 +447,8 @@
           "links": [
             10,
             35,
-            46
+            46,
+            57
           ]
         },
         {
@@ -576,7 +580,6 @@
         "Node name for S&R": "AOG QwenVL Semantic Extract"
       },
       "widgets_values": [
-        true,
         "en",
         ""
       ]
@@ -698,7 +701,6 @@
         "Node name for S&R": "AOG Prompt Draft"
       },
       "widgets_values": [
-        true,
         "llm",
         "",
         "qwenvl",
@@ -822,7 +824,6 @@
         "Node name for S&R": "AOG Lyrics Draft"
       },
       "widgets_values": [
-        true,
         "llm",
         "",
         "ja",
@@ -1051,6 +1052,36 @@
           "name": "text_cfg_scale",
           "type": "FLOAT",
           "link": 41
+        },
+        {
+          "name": "bpm",
+          "type": "",
+          "link": 59
+        },
+        {
+          "name": "duration",
+          "type": "",
+          "link": 60
+        },
+        {
+          "name": "timesignature",
+          "type": "",
+          "link": 61
+        },
+        {
+          "name": "ace_language",
+          "type": "",
+          "link": 62
+        },
+        {
+          "name": "keyscale",
+          "type": "",
+          "link": 63
+        },
+        {
+          "name": "stage_enabled",
+          "type": "BOOLEAN",
+          "link": 68
         }
       ],
       "outputs": [
@@ -1071,7 +1102,6 @@
         "Node name for S&R": "AOG ACE-Step Compose"
       },
       "widgets_values": [
-        true,
         "",
         "",
         "silence, clipping, distortion, noise",
@@ -1220,6 +1250,16 @@
           "name": "cfg",
           "type": "FLOAT",
           "link": 50
+        },
+        {
+          "name": "qwenvl_bundle",
+          "type": "AOG_QWENVL_BUNDLE",
+          "link": 71
+        },
+        {
+          "name": "stage_enabled",
+          "type": "BOOLEAN",
+          "link": 69
         }
       ],
       "outputs": [
@@ -1240,8 +1280,10 @@
         "Node name for S&R": "AOG SFX Compose"
       },
       "widgets_values": [
-        true,
         "auto",
+        "llm",
+        "qwenvl",
+        "en",
         1,
         "anime opening impact swells, whooshes, risers, accent hits",
         "spoken dialogue, vocals, muddy bass, clipping",
@@ -1277,9 +1319,9 @@
           "link": 52
         },
         {
-          "name": "enable_sfx",
+          "name": "stage_enable_sfx",
           "type": "BOOLEAN",
-          "link": 53
+          "link": 70
         }
       ],
       "outputs": [
@@ -1293,14 +1335,15 @@
         {
           "name": "summary_json",
           "type": "STRING",
-          "links": null
+          "links": [
+            64
+          ]
         }
       ],
       "properties": {
         "Node name for S&R": "AOG Final Audio Mix"
       },
       "widgets_values": [
-        true,
         "auto",
         0.25
       ]
@@ -1347,7 +1390,6 @@
         "Node name for S&R": "AOG Preview Video Combine"
       },
       "widgets_values": [
-        true,
         "AOG/full_music_sfx_preview",
         "video/mp4",
         true,
@@ -1427,9 +1469,7 @@
           "name": "loaded_duration🟦",
           "type": "FLOAT",
           "slot_index": 7,
-          "links": [
-            38
-          ]
+          "links": []
         },
         {
           "localized_name": "loaded_width🟦",
@@ -1455,6 +1495,134 @@
         }
       },
       "widgets_values": {}
+    },
+    {
+      "id": 27,
+      "type": "AOG Music Plan",
+      "title": "AOG Music Plan",
+      "pos": [
+        1020,
+        60
+      ],
+      "size": [
+        380,
+        230
+      ],
+      "order": 18,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video_batch",
+          "type": "AOG_VIDEO_BATCH",
+          "link": 56
+        },
+        {
+          "name": "video_features",
+          "type": "AOG_VIDEO_FEATURES",
+          "link": 57
+        },
+        {
+          "name": "qwenvl_bundle",
+          "type": "AOG_QWENVL_BUNDLE",
+          "link": 58
+        }
+      ],
+      "outputs": [
+        {
+          "name": "bpm",
+          "type": "INT",
+          "links": [
+            59
+          ]
+        },
+        {
+          "name": "duration",
+          "type": "FLOAT",
+          "links": [
+            60
+          ]
+        },
+        {
+          "name": "timesignature",
+          "type": "STRING",
+          "links": [
+            61
+          ]
+        },
+        {
+          "name": "ace_language",
+          "type": "STRING",
+          "links": [
+            62
+          ]
+        },
+        {
+          "name": "keyscale",
+          "type": "STRING",
+          "links": [
+            63
+          ]
+        },
+        {
+          "name": "summary_json",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AOG Music Plan"
+      },
+      "widgets_values": [
+        "llm",
+        "qwenvl",
+        "en",
+        "ja",
+        120,
+        "4",
+        "A minor",
+        "ja"
+      ]
+    },
+    {
+      "id": 28,
+      "type": "AOG Save Summary JSON",
+      "title": "AOG Save Summary JSON",
+      "pos": [
+        2400,
+        520
+      ],
+      "size": [
+        360,
+        130
+      ],
+      "order": 50,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "summary_json",
+          "type": "STRING",
+          "link": 64
+        }
+      ],
+      "outputs": [
+        {
+          "name": "saved_path",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "summary_json",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AOG Save Summary JSON"
+      },
+      "widgets_values": [
+        "{}",
+        "AOG/full_music_sfx_summary"
+      ]
     }
   ],
   "links": [
@@ -1755,14 +1923,6 @@
       "STRING"
     ],
     [
-      38,
-      26,
-      7,
-      20,
-      10,
-      "FLOAT"
-    ],
-    [
       39,
       6,
       1,
@@ -1875,14 +2035,6 @@
       "AUDIO"
     ],
     [
-      53,
-      5,
-      6,
-      24,
-      2,
-      "BOOLEAN"
-    ],
-    [
       54,
       4,
       0,
@@ -1897,6 +2049,110 @@
       25,
       2,
       "AUDIO"
+    ],
+    [
+      56,
+      4,
+      0,
+      27,
+      1,
+      "AOG_VIDEO_BATCH"
+    ],
+    [
+      57,
+      9,
+      0,
+      27,
+      2,
+      "AOG_VIDEO_FEATURES"
+    ],
+    [
+      58,
+      8,
+      0,
+      27,
+      3,
+      "AOG_QWENVL_BUNDLE"
+    ],
+    [
+      59,
+      27,
+      0,
+      20,
+      9,
+      "INT"
+    ],
+    [
+      60,
+      27,
+      1,
+      20,
+      10,
+      "FLOAT"
+    ],
+    [
+      61,
+      27,
+      2,
+      20,
+      11,
+      "STRING"
+    ],
+    [
+      62,
+      27,
+      3,
+      20,
+      12,
+      "STRING"
+    ],
+    [
+      63,
+      27,
+      4,
+      20,
+      13,
+      "STRING"
+    ],
+    [
+      64,
+      24,
+      1,
+      28,
+      1,
+      "STRING"
+    ],
+    [
+      68,
+      5,
+      1,
+      20,
+      0,
+      "BOOLEAN"
+    ],
+    [
+      69,
+      5,
+      6,
+      23,
+      0,
+      "BOOLEAN"
+    ],
+    [
+      70,
+      5,
+      6,
+      24,
+      0,
+      "BOOLEAN"
+    ],
+    [
+      71,
+      8,
+      0,
+      23,
+      7,
+      "AOG_QWENVL_BUNDLE"
     ]
   ]
 }

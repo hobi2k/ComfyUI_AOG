@@ -171,7 +171,8 @@
           "links": [
             5,
             9,
-            42
+            42,
+            44
           ]
         },
         {
@@ -376,7 +377,8 @@
           "name": "qwenvl_bundle",
           "type": "AOG_QWENVL_BUNDLE",
           "links": [
-            11
+            11,
+            46
           ]
         }
       ],
@@ -434,7 +436,8 @@
           "type": "AOG_VIDEO_FEATURES",
           "links": [
             10,
-            35
+            35,
+            45
           ]
         },
         {
@@ -566,7 +569,6 @@
         "Node name for S&R": "AOG QwenVL Semantic Extract"
       },
       "widgets_values": [
-        true,
         "en",
         ""
       ]
@@ -688,7 +690,6 @@
         "Node name for S&R": "AOG Prompt Draft"
       },
       "widgets_values": [
-        true,
         "llm",
         "",
         "qwenvl",
@@ -812,7 +813,6 @@
         "Node name for S&R": "AOG Lyrics Draft"
       },
       "widgets_values": [
-        true,
         "llm",
         "",
         "ja",
@@ -1041,6 +1041,36 @@
           "name": "text_cfg_scale",
           "type": "FLOAT",
           "link": 41
+        },
+        {
+          "name": "bpm",
+          "type": "",
+          "link": 47
+        },
+        {
+          "name": "duration",
+          "type": "",
+          "link": 48
+        },
+        {
+          "name": "timesignature",
+          "type": "",
+          "link": 49
+        },
+        {
+          "name": "ace_language",
+          "type": "",
+          "link": 50
+        },
+        {
+          "name": "keyscale",
+          "type": "",
+          "link": 51
+        },
+        {
+          "name": "stage_enabled",
+          "type": "BOOLEAN",
+          "link": 56
         }
       ],
       "outputs": [
@@ -1061,7 +1091,6 @@
         "Node name for S&R": "AOG ACE-Step Compose"
       },
       "widgets_values": [
-        true,
         "",
         "",
         "silence, clipping, distortion, noise",
@@ -1121,7 +1150,6 @@
         "Node name for S&R": "AOG Preview Video Combine"
       },
       "widgets_values": [
-        true,
         "AOG/qwenvl_authoring_preview",
         "video/mp4",
         true,
@@ -1201,9 +1229,7 @@
           "name": "loaded_duration🟦",
           "type": "FLOAT",
           "slot_index": 7,
-          "links": [
-            38
-          ]
+          "links": []
         },
         {
           "localized_name": "loaded_width🟦",
@@ -1229,6 +1255,136 @@
         }
       },
       "widgets_values": {}
+    },
+    {
+      "id": 23,
+      "type": "AOG Music Plan",
+      "title": "AOG Music Plan",
+      "pos": [
+        1020,
+        90
+      ],
+      "size": [
+        380,
+        230
+      ],
+      "order": 18,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video_batch",
+          "type": "AOG_VIDEO_BATCH",
+          "link": 44
+        },
+        {
+          "name": "video_features",
+          "type": "AOG_VIDEO_FEATURES",
+          "link": 45
+        },
+        {
+          "name": "qwenvl_bundle",
+          "type": "AOG_QWENVL_BUNDLE",
+          "link": 46
+        }
+      ],
+      "outputs": [
+        {
+          "name": "bpm",
+          "type": "INT",
+          "links": [
+            47
+          ]
+        },
+        {
+          "name": "duration",
+          "type": "FLOAT",
+          "links": [
+            48
+          ]
+        },
+        {
+          "name": "timesignature",
+          "type": "STRING",
+          "links": [
+            49
+          ]
+        },
+        {
+          "name": "ace_language",
+          "type": "STRING",
+          "links": [
+            50
+          ]
+        },
+        {
+          "name": "keyscale",
+          "type": "STRING",
+          "links": [
+            51
+          ]
+        },
+        {
+          "name": "summary_json",
+          "type": "STRING",
+          "links": [
+            52
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AOG Music Plan"
+      },
+      "widgets_values": [
+        "llm",
+        "qwenvl",
+        "en",
+        "ja",
+        120,
+        "4",
+        "A minor",
+        "ja"
+      ]
+    },
+    {
+      "id": 24,
+      "type": "AOG Save Summary JSON",
+      "title": "AOG Save Summary JSON",
+      "pos": [
+        1980,
+        430
+      ],
+      "size": [
+        360,
+        130
+      ],
+      "order": 50,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "summary_json",
+          "type": "STRING",
+          "link": 52
+        }
+      ],
+      "outputs": [
+        {
+          "name": "saved_path",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "summary_json",
+          "type": "STRING",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AOG Save Summary JSON"
+      },
+      "widgets_values": [
+        "{}",
+        "AOG/qwenvl_authoring_summary"
+      ]
     }
   ],
   "links": [
@@ -1529,14 +1685,6 @@
       "STRING"
     ],
     [
-      38,
-      22,
-      7,
-      20,
-      10,
-      "FLOAT"
-    ],
-    [
       39,
       6,
       1,
@@ -1575,6 +1723,86 @@
       21,
       2,
       "AUDIO"
+    ],
+    [
+      44,
+      4,
+      0,
+      23,
+      1,
+      "AOG_VIDEO_BATCH"
+    ],
+    [
+      45,
+      9,
+      0,
+      23,
+      2,
+      "AOG_VIDEO_FEATURES"
+    ],
+    [
+      46,
+      8,
+      0,
+      23,
+      3,
+      "AOG_QWENVL_BUNDLE"
+    ],
+    [
+      47,
+      23,
+      0,
+      20,
+      9,
+      "INT"
+    ],
+    [
+      48,
+      23,
+      1,
+      20,
+      10,
+      "FLOAT"
+    ],
+    [
+      49,
+      23,
+      2,
+      20,
+      11,
+      "STRING"
+    ],
+    [
+      50,
+      23,
+      3,
+      20,
+      12,
+      "STRING"
+    ],
+    [
+      51,
+      23,
+      4,
+      20,
+      13,
+      "STRING"
+    ],
+    [
+      52,
+      23,
+      5,
+      24,
+      1,
+      "STRING"
+    ],
+    [
+      56,
+      5,
+      1,
+      20,
+      0,
+      "BOOLEAN"
     ]
   ]
 }

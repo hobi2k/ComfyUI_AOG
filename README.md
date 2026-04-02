@@ -1,5 +1,7 @@
 # ComfyUI_AOG
 
+한국어 문서: [README.ko.md](./README.ko.md)
+
 `ComfyUI_AOG` is a ComfyUI custom-node pack for turning a finished opening video into music that matches the video.
 
 Current scope:
@@ -66,6 +68,11 @@ Important workflow-facing behavior:
   - `enable_prompt_authoring`
   - `enable_lyrics_authoring`
   - `enable_sfx`
+- `AOG SFX Compose` supports both human-authored and LLM-authored SFX prompts.
+  - `sfx_prompt_mode = human | llm`
+  - `llm_provider = qwenvl | local_qwen`
+  - in `human` mode, the `sfx_prompt` text box is used as-is
+  - in `llm` mode, the node writes an SFX prompt from video-derived context first, then enriches it with MMAudio timing/motion cues
 - `QwenVL analysis` does not require MMAudio feature extraction.
   - QwenVL can analyze the uploaded video directly.
   - MMAudio-derived cues are optional authoring enrichment.
@@ -102,6 +109,14 @@ Example:
 - prompt: English
 - lyrics: Japanese
 - ACE-Step language: Japanese
+
+Recommended SFX configuration:
+
+- `sfx_prompt_mode = llm`
+- `llm_provider = qwenvl`
+- `authoring_language = en`
+
+This gives the full workflow a video-driven SFX authoring path by default.
 
 ## Installation
 
@@ -160,7 +175,7 @@ Also supported:
 
 ## Example Workflows
 
-This repo ships three example workflows in [workflows](/d:/Stable%20Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/custom_nodes/ComfyUI_AOG/workflows):
+This repo ships three example workflows in [workflows](./workflows):
 
 - `AOG_QwenVL_Authoring.json`
 - `AOG_ACE_Music_Only.json`
@@ -181,6 +196,8 @@ Notes on the three example workflows:
 - `AOG_Full_Music_SFX_Mux.json`
   - full graph with optional MMAudio SFX and final mux
   - best reference for preview-ready end-to-end output
+  - default SFX mode is `llm + qwenvl`
+  - switch to `human` if you want to write the SFX prompt manually
 
 ## Workflow Reload Note
 
