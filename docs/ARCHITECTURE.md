@@ -76,6 +76,15 @@
 - `VHS_LoadVideo -> AOG VHS Video Batch Adapter` is the authoritative upload path.
 - `title` and `theme` are not part of the canvas authoring contract.
 - Example workflows should be queueable after video upload without extra path editing.
+- Shipped example workflows use `rgthree` for canvas-level mute and bypass UX.
+- Shipped example workflows use `AOG` nodes for functionality:
+  - feature extraction
+  - authoring
+  - music planning
+  - composition
+  - summary saving
+  - preview saving
+- Branch toggling belongs to the workflow layer, not to the AOG feature-node contract.
 - Seed-like user controls in saved workflows must avoid the literal input name `seed`.
   - use `music_seed` for ACE-Step
   - use `sfx_seed` for MMAudio SFX
@@ -257,7 +266,6 @@ These should drive:
 - `AOG SFX Compose`
 - `AOG Mux Video Audio`
 - `AOG Preview Video Combine`
-- `AOG Opening Music Pipeline`
 
 `AOG Prompt Draft`, `AOG Lyrics Draft`, and `AOG SFX Compose` represent the target-tier interface. Some implementations may still expose only a subset of that contract.
 `AOG Prompt Draft` and `AOG Lyrics Draft` are the most important near-term quality path because ACE-Step currently benefits most from better authored inputs.

@@ -1,0 +1,12 @@
+Using Python 3.11.10 environment at: venv
+warning: Ignoring dangling temporary directory: `D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\~orch-2.10.0+cu130.dist-info`
+warning: Ignoring dangling temporary directory: `D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\~ympy-1.14.0.dist-info`
+Using Python 3.11.10 environment at: venv
+warning: Ignoring dangling temporary directory: `D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\~orch-2.10.0+cu130.dist-info`
+warning: Ignoring dangling temporary directory: `D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\~ympy-1.14.0.dist-info`
+Using Python 3.11.10 environment at: venv
+warning: Ignoring dangling temporary directory: `D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\~orch-2.10.0+cu130.dist-info`
+warning: Ignoring dangling temporary directory: `D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\~ympy-1.14.0.dist-info`
+aimdo: src-win/cuda-detour.c:77:INFO:aimdo_setup_hooks: found driver at 00007FFB8CC60000, installing 4 hooks
+aimdo: src-win/cuda-detour.c:61:DEBUG:install_hook_entrys: hooks successfully installed
+aimdo: src/control.c:69:INFO:comfy-aimdo inited for GPU: NVIDIA GeForce RTX 5080 (VRAM: 16302 MB)

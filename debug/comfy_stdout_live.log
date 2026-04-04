@@ -1,0 +1,626 @@
+Adding extra search path checkpoints D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\StableDiffusion
+Adding extra search path diffusers D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\Diffusers
+Adding extra search path loras D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\Lora
+Adding extra search path loras D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\LyCORIS
+Adding extra search path clip D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\TextEncoders
+Adding extra search path clip_vision D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\ClipVision
+Adding extra search path embeddings D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\Embeddings
+Adding extra search path vae D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\VAE
+Adding extra search path vae_approx D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\ApproxVAE
+Adding extra search path controlnet D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\ControlNet
+Adding extra search path controlnet D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\T2IAdapter
+Adding extra search path gligen D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\GLIGEN
+Adding extra search path upscale_models D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\ESRGAN
+Adding extra search path upscale_models D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\RealESRGAN
+Adding extra search path upscale_models D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\SwinIR
+Adding extra search path hypernetworks D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\Hypernetwork
+Adding extra search path ipadapter D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\IpAdapter
+Adding extra search path ipadapter D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\IpAdapters15
+Adding extra search path ipadapter D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\IpAdaptersXl
+Adding extra search path prompt_expansion D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\PromptExpansion
+Adding extra search path ultralytics D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\Ultralytics
+Adding extra search path ultralytics_bbox D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\Ultralytics\bbox
+Adding extra search path ultralytics_segm D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\Ultralytics\segm
+Adding extra search path sams D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\Sams
+Adding extra search path diffusion_models D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\DiffusionModels
+[ComfyUI-Manager] `python -m pip` not available. Falling back to `uv`.
+[ComfyUI-Manager] Using `uv` as Python module for pip operations.
+[START] Security scan
+[DONE] Security scan
+## ComfyUI-Manager: installing dependencies done.
+** ComfyUI startup time: 2026-04-04 21:50:46.971
+** Platform: Windows
+** Python version: 3.11.10 (main, Oct 16 2024, 00:15:32) [MSC v.1929 64 bit (AMD64)]
+** Python executable: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Scripts\python.exe
+** ComfyUI Path: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI
+** ComfyUI Base Folder Path: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI
+** User directory: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\user
+** ComfyUI-Manager config path: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\user\__manager\config.ini
+** Log path: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\user\comfyui.log
+
+Prestartup times for custom nodes:
+   0.0 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\rgthree-comfy
+   0.0 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-Easy-Use
+  40.0 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-Manager
+
+D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+Found comfy_kitchen backend cuda: {'available': True, 'disabled': False, 'unavailable_reason': None, 'capabilities': ['apply_rope', 'apply_rope1', 'dequantize_nvfp4', 'dequantize_per_tensor_fp8', 'quantize_mxfp8', 'quantize_nvfp4', 'quantize_per_tensor_fp8', 'scaled_mm_nvfp4']}
+Found comfy_kitchen backend triton: {'available': True, 'disabled': True, 'unavailable_reason': None, 'capabilities': ['apply_rope', 'apply_rope1', 'dequantize_nvfp4', 'dequantize_per_tensor_fp8', 'quantize_mxfp8', 'quantize_nvfp4', 'quantize_per_tensor_fp8']}
+Found comfy_kitchen backend eager: {'available': True, 'disabled': False, 'unavailable_reason': None, 'capabilities': ['apply_rope', 'apply_rope1', 'dequantize_mxfp8', 'dequantize_nvfp4', 'dequantize_per_tensor_fp8', 'quantize_mxfp8', 'quantize_nvfp4', 'quantize_per_tensor_fp8', 'scaled_mm_mxfp8', 'scaled_mm_nvfp4']}
+Checkpoint files will always be loaded safely.
+Total VRAM 16303 MB, total RAM 32466 MB
+pytorch version: 2.11.0+cu130
+WARNING[XFORMERS]: xFormers can't load C++/CUDA extensions. xFormers was built for:
+    PyTorch 2.10.0+cu128 with CUDA 1208 (you have 2.11.0+cu130)
+    Python  3.10.11 (you have 3.11.10)
+  Please reinstall xformers (see https://github.com/facebookresearch/xformers#installing-xformers)
+  Memory-efficient attention, SwiGLU, sparse and more won't be available.
+  Set XFORMERS_MORE_DETAILS=1 for more details
+xformers version: 0.0.35
+Set vram state to: NORMAL_VRAM
+Device: cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync
+Using async weight offloading with 2 streams
+Enabled pinned memory 14609.0
+Using pytorch attention
+DynamicVRAM support detected and enabled
+Python version: 3.11.10 (main, Oct 16 2024, 00:15:32) [MSC v.1929 64 bit (AMD64)]
+ComfyUI version: 0.18.0
+comfy-aimdo version: 0.2.12
+comfy-kitchen version: 0.2.8
+ComfyUI frontend version: 1.41.21
+[Prompt Server] web root: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\comfyui_frontend_package\static
+Asset seeder disabled
+Traceback (most recent call last):
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\nodes.py", line 2227, in load_custom_node
+    module_spec.loader.exec_module(module)
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\Applio\__init__.py", line 9, in <module>
+    from .nodes import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\Applio\nodes.py", line 47, in <module>
+    from rvc.infer.infer import VoiceConverter
+ModuleNotFoundError: No module named 'rvc.infer.infer'
+
+Cannot import D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\Applio module for custom nodes: No module named 'rvc.infer.infer'
+[36;20m[D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfy-mtb] | INFO -> loaded [96m103[0m nodes successfuly[0m
+[36;20m[D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfy-mtb] | INFO -> Some nodes (5) could not be loaded. This can be ignored, but go to http://127.0.0.1:8188/mtb if you want more information.[0m
+Traceback (most recent call last):
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\nodes.py", line 2227, in load_custom_node
+    module_spec.loader.exec_module(module)
+  File "<frozen importlib._bootstrap_external>", line 936, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1073, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1130, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: 'D:\\Stable Diffusion\\StabilityMatrix-win-x64\\Data\\Packages\\ComfyUI\\custom_nodes\\ComfyUI\\__init__.py'
+
+Cannot import D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI module for custom nodes: [Errno 2] No such file or directory: 'D:\\Stable Diffusion\\StabilityMatrix-win-x64\\Data\\Packages\\ComfyUI\\custom_nodes\\ComfyUI\\__init__.py'
+Imported AddPaddingAdvanced successfully
+Imported AddPaddingBase successfully
+Imported AD_ImageResize successfully
+Imported AD_MockupMaker successfully
+Imported AD_PosterMaker successfully
+Imported AD_PromptSaver successfully
+Imported ComfyUI-FofrToolkit successfully
+Imported ComfyUI-ImageCaptioner successfully
+Imported ComfyUI-imageResize successfully
+Imported ComfyUI-textAppend successfully
+Imported imagecreatemask successfully
+Imported multiline_string successfully
+Imported AddPaddingAdvanced successfully
+Imported AddPaddingBase successfully
+Imported AD_ImageResize successfully
+Imported AD_MockupMaker successfully
+Imported AD_PosterMaker successfully
+Imported AD_PromptSaver successfully
+Imported ComfyUI-FofrToolkit successfully
+Imported ComfyUI-ImageCaptioner successfully
+Imported ComfyUI-imageResize successfully
+Imported ComfyUI-textAppend successfully
+Imported imagecreatemask successfully
+Imported multiline_string successfully
+D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\perth\perth_net\__init__.py:1: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_filename
+Traceback (most recent call last):
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\nodes.py", line 2227, in load_custom_node
+    module_spec.loader.exec_module(module)
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-cogvideoxwrapper\__init__.py", line 1, in <module>
+    from .nodes import NODE_CLASS_MAPPINGS as NODES_CLASS, NODE_DISPLAY_NAME_MAPPINGS as NODES_DISPLAY
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-cogvideoxwrapper\nodes.py", line 8, in <module>
+    check_diffusers_version()
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-cogvideoxwrapper\utils.py", line 12, in check_diffusers_version
+    raise AssertionError(f"diffusers version {version} is installed, but version {required_version} or higher is required.")
+AssertionError: diffusers version 0.29.0 is installed, but version 0.31.0 or higher is required.
+
+Cannot import D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-cogvideoxwrapper module for custom nodes: diffusers version 0.29.0 is installed, but version 0.31.0 or higher is required.
+[Crystools [0;32mINFO[0m] Crystools version: 1.27.4
+[Crystools [0;32mINFO[0m] Platform release: 10
+[Crystools [0;32mINFO[0m] JETSON: Not detected.
+[Crystools [0;32mINFO[0m] CPU: Intel(R) Core(TM) Ultra 7 265KF - Arch: AMD64 - OS: Windows 10
+[Crystools [0;32mINFO[0m] pynvml (NVIDIA) initialized.
+[Crystools [0;32mINFO[0m] GPU/s:
+[Crystools [0;32mINFO[0m] 0) NVIDIA GeForce RTX 5080
+[Crystools [0;32mINFO[0m] NVIDIA Driver: 595.79
+D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\diffusers\models\transformers\transformer_2d.py:34: FutureWarning: `Transformer2DModelOutput` is deprecated and will be removed in version 1.0.0. Importing `Transformer2DModelOutput` from `diffusers.models.transformer_2d` is deprecated and this will be removed in a future version. Please use `from diffusers.models.modeling_outputs import Transformer2DModelOutput`, instead.
+  deprecate("Transformer2DModelOutput", "1.0.0", deprecation_message)
+[ComfyUI-Easy-Use] server: v1.3.7 Loaded
+[ComfyUI-Easy-Use] web root: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-Easy-Use\web_version/v2 Loaded
+Traceback (most recent call last):
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\nodes.py", line 2227, in load_custom_node
+    module_spec.loader.exec_module(module)
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-FramePackWrapper_Plus\__init__.py", line 1, in <module>
+    from .nodes import NODE_CLASS_MAPPINGS as NODES_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS as NODES_DISPLAY_MAPPINGS
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-FramePackWrapper_Plus\nodes.py", line 26, in <module>
+    from .diffusers_helper.models.hunyuan_video_packed import HunyuanVideoTransformer3DModel
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-FramePackWrapper_Plus\diffusers_helper\models\hunyuan_video_packed.py", line 17, in <module>
+    from ...diffusers_helper.dit_common import LayerNorm
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-FramePackWrapper_Plus\diffusers_helper\dit_common.py", line 4, in <module>
+    from diffusers.models.normalization import RMSNorm, LayerNorm, FP32LayerNorm, AdaLayerNormContinuous
+ImportError: cannot import name 'FP32LayerNorm' from 'diffusers.models.normalization' (D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\diffusers\models\normalization.py)
+
+Cannot import D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-FramePackWrapper_Plus module for custom nodes: cannot import name 'FP32LayerNorm' from 'diffusers.models.normalization' (D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\diffusers\models\normalization.py)
+Traceback (most recent call last):
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\nodes.py", line 2227, in load_custom_node
+    module_spec.loader.exec_module(module)
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-FramePackWrapper_PlusOne\__init__.py", line 1, in <module>
+    from .nodes import NODE_CLASS_MAPPINGS as NODES_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS as NODES_DISPLAY_MAPPINGS
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-FramePackWrapper_PlusOne\nodes.py", line 26, in <module>
+    from .diffusers_helper.models.hunyuan_video_packed import HunyuanVideoTransformer3DModel
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-FramePackWrapper_PlusOne\diffusers_helper\models\hunyuan_video_packed.py", line 17, in <module>
+    from ...diffusers_helper.dit_common import LayerNorm
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-FramePackWrapper_PlusOne\diffusers_helper\dit_common.py", line 4, in <module>
+    from diffusers.models.normalization import RMSNorm, LayerNorm, FP32LayerNorm, AdaLayerNormContinuous
+ImportError: cannot import name 'FP32LayerNorm' from 'diffusers.models.normalization' (D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\diffusers\models\normalization.py)
+
+Cannot import D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-FramePackWrapper_PlusOne module for custom nodes: cannot import name 'FP32LayerNorm' from 'diffusers.models.normalization' (D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\diffusers\models\normalization.py)
+ComfyUI-GGUF: Allowing full torch compile
+### Loading: ComfyUI-Impact-Pack (V8.28.2)
+[Impact Pack] Wildcard total size (0.00 MB) is within cache limit (50.00 MB). Using full cache mode.
+[Impact Pack] Wildcards loading done.
+### Loading: ComfyUI-Impact-Subpack (V1.3.5)
+[Impact Pack/Subpack] Using folder_paths to determine whitelist path: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\user\default\ComfyUI-Impact-Subpack\model-whitelist.txt
+[Impact Pack/Subpack] Ensured whitelist directory exists: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\user\default\ComfyUI-Impact-Subpack
+[Impact Pack/Subpack] Loaded 0 model(s) from whitelist: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\user\default\ComfyUI-Impact-Subpack\model-whitelist.txt
+[Impact Subpack] ultralytics_bbox: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\Ultralytics\bbox, D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\models\ultralytics\bbox
+[Impact Subpack] ultralytics_segm: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Models\Ultralytics\segm, D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\models\ultralytics\segm
+### Loading: ComfyUI-Inspire-Pack (V1.23)
+✅ K3NK Image Grab (WanVideoWrapper frame groups): Loaded
+   - anchor_frame_index: selects a specific frame from the anchor file
+   - batch_start_frame: starting FRAME GROUP index (0=first group, 1=second group, etc.)
+   - batch_end_frame: FRAME GROUPS to remove from END (0=none, 1=remove last group, etc.)
+   - max_batch_frames: maximum number of frames (0=ignored)
+   - WanVideoWrapper uses groups of 4 frames - parameters work with frame groups
+   - Example: batch_start_frame=1 skips the first 4 frames
+   - Example: batch_end_frame=1 removes the last 4 frames
+   - frame_stride: applies to frames inside .latent files when latent_frame_stride=True
+### Loading: ComfyUI-Manager (V3.39.2)
+[ComfyUI-Manager] network_mode: public
+[ComfyUI-Manager] ComfyUI per-queue preview override detected (PR #11261). Manager's preview method feature is disabled. Use ComfyUI's --preview-method CLI option or 'Settings > Execution > Live preview method'.
+### ComfyUI Revision: 4954 [dc719cde] *DETACHED | Released on '2026-03-20'
+[ComfyUI-Manager] default cache updated: https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/alter-list.json
+[ComfyUI-Manager] default cache updated: https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/model-list.json
+[ComfyUI-Manager] default cache updated: https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/github-stats.json
+[ComfyUI-Manager] default cache updated: https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/extension-node-map.json
+[ComfyUI-Manager] default cache updated: https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/custom-node-list.json
+FETCH ComfyRegistry Data: 5/136
+[MultiGPU Core Patching] Patching mm.soft_empty_cache for Comprehensive Memory Management (VRAM + CPU + Store Pruning)
+[MultiGPU Core Patching] Patching mm.get_torch_device, mm.text_encoder_device, mm.unet_offload_device
+[MultiGPU DEBUG] Initial current_device: cuda:0
+[MultiGPU DEBUG] Initial current_text_encoder_device: cuda:0
+[MultiGPU DEBUG] Initial current_unet_offload_device: cpu
+[MultiGPU] Initiating custom_node Registration. . .
+-----------------------------------------------
+custom_node                   Found     Nodes
+-----------------------------------------------
+ComfyUI-LTXVideo                  N         0
+ComfyUI-Florence2                 Y         2
+ComfyUI_bitsandbytes_NF4          N         0
+x-flux-comfyui                    N         0
+ComfyUI-MMAudio                   Y         3
+ComfyUI-GGUF                      Y        18
+PuLID_ComfyUI                     N         0
+ComfyUI-WanVideoWrapper           Y        20
+-----------------------------------------------
+[MultiGPU] Registration complete. Final mappings: CheckpointLoaderAdvancedMultiGPU, CheckpointLoaderAdvancedDisTorch2MultiGPU, UNetLoaderLP, UNETLoaderMultiGPU, VAELoaderMultiGPU, CLIPLoaderMultiGPU, DualCLIPLoaderMultiGPU, TripleCLIPLoaderMultiGPU, QuadrupleCLIPLoaderMultiGPU, CLIPVisionLoaderMultiGPU, CheckpointLoaderSimpleMultiGPU, ControlNetLoaderMultiGPU, DiffusersLoaderMultiGPU, DiffControlNetLoaderMultiGPU, UNETLoaderDisTorch2MultiGPU, VAELoaderDisTorch2MultiGPU, CLIPLoaderDisTorch2MultiGPU, DualCLIPLoaderDisTorch2MultiGPU, TripleCLIPLoaderDisTorch2MultiGPU, QuadrupleCLIPLoaderDisTorch2MultiGPU, CLIPVisionLoaderDisTorch2MultiGPU, CheckpointLoaderSimpleDisTorch2MultiGPU, ControlNetLoaderDisTorch2MultiGPU, DiffusersLoaderDisTorch2MultiGPU, DiffControlNetLoaderDisTorch2MultiGPU, Florence2ModelLoaderMultiGPU, DownloadAndLoadFlorence2ModelMultiGPU, MMAudioModelLoaderMultiGPU, MMAudioFeatureUtilsLoaderMultiGPU, MMAudioSamplerMultiGPU, UnetLoaderGGUFDisTorchMultiGPU, UnetLoaderGGUFAdvancedDisTorchMultiGPU, CLIPLoaderGGUFDisTorchMultiGPU, DualCLIPLoaderGGUFDisTorchMultiGPU, TripleCLIPLoaderGGUFDisTorchMultiGPU, QuadrupleCLIPLoaderGGUFDisTorchMultiGPU, UnetLoaderGGUFDisTorch2MultiGPU, UnetLoaderGGUFAdvancedDisTorch2MultiGPU, CLIPLoaderGGUFDisTorch2MultiGPU, DualCLIPLoaderGGUFDisTorch2MultiGPU, TripleCLIPLoaderGGUFDisTorch2MultiGPU, QuadrupleCLIPLoaderGGUFDisTorch2MultiGPU, UnetLoaderGGUFMultiGPU, UnetLoaderGGUFAdvancedMultiGPU, CLIPLoaderGGUFMultiGPU, DualCLIPLoaderGGUFMultiGPU, TripleCLIPLoaderGGUFMultiGPU, QuadrupleCLIPLoaderGGUFMultiGPU, LoadWanVideoT5TextEncoderMultiGPU, WanVideoTextEncodeMultiGPU, WanVideoTextEncodeCachedMultiGPU, WanVideoTextEncodeSingleMultiGPU, WanVideoVAELoaderMultiGPU, WanVideoTinyVAELoaderMultiGPU, WanVideoBlockSwapMultiGPU, WanVideoImageToVideoEncodeMultiGPU, WanVideoDecodeMultiGPU, WanVideoModelLoaderMultiGPU, WanVideoSamplerMultiGPU, WanVideoVACEEncodeMultiGPU, WanVideoEncodeMultiGPU, LoadWanVideoClipTextEncoderMultiGPU, WanVideoClipVisionEncodeMultiGPU, WanVideoControlnetLoaderMultiGPU, FantasyTalkingModelLoaderMultiGPU, Wav2VecModelLoaderMultiGPU, WanVideoUni3C_ControlnetLoaderMultiGPU, DownloadAndLoadWav2VecModelMultiGPU
+FETCH ComfyRegistry Data: 10/136
+Error loading module AILab_QwenVL_GGUF_PromptEnhancer: No module named 'llama_cpp'
+FETCH ComfyRegistry Data: 15/136
+[ComfyUI-RMBG] v3.0.0 | 43 nodes Loaded
+!!!RVC path was added to D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages/users.pth
+ if meet `No module` error,try `python main.py` again
+!!!RVC auto-download disabled; run download_models.py manually if assets are missing
+Loading faiss with AVX2 support.
+Successfully loaded faiss with AVX2 support.
+FETCH ComfyRegistry Data: 20/136
+
+__     ______   ____                      ____              ____ _      _ 
+\ \   / /  _ \ / ___| __ _ _ __ ___   ___|  _ \  _____   __/ ___(_)_ __| |
+ \ \ / /| |_) | |  _ / _` | '_ ` _ \ / _ \ | | |/ _ \ \ / / |  _| | '__| |
+  \ V / |  _ <| |_| | (_| | | | | | |  __/ |_| |  __/\ V /| |_| | | |  | |
+   \_/  |_| \_\\____|\__,_|_| |_| |_|\___|____/ \___| \_/  \____|_|_|  |_|
+                                                                          
+             🎮 VRGameDevGirl custom nodes loaded successfully! 🎞️
+
+FETCH ComfyRegistry Data: 25/136
+FETCH ComfyRegistry Data: 30/136
+FETCH ComfyRegistry Data: 35/136
+FETCH ComfyRegistry Data: 40/136
+FETCH ComfyRegistry Data: 45/136
+FETCH ComfyRegistry Data: 50/136
+Lanczos cache: Loaded 20 items, totaling 3.21 MB.
+Lanczos cache: Loaded 20 items.
+Memory profile cache: Loaded 10 entries.
+FETCH ComfyRegistry Data: 55/136
+FETCH ComfyRegistry Data: 60/136
+✅ ChatterboxTTS loaded from bundled package
+✅ ChatterboxVC loaded from bundled package
+❌ F5-TTS not available: No module named 'f5_tts'
+🎭 Character voices: Found 9 characters, 10 aliases
+✅ SRT modules loaded from system package
+❌ F5-TTS not available: No module named 'f5_tts'
+❌ F5-TTS initialization failed: cannot import name 'F5TTS_IMPORT_ERROR' from 'engines.f5tts.f5tts' (D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI_ChatterBox_SRT_Voice\engines\f5tts\f5tts.py)
+======================================================================
+🚀 ChatterBox Voice Extension v3.4.4
+Using model source: huggingface
+⚠️ No local models found - will download from Hugging Face
+💡 Tip: First generation will download models (~1GB)
+   Models will be saved locally for future use
+======================================================================
+🚀 ChatterBox Voice Extension v3.4.4 loaded with 6 nodes:
+   • 🌊 Audio Wave Analyzer
+   • 🎙️ ChatterBox Voice Capture (diogod)
+   • 🎤 ChatterBox Voice TTS (diogod)
+   • 📺 ChatterBox SRT Voice TTS
+   • 🔄 ChatterBox Voice Conversion (diogod)
+   • 🔧 Audio Wave Analyzer Options
+⚠️  Missing optional features: F5-TTS nodes
+   Install missing dependencies to enable all features
+======================================================================
+------------------------------------------
+Comfyroll Studio v1.76 :  175 Nodes Loaded
+------------------------------------------
+** For changes, please see patch notes at https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes/blob/main/Patch_Notes.md
+** For help, please see the wiki at https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes/wiki
+------------------------------------------
+[D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui_controlnet_aux] | INFO -> Using ckpts path: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui_controlnet_aux\ckpts
+[D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui_controlnet_aux] | INFO -> Using symlinks: False
+[D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui_controlnet_aux] | INFO -> Using ort providers: ['CUDAExecutionProvider', 'DirectMLExecutionProvider', 'OpenVINOExecutionProvider', 'ROCMExecutionProvider', 'CPUExecutionProvider', 'CoreMLExecutionProvider']
+DWPose: Onnxruntime with acceleration providers detected
+
+⣏⡉ ⡇    ⡎⠑ ⣇⡀ ⢀⣀ ⣰⡀ ⣰⡀ ⢀⡀ ⡀⣀ ⣏⡱ ⢀⡀ ⡀⢀
+⠇  ⠧⠤   ⠣⠔ ⠇⠸ ⠣⠼ ⠘⠤ ⠘⠤ ⠣⠭ ⠏  ⠧⠜ ⠣⠜ ⠜⠣
+
+FL ChatterBox Custom Nodes Loaded
+FETCH ComfyRegistry Data: 65/136
+FETCH ComfyRegistry Data: 70/136
+LOADED 6 FONTS
+No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+FETCH ComfyRegistry Data: 75/136
+
+
+███╗   ███╗ █████╗  ██████╗██╗  ██╗██╗███╗   ██╗███████╗               
+████╗ ████║██╔══██╗██╔════╝██║  ██║██║████╗  ██║██╔════╝               
+██╔████╔██║███████║██║     ███████║██║██╔██╗ ██║█████╗                 
+██║╚██╔╝██║██╔══██║██║     ██╔══██║██║██║╚██╗██║██╔══╝                 
+██║ ╚═╝ ██║██║  ██║╚██████╗██║  ██║██║██║ ╚████║███████╗               
+╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝╚══════╝               
+                                                                       
+██████╗ ███████╗██╗     ██╗   ██╗███████╗██╗ ██████╗ ███╗   ██╗███████╗
+██╔══██╗██╔════╝██║     ██║   ██║██╔════╝██║██╔═══██╗████╗  ██║██╔════╝
+██║  ██║█████╗  ██║     ██║   ██║███████╗██║██║   ██║██╔██╗ ██║███████╗
+██║  ██║██╔══╝  ██║     ██║   ██║╚════██║██║██║   ██║██║╚██╗██║╚════██║
+██████╔╝███████╗███████╗╚██████╔╝███████║██║╚██████╔╝██║ ╚████║███████║
+╚═════╝ ╚══════╝╚══════╝ ╚═════╝ ╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
+                                                                       
+
+
+
+⣏⡉ ⡇    ⡎⠑ ⢀⡀ ⢀⣀ ⡀⢀ ⡇⢸ ⢀⡀ ⠄ ⢀⣀ ⢀⡀ ⢉⡹
+⠇  ⠧⠤   ⠣⠔ ⠣⠜ ⠭⠕ ⣑⡺ ⠸⠃ ⠣⠜ ⠇ ⠣⠤ ⠣⠭ ⠤⠜
+
+FL CosyVoice3 Custom Nodes Loaded - Version 1.2.1
+# 😺dzNodes: LayerStyle -> Cannot import name 'guidedFilter' from 'cv2.ximgproc'
+A few nodes cannot works properly, while most nodes are not affected. Please REINSTALL package 'opencv-contrib-python'.
+For detail refer to https://github.com/chflame163/ComfyUI_LayerStyle/issues/5
+FETCH ComfyRegistry Data: 80/136
+FETCH ComfyRegistry Data: 85/136
+[tinyterraNodes] Loaded
+[ttNodes Config] auto_update - 'none' not in ('true', 'false'), reverting to default.
+[ttNodes Config] enable_fullscreen - 'none' not in ('true', 'false'), reverting to default.
+USDU batch patches applied successfully.
+USDU batch patches applied successfully.
+Traceback (most recent call last):
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\nodes.py", line 2227, in load_custom_node
+    module_spec.loader.exec_module(module)
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI_YingMusic-SVC\__init__.py", line 1, in <module>
+    from .nodes import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI_YingMusic-SVC\nodes.py", line 24, in <module>
+    from .Remix.auger import echo_then_reverb_save  # optional post-process
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI_YingMusic-SVC\Remix\auger.py", line 3, in <module>
+    from torchaudio import sox_effects
+ImportError: cannot import name 'sox_effects' from 'torchaudio' (D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\torchaudio\__init__.py)
+
+Cannot import D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI_YingMusic-SVC module for custom nodes: cannot import name 'sox_effects' from 'torchaudio' (D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\torchaudio\__init__.py)
+FETCH ComfyRegistry Data: 90/136
+Traceback (most recent call last):
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\nodes.py", line 2227, in load_custom_node
+    module_spec.loader.exec_module(module)
+  File "<frozen importlib._bootstrap_external>", line 940, in exec_module
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\easyanimate\__init__.py", line 1, in <module>
+    from .comfyui.comfyui_nodes import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\easyanimate\comfyui\comfyui_nodes.py", line 31, in <module>
+    from ..easyanimate.models import (name_to_autoencoder_magvit,
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\easyanimate\easyanimate\models\__init__.py", line 1, in <module>
+    from .autoencoder_magvit import (AutoencoderKL, AutoencoderKLCogVideoX,
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\easyanimate\easyanimate\models\autoencoder_magvit.py", line 43, in <module>
+    from ..vae.ldm.models.cogvideox_enc_dec import (CogVideoXCausalConv3d,
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\easyanimate\easyanimate\vae\ldm\models\cogvideox_enc_dec.py", line 20, in <module>
+    from diffusers.models.autoencoders.autoencoder_kl_cogvideox import (
+ModuleNotFoundError: No module named 'diffusers.models.autoencoders.autoencoder_kl_cogvideox'
+
+Cannot import D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\easyanimate module for custom nodes: No module named 'diffusers.models.autoencoders.autoencoder_kl_cogvideox'
+Traceback (most recent call last):
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\nodes.py", line 2227, in load_custom_node
+    module_spec.loader.exec_module(module)
+  File "<frozen importlib._bootstrap_external>", line 936, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1073, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1130, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: 'D:\\Stable Diffusion\\StabilityMatrix-win-x64\\Data\\Packages\\ComfyUI\\custom_nodes\\GroundingDINO\\__init__.py'
+
+Cannot import D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\GroundingDINO module for custom nodes: [Errno 2] No such file or directory: 'D:\\Stable Diffusion\\StabilityMatrix-win-x64\\Data\\Packages\\ComfyUI\\custom_nodes\\GroundingDINO\\__init__.py'
+FETCH ComfyRegistry Data: 95/136
+Using pytorch attention
+(RES4LYF) Init
+(RES4LYF) Importing beta samplers.
+(RES4LYF) Importing legacy samplers.
+FETCH ComfyRegistry Data: 100/136
+
+[rgthree-comfy] Loaded 48 magnificent nodes. 🎉
+
+[rgthree-comfy] ComfyUI's new Node 2.0 rendering may be incompatible with some rgthree-comfy nodes and features, breaking some rendering as well as losing the ability to access a node's properties (a vital part of many nodes). It also appears to run MUCH more slowly spiking CPU usage and causing jankiness and unresponsiveness, especially with large workflows. Personally I am not planning to use the new Nodes 2.0 and, unfortunately, am not able to invest the time to investigate and overhaul rgthree-comfy where needed. If you have issues when Nodes 2.0 is enabled, I'd urge you to switch it off as well and join me in hoping ComfyUI is not planning to deprecate the existing, stable canvas rendering all together.
+
+bitsandbytes library load error: Configured CUDA binary not found at D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\bitsandbytes\libbitsandbytes_cuda130.dll
+ If you are using Intel CPU/XPU, please install intel_extension_for_pytorch to enable required ops
+Traceback (most recent call last):
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\bitsandbytes\cextension.py", line 318, in <module>
+    lib = get_native_library()
+          ^^^^^^^^^^^^^^^^^^^^
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\bitsandbytes\cextension.py", line 282, in get_native_library
+    raise RuntimeError(f"Configured {BNB_BACKEND} binary not found at {cuda_binary_path}")
+RuntimeError: Configured CUDA binary not found at D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\bitsandbytes\libbitsandbytes_cuda130.dll
+⚡ SeedVR2 optimizations check: SageAttention ✅ | Flash Attention ❌ | Triton ✅
+💡 Optional: pip install flash-attn
+📊 Initial CUDA memory: 14.55GB free / 15.92GB total
+   🔧 torchaudio.save/load globally patched (scipy for WAV files, no TorchCodec)
+   🔇 Suppressed torchaudio 2.9 migration warnings
+✅ Numba JIT working properly (tested in 0.08s)
+ℹ️ Critical package versions: NumPy 2.2.6, Librosa 0.11.0, Numba 0.64.0, PyTorch 2.11.0+cu130, TorchAudio 2.11.0+cu130, Transformers 4.57.3, Accelerate 1.13.0, SoundFile 0.13.1
+
+================================================================================
+⚠️  EXTENSION CONFLICT DETECTED ⚠️
+================================================================================
+❌ OLD EXTENSION FOUND: ComfyUI_ChatterBox_SRT_Voice
+🆕 CURRENT EXTENSION: ComfyUI_TTS_Audio_Suite
+
+The old 'ComfyUI_ChatterBox_SRT_Voice' extension conflicts with this
+new 'ComfyUI_TTS_Audio_Suite' extension and MUST be removed.
+
+REQUIRED ACTION:
+1. Delete the old extension folder: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI_ChatterBox_SRT_Voice
+2. Restart ComfyUI
+
+The TTS Audio Suite is the evolved version with:
+• Unified architecture supporting multiple TTS engines
+• Better performance and stability
+• All features from the old extension plus new capabilities
+
+Your workflows will be compatible - just update node names.
+================================================================================
+
+❌ Step Audio EditX Engine failed: No module named 'utils.models.extra_paths'
+❌ Qwen3-TTS Engine failed: No module named 'engines.qwen3_asr'
+❌ Granite ASR Engine failed: No module named 'engines.granite_asr'
+❌ IndexTTS-2 Engine failed: No module named 'utils.models.extra_paths'
+FETCH ComfyRegistry Data: 105/136
+❌ CosyVoice3 Engine failed: No module named 'utils.models.extra_paths'
+❌ Unified TTS Text failed: No module named 'utils.config_sanitizer'
+❌ Unified TTS SRT failed: No module named 'utils.config_sanitizer'
+❌ Unified Voice Changer failed: No module named 'utils.config_sanitizer'
+❌ Unified ASR Transcribe failed: No module named 'utils.asr'
+❌ Text to SRT Builder failed: No module named 'utils.asr'
+❌ Step Audio EditX Audio Editor failed: No module named 'utils.text.step_audio_editx_special_tags'
+❌ RVC Engine failed: No module named 'engines.adapters.rvc_adapter'
+❌ Vocal/Noise Removal failed: No module named 'utils.compatibility'
+❌ Voice Fixer Audio Restoration failed: No module named 'utils.downloads'
+❌ ASR Punctuation / Truecase failed: No module named 'utils.aux_models'
+======================================================================
+🚀 TTS Audio Suite v4.24.4
+Universal multi-engine TTS extension for ComfyUI
+✅ TTS Audio Suite v4.24.4 loaded with 25 nodes:
+   • ⚙️ ChatterBox Official 23-Lang Engine
+   • ⚙️ ChatterBox TTS Engine
+   • ⚙️ Echo-TTS Engine
+   • ⚙️ F5 TTS Engine
+   • ⚙️ Higgs Audio 2 Engine
+   • ⚙️ VibeVoice Engine
+   • ♻️ Refresh Voice Cache
+   • 🌈 IndexTTS-2 Emotion Vectors
+   • 🌈 IndexTTS-2 Text Emotion
+   • 🌊 Audio Wave Analyzer
+   • 🎙️ Voice Capture
+   • 🎨 Qwen3-TTS Voice Designer
+   • 🎭 Character Voices
+   • 🎭 Load RVC Character Model
+   • 🏷️ Multiline TTS Tag Editor
+   • 👄 F5-TTS Speech Editor
+   • 📝 Phoneme Text Normalizer
+   • 🔧 Audio Analyzer Options
+   • 🔧 F5-TTS Edit Options
+   • 🔧 RVC Pitch Extraction Options
+   • 🔧 SRT Advanced Options
+   • 🔧 SRT Advanced Options
+   • 🔧 Viseme Mouth Shape Options
+   • 🗣️ Silent Speech Analyzer
+   • 🥪 Merge Audio
+======================================================================
+Exception in thread Thread-26 (_init_voice_discovery_background):
+Traceback (most recent call last):
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Assets\Python\cpython-3.11.10-windows-x86_64-none\Lib\threading.py", line 1045, in _bootstrap_inner
+    self.run()
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Assets\Python\cpython-3.11.10-windows-x86_64-none\Lib\threading.py", line 982, in run
+    self._target(*self._args, **self._kwargs)
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\tts_audio_suite\nodes.py", line 737, in _init_voice_discovery_background
+    voice_discovery._ensure_initialized()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'VoiceDiscovery' object has no attribute '_ensure_initialized'
+WAS Node Suite: OpenCV Python FFMPEG support is enabled
+WAS Node Suite Warning: `ffmpeg_bin_path` is not set in `D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\was-node-suite-comfyui\was_suite_config.json` config file. Will attempt to use system ffmpeg binaries if available.
+WAS Node Suite: Finished. Loaded 217 nodes successfully.
+
+	"Every great dream begins with a dreamer." - Harriet Tubman
+
+WAS Node Suite: OpenCV Python FFMPEG support is enabled
+WAS Node Suite Warning: `ffmpeg_bin_path` is not set in `D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\was-ns\was_suite_config.json` config file. Will attempt to use system ffmpeg binaries if available.
+FETCH ComfyRegistry Data: 110/136
+WAS Node Suite: Finished. Loaded 220 nodes successfully.
+
+	"Art is the soul made visible." - George Crook
+
+
+Import times for custom nodes:
+   0.0 seconds (IMPORT FAILED): D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\GroundingDINO
+   0.0 seconds (IMPORT FAILED): D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI
+   0.0 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\masquerade-nodes-comfyui
+   0.0 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\websocket_image_save.py
+   0.0 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-unload-model
+   0.0 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-post-processing-nodes
+   0.0 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\wlsh_nodes
+   0.0 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI_AOG
+   0.0 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-PainterI2V
+   0.0 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-Z-Image-Turbo-Resolutions
+   0.0 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-PainterI2Vadvanced
+   0.0 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-WanVideo-LatentIO
+   0.0 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-for-chatterbox
+   0.0 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\mikey_nodes
+   0.1 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-VFI
+   0.1 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-K3NKImageGrab
+   0.1 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-MelBandRoFormer
+   0.1 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\cg-use-everywhere
+   0.1 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI_JPS-Nodes
+   0.1 seconds (IMPORT FAILED): D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-cogvideoxwrapper
+   0.1 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\wan22fmlf
+   0.1 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui_ipadapter_plus
+   0.1 seconds (IMPORT FAILED): D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-FramePackWrapper_Plus
+   0.1 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\vnccs-utils
+   0.1 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-Color-Matcher
+   0.1 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\vnccs
+   0.1 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-VideoHelperSuite
+   0.1 seconds (IMPORT FAILED): D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-FramePackWrapper_PlusOne
+   0.1 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-WhiteRabbit
+   0.2 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-mxToolkit
+   0.2 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI_essentials
+   0.2 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-various
+   0.2 seconds (IMPORT FAILED): D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\Applio
+   0.2 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-QwenVL
+   0.2 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI_FL-CosyVoice3
+   0.2 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-Helper-Nodes
+   0.2 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\derfuu_comfyui_moddednodes
+   0.2 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-S3-IO
+   0.2 seconds (IMPORT FAILED): D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI_YingMusic-SVC
+   0.2 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-inspire-pack
+   0.2 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui_ultimatesdupscale
+   0.2 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\wywywywy-pause
+   0.3 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-Chibi-Nodes
+   0.3 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-KJNodes
+   0.3 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\skbundle
+   0.3 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-Custom-Scripts
+   0.3 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\tts-webui
+   0.3 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-adaptiveprompts
+   0.3 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-multigpu
+   0.4 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-GGUF
+   0.4 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-frame-interpolation
+   0.4 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfy-image-saver
+   0.5 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyMath
+   0.5 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI_ExtraModels
+   0.6 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI_Swwan
+   0.6 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-vslinx-nodes
+   0.6 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\basic_data_handling
+   0.6 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui_image_metadata_extension
+   0.6 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\rgthree-comfy
+   0.7 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-voice-clone
+   0.7 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui_tinyterranodes
+   0.8 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI_Fill-ChatterBox
+   0.8 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-NAG
+   0.8 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-impact-pack
+   0.9 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI_Comfyroll_CustomNodes
+   0.9 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-impact-subpack
+   0.9 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui_controlnet_aux
+   1.0 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-NovaSR
+   1.1 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\tts_audio_suite
+   1.2 seconds (IMPORT FAILED): D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\easyanimate
+   1.3 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-MMAudio
+   1.3 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\Comfyui-ergouzi-Nodes
+   1.4 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\RES4LYF
+   1.4 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI_ChatterBox_SRT_Voice
+   1.7 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-WanVideoWrapper
+   1.8 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-ollama
+   1.9 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\was-ns
+   2.1 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\was-node-suite-comfyui
+   2.1 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-Easy-Use
+   2.3 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\seedvr2_videoupscaler
+   2.7 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui_layerstyle
+   3.0 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI_Seed-VC
+   3.1 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-Crystools
+   3.3 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-Manager
+   3.7 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-florence2
+   3.8 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-MediaMixer
+   3.8 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-rmbg
+   4.1 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-RVC
+   6.4 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\Nvidia_RTX_Nodes_ComfyUI
+   7.1 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-WorkflowGenerator
+   9.7 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\audio-separation-nodes-comfyui
+  12.0 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui_fill-nodes
+  12.9 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-HunyuanVideo-Foley
+  21.4 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfyui-vrgamedevgirl
+  23.4 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-Addoor
+  28.8 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-Chatterbox
+  50.4 seconds: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\comfy-mtb
+
+Context impl SQLiteImpl.
+Will assume non-transactional DDL.
+Starting server
+
+Traceback (most recent call last):
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\main.py", line 478, in <module>
+    event_loop.run_until_complete(x)
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Assets\Python\cpython-3.11.10-windows-x86_64-none\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\main.py", line 455, in start_all
+    await run(prompt_server, address=args.listen, port=args.port, verbose=not args.dont_print_server, call_on_start=call_on_start)
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\main.py", line 327, in run
+    await asyncio.gather(
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\server.py", line 1239, in start_multi_address
+    await site.start()
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\venv\Lib\site-packages\aiohttp\web_runner.py", line 121, in start
+    self._server = await loop.create_server(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Assets\Python\cpython-3.11.10-windows-x86_64-none\Lib\asyncio\base_events.py", line 1536, in create_server
+    raise OSError(err.errno, msg) from None
+OSError: [Errno 10048] error while attempting to bind on address ('127.0.0.1', 8188): 각 소켓 주소(프로토콜/네트워크 주소/포트)는 하나만 사용할 수 있습니다
+Cannot connect to comfyregistry.
+FETCH DATA from: https://raw.githubusercontent.com/ltdrdata/ComfyUI-Manager/main/custom-node-list.json[ComfyUI-Manager] Due to a network error, switching to local mode.
+=> custom-node-list.json
+=> cannot schedule new futures after shutdown
+FETCH DATA from: D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\custom_nodes\ComfyUI-Manager\custom-node-list.json [DONE]
+[ComfyUI-Manager] All startup tasks have been completed.

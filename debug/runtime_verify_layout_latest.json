@@ -1,0 +1,171 @@
+[
+  {
+    "label": "full_layout",
+    "workflow": "AOG_Full_Music_SFX_Mux.json",
+    "prompt_id": "59160c50-ff8c-478e-a29c-114034f05c17",
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "59160c50-ff8c-478e-a29c-114034f05c17",
+            "timestamp": 1775317978132
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [],
+            "prompt_id": "59160c50-ff8c-478e-a29c-114034f05c17",
+            "timestamp": 1775317978138
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "59160c50-ff8c-478e-a29c-114034f05c17",
+            "timestamp": 1775318644798
+          }
+        ]
+      ]
+    },
+    "files": [
+      {
+        "node_id": "25",
+        "slot": "gifs",
+        "filename": "full_music_sfx_preview_00006-audio.mp4",
+        "subfolder": "AOG",
+        "type": "output",
+        "format": "video/h264-mp4",
+        "frame_rate": 8.0,
+        "workflow": "full_music_sfx_preview_00006.png",
+        "fullpath": "D:\\Stable Diffusion\\StabilityMatrix-win-x64\\Data\\Packages\\ComfyUI\\output\\AOG\\full_music_sfx_preview_00006-audio.mp4"
+      }
+    ],
+    "ui": {
+      "15": [
+        "aog_lyrics",
+        "text"
+      ],
+      "13": [
+        "aog_prompt",
+        "text"
+      ],
+      "25": [
+        "gifs"
+      ]
+    }
+  },
+  {
+    "label": "ace_only_layout",
+    "workflow": "AOG_ACE_Music_Only.json",
+    "prompt_id": "b216870e-a361-4bb2-b0dd-02c22d4dcfc2",
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "b216870e-a361-4bb2-b0dd-02c22d4dcfc2",
+            "timestamp": 1775318646270
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [],
+            "prompt_id": "b216870e-a361-4bb2-b0dd-02c22d4dcfc2",
+            "timestamp": 1775318646270
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "b216870e-a361-4bb2-b0dd-02c22d4dcfc2",
+            "timestamp": 1775319255877
+          }
+        ]
+      ]
+    },
+    "files": [
+      {
+        "node_id": "21",
+        "slot": "gifs",
+        "filename": "music_only_preview_00003-audio.mp4",
+        "subfolder": "AOG",
+        "type": "output",
+        "format": "video/h264-mp4",
+        "frame_rate": 8.0,
+        "workflow": "music_only_preview_00003.png",
+        "fullpath": "D:\\Stable Diffusion\\StabilityMatrix-win-x64\\Data\\Packages\\ComfyUI\\output\\AOG\\music_only_preview_00003-audio.mp4"
+      }
+    ],
+    "ui": {
+      "15": [
+        "aog_lyrics",
+        "text"
+      ],
+      "13": [
+        "aog_prompt",
+        "text"
+      ],
+      "21": [
+        "gifs"
+      ]
+    }
+  },
+  {
+    "label": "sfx_only_layout",
+    "workflow": "AOG_MMAudio_SFX_Only.json",
+    "prompt_id": "7a38fd50-3d13-465a-8b0a-391be0aff1bb",
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "7a38fd50-3d13-465a-8b0a-391be0aff1bb",
+            "timestamp": 1775319257070
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [],
+            "prompt_id": "7a38fd50-3d13-465a-8b0a-391be0aff1bb",
+            "timestamp": 1775319257075
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "7a38fd50-3d13-465a-8b0a-391be0aff1bb",
+            "timestamp": 1775319566292
+          }
+        ]
+      ]
+    },
+    "files": [
+      {
+        "node_id": "25",
+        "slot": "gifs",
+        "filename": "mmaudio_sfx_only_preview_00002-audio.mp4",
+        "subfolder": "AOG",
+        "type": "output",
+        "format": "video/h264-mp4",
+        "frame_rate": 8.0,
+        "workflow": "mmaudio_sfx_only_preview_00002.png",
+        "fullpath": "D:\\Stable Diffusion\\StabilityMatrix-win-x64\\Data\\Packages\\ComfyUI\\output\\AOG\\mmaudio_sfx_only_preview_00002-audio.mp4"
+      }
+    ],
+    "ui": {
+      "25": [
+        "gifs"
+      ]
+    }
+  }
+]

@@ -22,7 +22,24 @@
       "WebFetch(domain:api.github.com)",
       "Bash(gh auth:*)",
       "Bash(git config:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Read(//d/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/models/unet/**)",
+      "Read(//d/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/models/loras/**)",
+      "Read(//d/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/models/clip_vision/**)",
+      "Read(//d/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/custom_nodes/**)",
+      "Bash(xargs grep:*)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d, indent=2\\)\\)\")",
+      "Bash(python3 -c ':*)",
+      "Bash(python3:*)",
+      "Bash(cp \"D:/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/output/task1_bbq_v8_L3_s888_00001.png\" \"D:/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/homework/final_icons/bbq_L2.png\")",
+      "Bash(cp \"D:/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/output/task1_bbq_v8_L2_s888_00001.png\" \"D:/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/homework/final_icons/bbq_L3.png\")",
+      "Bash(cp \"D:/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/output/task1_bbq_v9_L4_s111_00001.png\" \"D:/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/homework/final_icons/bbq_L4.png\")",
+      "Bash(cp \"D:/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/output/task1_bbq_v9_L5_s333_00001.png\" \"D:/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/homework/final_icons/bbq_L5.png\")",
+      "Bash(cp \"D:/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/output/task1_mokapot_v7_L2_p0_s444_00001.png\" \"D:/Stable Diffusion/StabilityMatrix-win-x64/Data/Packages/ComfyUI/homework/final_icons/moka_L2.png\")",
+      "Bash(grep -E \"\\\\.json$\")"
+    ],
+    "additionalDirectories": [
+      "D:\\Stable Diffusion\\StabilityMatrix-win-x64\\Data\\Packages\\ComfyUI\\homework"
     ]
   }
 }

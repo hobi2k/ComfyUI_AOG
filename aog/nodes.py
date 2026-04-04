@@ -181,26 +181,6 @@ def _resolve_quality_settings(quality_profile, apply_quality_profile, steps, cfg
     }
 
 
-def _resolve_toggle_settings(enable_mmaudio_features, enable_ace_step, enable_qwenvl_analysis, enable_prompt_authoring, enable_lyrics_authoring, enable_sfx, pipeline_toggles=None):
-    """개별 토글과 토글 노드 입력을 합쳐 최종 on/off 상태를 만든다."""
-    resolved = {
-        "enable_mmaudio_features": bool(enable_mmaudio_features),
-        "enable_ace_step": bool(enable_ace_step),
-        "enable_qwenvl_analysis": bool(enable_qwenvl_analysis),
-        "enable_prompt_authoring": bool(enable_prompt_authoring),
-        "enable_lyrics_authoring": bool(enable_lyrics_authoring),
-        "enable_sfx": bool(enable_sfx),
-    }
-    if pipeline_toggles is not None:
-        resolved.update({key: bool(value) for key, value in pipeline_toggles.items() if key in resolved})
-    return resolved
-
-
-def _make_execution_blocker():
-    """비활성 branch를 ComfyUI 그래프 수준에서 막기 위한 blocker를 만든다."""
-    from comfy_execution.graph import ExecutionBlocker
-    return ExecutionBlocker(None)
-
 
 def _build_video_features_without_mmaudio(video_batch):
     """MMAudio를 끈 경우에도 authoring에 필요한 기본 영상 특징을 생성한다."""
@@ -348,6 +328,14 @@ def _draft_music_plan_with_qwenvl(video_batch, video_features, qwenvl_bundle, au
     }
     info.update({"response_json": payload})
     return plan, info
+
+
+def _inject_scene_analysis(video_features, scene_analysis):
+    if not scene_analysis:
+        return video_features
+    enriched = dict(video_features)
+    enriched["qwenvl_scene_analysis"] = str(scene_analysis).strip()
+    return enriched
 
 
 def _draft_sfx_prompt_with_qwenvl(video_batch, video_features, qwenvl_bundle, authoring_language):
@@ -501,7 +489,7 @@ class AOGQwenVLBundle:
                 "top_p": ("FLOAT", {"default": 0.9, "min": 0.0, "max": 1.0, "step": 0.05}),
                 "num_beams": ("INT", {"default": 1, "min": 1, "max": 8}),
                 "repetition_penalty": ("FLOAT", {"default": 1.1, "min": 0.5, "max": 2.0, "step": 0.05}),
-                "keep_model_loaded": ("BOOLEAN", {"default": False}),
+                "keep_model_loaded": ("BOOLEAN", {"default": True}),
                 "seed": ("INT", {"default": 1, "min": 1, "max": 2**32 - 1}),
             }
         }
@@ -559,288 +547,6 @@ class AOGQwenVLBundle:
             "keep_model_loaded": bool(keep_model_loaded),
             "seed": int(seed),
         },)
-
-
-class AOGQwenVLBranchGate:
-    """QwenVL 분석 branch를 그래프 토글에 따라 열거나 막는다."""
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "pipeline_toggles": ("AOG_PIPELINE_TOGGLES",),
-                "video_batch": ("AOG_VIDEO_BATCH",),
-                "video_features": ("AOG_VIDEO_FEATURES",),
-                "qwenvl_bundle": ("AOG_QWENVL_BUNDLE",),
-            }
-        }
-
-    RETURN_TYPES = ("AOG_VIDEO_BATCH", "AOG_VIDEO_FEATURES", "AOG_QWENVL_BUNDLE", "STRING")
-    RETURN_NAMES = ("video_batch", "video_features", "qwenvl_bundle", "summary_json")
-    FUNCTION = "gate"
-    CATEGORY = "AOG/Config"
-
-    def gate(self, pipeline_toggles, video_batch, video_features, qwenvl_bundle):
-
-        """?? ??? ?? authoring ?? ???? ?????? ???.
-
-        
-
-                Args:
-
-                    pipeline_toggles: ????? ?? ??.
-
-                    video_batch: ?? ??? ??.
-
-                    video_features: ?? ??? ?? payload.
-
-                    qwenvl_bundle: QwenVL ?? ??.
-
-        
-
-                Returns:
-
-                    ?? ? ?? ??, ??? ? blocker? ?? JSON."""
-        enabled = bool(pipeline_toggles.get("enable_qwenvl_analysis", True))
-        if enabled:
-            return (video_batch, video_features, qwenvl_bundle, to_pretty_json({"enabled": True, "reason": "QwenVL analysis path active"}))
-        blocker = _make_execution_blocker()
-        return (blocker, blocker, blocker, to_pretty_json({"enabled": False, "reason": "QwenVL analysis path blocked by pipeline toggles"}))
-
-
-class AOGPromptStageGate:
-    """프롬프트 작성 branch를 그래프 토글에 따라 열거나 막는다."""
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "pipeline_toggles": ("AOG_PIPELINE_TOGGLES",),
-                "video_batch": ("AOG_VIDEO_BATCH",),
-                "video_features": ("AOG_VIDEO_FEATURES",),
-                "qwenvl_bundle": ("AOG_QWENVL_BUNDLE",),
-            }
-        }
-
-    RETURN_TYPES = ("AOG_VIDEO_BATCH", "AOG_VIDEO_FEATURES", "AOG_QWENVL_BUNDLE", "STRING")
-    RETURN_NAMES = ("video_batch", "video_features", "qwenvl_bundle", "summary_json")
-    FUNCTION = "gate"
-    CATEGORY = "AOG/Config"
-
-    def gate(self, pipeline_toggles, video_batch, video_features, qwenvl_bundle):
-        """프롬프트 작성 branch의 실행 여부를 결정한다.
-
-        Args:
-            pipeline_toggles: 토글 설정 딕셔너리.
-            video_batch: AOG 표준 영상 배치.
-            video_features: 현재 영상 특징 payload.
-            qwenvl_bundle: QwenVL 설정 payload.
-
-        Returns:
-            활성화 시 원본 입력, 비활성화 시 blocker와 요약 JSON.
-        """
-        enabled = bool(pipeline_toggles.get("enable_prompt_authoring", True))
-        if enabled:
-            return (video_batch, video_features, qwenvl_bundle, to_pretty_json({"enabled": True, "reason": "Prompt authoring path active"}))
-        blocker = _make_execution_blocker()
-        return (blocker, blocker, blocker, to_pretty_json({"enabled": False, "reason": "Prompt authoring path blocked by pipeline toggles"}))
-
-
-class AOGLyricsStageGate:
-    """가사 작성 branch를 그래프 토글에 따라 열거나 막는다."""
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "pipeline_toggles": ("AOG_PIPELINE_TOGGLES",),
-                "video_batch": ("AOG_VIDEO_BATCH",),
-                "video_features": ("AOG_VIDEO_FEATURES",),
-                "qwenvl_bundle": ("AOG_QWENVL_BUNDLE",),
-            }
-        }
-
-    RETURN_TYPES = ("AOG_VIDEO_BATCH", "AOG_VIDEO_FEATURES", "AOG_QWENVL_BUNDLE", "STRING")
-    RETURN_NAMES = ("video_batch", "video_features", "qwenvl_bundle", "summary_json")
-    FUNCTION = "gate"
-    CATEGORY = "AOG/Config"
-
-    def gate(self, pipeline_toggles, video_batch, video_features, qwenvl_bundle):
-        """가사 작성 branch의 실행 여부를 결정한다.
-
-        Args:
-            pipeline_toggles: 토글 설정 딕셔너리.
-            video_batch: AOG 표준 영상 배치.
-            video_features: 현재 영상 특징 payload.
-            qwenvl_bundle: QwenVL 설정 payload.
-
-        Returns:
-            활성화 시 원본 입력, 비활성화 시 blocker와 요약 JSON.
-        """
-        enabled = bool(pipeline_toggles.get("enable_lyrics_authoring", True))
-        if enabled:
-            return (video_batch, video_features, qwenvl_bundle, to_pretty_json({"enabled": True, "reason": "Lyrics authoring path active"}))
-        blocker = _make_execution_blocker()
-        return (blocker, blocker, blocker, to_pretty_json({"enabled": False, "reason": "Lyrics authoring path blocked by pipeline toggles"}))
-
-
-class AOGACEStageGate:
-    """ACE-Step 생성 branch를 그래프 토글에 따라 열거나 막는다."""
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "pipeline_toggles": ("AOG_PIPELINE_TOGGLES",),
-                "model": ("MODEL",),
-                "clip": ("CLIP",),
-                "vae": ("VAE",),
-            }
-        }
-
-    RETURN_TYPES = ("MODEL", "CLIP", "VAE", "STRING")
-    RETURN_NAMES = ("model", "clip", "vae", "summary_json")
-    FUNCTION = "gate"
-    CATEGORY = "AOG/Config"
-
-    def gate(self, pipeline_toggles, model, clip, vae):
-
-        """?? ??? ?? ACE-Step ???? ?????? ???.
-
-        
-
-                Args:
-
-                    pipeline_toggles: ????? ?? ??.
-
-                    model: ACE-Step ??.
-
-                    clip: ACE-Step ??? ???.
-
-                    vae: ACE-Step ??? VAE.
-
-        
-
-                Returns:
-
-                    ?? ? ?? ??, ??? ? blocker? ?? JSON."""
-        enabled = bool(pipeline_toggles.get("enable_ace_step", True))
-        # ACE-Step이 꺼져 있어도 뒤쪽 믹스/프리뷰 체인이 끊기지 않도록
-        # 모델 객체는 그대로 통과시키고, 실제 무음 fallback 여부는
-        # AOG ACE-Step Compose.enabled에서 처리한다.
-        if enabled:
-            return (model, clip, vae, to_pretty_json({"enabled": True, "reason": "ACE-Step generation path active"}))
-        return (model, clip, vae, to_pretty_json({"enabled": False, "reason": "ACE-Step generation disabled; downstream nodes remain executable"}))
-
-
-class AOGSFXStageGate:
-    """MMAudio SFX branch를 그래프 토글에 따라 열거나 막는다."""
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "pipeline_toggles": ("AOG_PIPELINE_TOGGLES",),
-                "mmaudio_featureutils": ("MMAUDIO_FEATUREUTILS",),
-                "mmaudio_model": ("MMAUDIO_MODEL",),
-            }
-        }
-
-    RETURN_TYPES = ("MMAUDIO_FEATUREUTILS", "MMAUDIO_MODEL", "STRING")
-    RETURN_NAMES = ("mmaudio_featureutils", "mmaudio_model", "summary_json")
-    FUNCTION = "gate"
-    CATEGORY = "AOG/Config"
-
-    def gate(self, pipeline_toggles, mmaudio_featureutils, mmaudio_model):
-
-        """?? ??? ?? MMAudio SFX ???? ?????? ???.
-
-        
-
-                Args:
-
-                    pipeline_toggles: ????? ?? ??.
-
-                    mmaudio_featureutils: MMAudio ?? ?? ????.
-
-                    mmaudio_model: MMAudio SFX ??.
-
-        
-
-                Returns:
-
-                    ?? ? ?? ??, ??? ? blocker? ?? JSON."""
-        enabled = bool(pipeline_toggles.get("enable_sfx", True))
-        # SFX를 꺼도 뒤쪽 final mix / preview / 저장 체인은 계속 살아 있어야 한다.
-        # 그래서 여기서는 blocker를 뿌리지 않고, 실제 SFX 생성 여부는
-        # AOG SFX Compose.stage_enabled에서만 판단한다.
-        if enabled:
-            return (mmaudio_featureutils, mmaudio_model, to_pretty_json({"enabled": True, "reason": "MMAudio SFX path active"}))
-        return (
-            mmaudio_featureutils,
-            mmaudio_model,
-            to_pretty_json({"enabled": False, "reason": "MMAudio SFX generation disabled; downstream save/mux path remains active"}),
-        )
-
-
-class AOGPipelineToggles:
-    """파이프라인 단계별 on/off 설정을 하나의 payload로 묶는다."""
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "enable_ace_step": ("BOOLEAN", {"default": True}),
-                "enable_mmaudio_features": ("BOOLEAN", {"default": True}),
-                "enable_qwenvl_analysis": ("BOOLEAN", {"default": True}),
-                "enable_prompt_authoring": ("BOOLEAN", {"default": True}),
-                "enable_lyrics_authoring": ("BOOLEAN", {"default": True}),
-                "enable_sfx": ("BOOLEAN", {"default": True}),
-            }
-        }
-
-    RETURN_TYPES = ("AOG_PIPELINE_TOGGLES", "BOOLEAN", "BOOLEAN", "BOOLEAN", "BOOLEAN", "BOOLEAN", "BOOLEAN", "STRING")
-    RETURN_NAMES = ("pipeline_toggles", "enable_ace_step", "enable_mmaudio_features", "enable_qwenvl_analysis", "enable_prompt_authoring", "enable_lyrics_authoring", "enable_sfx", "summary_json")
-    FUNCTION = "build"
-    CATEGORY = "AOG/Config"
-
-    def build(self, enable_ace_step, enable_mmaudio_features, enable_qwenvl_analysis, enable_prompt_authoring, enable_lyrics_authoring, enable_sfx):
-
-        """????? on/off ??? ??? payload? ???.
-
-        
-
-                Args:
-
-                    enable_ace_step: ACE-Step ?? ??.
-
-                    enable_mmaudio_features: MMAudio ?? ?? ?? ??.
-
-                    enable_qwenvl_analysis: QwenVL ?? ?? ??.
-
-                    enable_prompt_authoring: ???? ?? ?? ?? ??.
-
-                    enable_lyrics_authoring: ?? ?? ?? ?? ??.
-
-                    enable_sfx: SFX ?? ??.
-
-        
-
-                Returns:
-
-                    ?? payload? ?? boolean ?, ?? JSON."""
-        payload = {
-            "enable_ace_step": bool(enable_ace_step),
-            "enable_mmaudio_features": bool(enable_mmaudio_features),
-            "enable_qwenvl_analysis": bool(enable_qwenvl_analysis),
-            "enable_prompt_authoring": bool(enable_prompt_authoring),
-            "enable_lyrics_authoring": bool(enable_lyrics_authoring),
-            "enable_sfx": bool(enable_sfx),
-        }
-        return (
-            payload,
-            payload["enable_ace_step"],
-            payload["enable_mmaudio_features"],
-            payload["enable_qwenvl_analysis"],
-            payload["enable_prompt_authoring"],
-            payload["enable_lyrics_authoring"],
-            payload["enable_sfx"],
-            to_pretty_json(payload),
-        )
 
 
 class AOGQualityPreset:
@@ -1152,17 +858,14 @@ class AOGVideoFeatureExtract:
                 "mmaudio_featureutils": ("MMAUDIO_FEATUREUTILS",),
                 "mask_away_clip": ("BOOLEAN", {"default": False}),
             },
-            "optional": {
-                "pipeline_toggles": ("AOG_PIPELINE_TOGGLES",),
-            },
-        }
+                    }
 
     RETURN_TYPES = ("AOG_VIDEO_FEATURES", "STRING")
     RETURN_NAMES = ("video_features", "summary_json")
     FUNCTION = "extract_features"
     CATEGORY = "AOG/Audio"
 
-    def extract_features(self, video_batch, mmaudio_featureutils, mask_away_clip, pipeline_toggles=None):
+    def extract_features(self, video_batch, mmaudio_featureutils, mask_away_clip):
 
         """???? authoring? SFX? ??? ??? ??? ????.
 
@@ -1176,21 +879,12 @@ class AOGVideoFeatureExtract:
 
                     mask_away_clip: CLIP branch ?? ?? ??.
 
-                    pipeline_toggles: ??? ?? payload.
 
         
 
                 Returns:
 
                     `(video_features, summary_json)` ??."""
-        enabled = True
-        if pipeline_toggles is not None:
-            enabled = bool(pipeline_toggles.get("enable_mmaudio_features", True))
-        if not enabled:
-            # MMAudio를 끄더라도 후속 authoring 단계가 멈추지 않도록
-            # 최소 요약/타임라인 기반 특징을 만들어 넘긴다.
-            export_payload = _build_video_features_without_mmaudio(video_batch)
-            return (export_payload, to_pretty_json(export_payload))
         images = video_batch["images"]
         mmaudio_nodes = load_module_from_path("aog_ext_mmaudio_nodes", str(CUSTOM_NODES_DIR / "ComfyUI-MMAudio" / "nodes.py"))
         source_duration = float(video_batch.get("source_duration_sec", video_batch.get("duration_sec", 0.0)))
@@ -1352,6 +1046,7 @@ class AOGPromptDraft:
             },
             "optional": {
                 "qwenvl_bundle": ("AOG_QWENVL_BUNDLE",),
+                "scene_analysis": ("STRING", {"multiline": True, "default": ""}),
             },
         }
 
@@ -1360,7 +1055,7 @@ class AOGPromptDraft:
     FUNCTION = "draft"
     CATEGORY = "AOG/Audio"
 
-    def draft(self, video_batch, video_features, prompt_mode, user_prompt, llm_provider, authoring_language, qwenvl_bundle=None):
+    def draft(self, video_batch, video_features, prompt_mode, user_prompt, llm_provider, authoring_language, qwenvl_bundle=None, scene_analysis=""):
 
         """ACE-Step? ?? ????? ????.
 
@@ -1387,14 +1082,19 @@ class AOGPromptDraft:
                 Returns:
 
                     `(prompt_text, summary_json)` ??."""
+        enriched_features = _inject_scene_analysis(video_features, scene_analysis)
         if prompt_mode == "human":
-            prompt_text, info = generate_prompt(video_features=video_features, user_prompt=user_prompt, provider="human", language=authoring_language)
+            prompt_text, info = generate_prompt(video_features=enriched_features, user_prompt=user_prompt, provider="human", language=authoring_language)
+        elif llm_provider == "qwenvl" and str(scene_analysis).strip():
+            prompt_text, info = generate_prompt(video_features=enriched_features, user_prompt=user_prompt, provider="local_qwen", language=authoring_language)
+            info["video_analysis_provider"] = "qwenvl"
+            info["drafting_provider"] = "local_qwen"
         elif llm_provider == "qwenvl":
             if qwenvl_bundle is None:
                 raise ValueError("prompt_mode=llm with llm_provider=qwenvl requires qwenvl_bundle.")
-            prompt_text, info = _draft_prompt_with_qwenvl(video_batch, video_features, qwenvl_bundle, authoring_language)
+            prompt_text, info = _draft_prompt_with_qwenvl(video_batch, enriched_features, qwenvl_bundle, authoring_language)
         else:
-            prompt_text, info = generate_prompt(video_features=video_features, user_prompt=user_prompt, provider=llm_provider, language=authoring_language)
+            prompt_text, info = generate_prompt(video_features=enriched_features, user_prompt=user_prompt, provider=llm_provider, language=authoring_language)
         summary_json = to_pretty_json({"prompt_mode": prompt_mode, "resolved_prompt": prompt_text, "llm_info": info})
         return {
             "ui": {
@@ -1421,6 +1121,7 @@ class AOGLyricsDraft:
             },
             "optional": {
                 "qwenvl_bundle": ("AOG_QWENVL_BUNDLE",),
+                "scene_analysis": ("STRING", {"multiline": True, "default": ""}),
             },
         }
 
@@ -1429,7 +1130,7 @@ class AOGLyricsDraft:
     FUNCTION = "draft"
     CATEGORY = "AOG/Audio"
 
-    def draft(self, video_batch, video_features, lyrics_mode, user_lyrics, lyrics_language, llm_provider, authoring_language, qwenvl_bundle=None):
+    def draft(self, video_batch, video_features, lyrics_mode, user_lyrics, lyrics_language, llm_provider, authoring_language, qwenvl_bundle=None, scene_analysis=""):
 
         """ACE-Step? ??? ????.
 
@@ -1458,14 +1159,19 @@ class AOGLyricsDraft:
                 Returns:
 
                     `(lyrics_text, summary_json)` ??."""
+        enriched_features = _inject_scene_analysis(video_features, scene_analysis)
         if lyrics_mode == "human":
-            lyrics_text, info = generate_lyrics(video_features=video_features, user_lyrics=user_lyrics, language=lyrics_language, provider="human", authoring_language=authoring_language)
+            lyrics_text, info = generate_lyrics(video_features=enriched_features, user_lyrics=user_lyrics, language=lyrics_language, provider="human", authoring_language=authoring_language)
+        elif llm_provider == "qwenvl" and str(scene_analysis).strip():
+            lyrics_text, info = generate_lyrics(video_features=enriched_features, user_lyrics=user_lyrics, language=lyrics_language, provider="local_qwen", authoring_language=authoring_language)
+            info["video_analysis_provider"] = "qwenvl"
+            info["drafting_provider"] = "local_qwen"
         elif llm_provider == "qwenvl":
             if qwenvl_bundle is None:
                 raise ValueError("lyrics_mode=llm with llm_provider=qwenvl requires qwenvl_bundle.")
-            lyrics_text, info = _draft_lyrics_with_qwenvl(video_batch, video_features, qwenvl_bundle, authoring_language, lyrics_language)
+            lyrics_text, info = _draft_lyrics_with_qwenvl(video_batch, enriched_features, qwenvl_bundle, authoring_language, lyrics_language)
         else:
-            lyrics_text, info = generate_lyrics(video_features=video_features, user_lyrics=user_lyrics, language=lyrics_language, provider=llm_provider, authoring_language=authoring_language)
+            lyrics_text, info = generate_lyrics(video_features=enriched_features, user_lyrics=user_lyrics, language=lyrics_language, provider=llm_provider, authoring_language=authoring_language)
         summary_json = to_pretty_json({"lyrics_mode": lyrics_mode, "lyrics_language": lyrics_language, "resolved_lyrics": lyrics_text, "llm_info": info})
         return {
             "ui": {
@@ -1495,6 +1201,7 @@ class AOGMusicPlan:
             },
             "optional": {
                 "qwenvl_bundle": ("AOG_QWENVL_BUNDLE",),
+                "scene_analysis": ("STRING", {"multiline": True, "default": ""}),
             },
         }
 
@@ -1503,7 +1210,7 @@ class AOGMusicPlan:
     FUNCTION = "plan"
     CATEGORY = "AOG/Audio"
 
-    def plan(self, video_batch, video_features, plan_mode, llm_provider, authoring_language, lyrics_language, manual_bpm, manual_timesignature, manual_keyscale, manual_ace_language, qwenvl_bundle=None):
+    def plan(self, video_batch, video_features, plan_mode, llm_provider, authoring_language, lyrics_language, manual_bpm, manual_timesignature, manual_keyscale, manual_ace_language, qwenvl_bundle=None, scene_analysis=""):
 
         """?? ?? ?? ?? ?? ????.
 
@@ -1538,7 +1245,8 @@ class AOGMusicPlan:
                 Returns:
 
                     `(bpm, duration, timesignature, ace_language, keyscale, summary_json)` ??."""
-        duration = float(video_features.get("source_duration_sec", video_features.get("duration_sec", video_batch.get("loaded_duration_sec", 0.0))))
+        enriched_features = _inject_scene_analysis(video_features, scene_analysis)
+        duration = float(enriched_features.get("source_duration_sec", enriched_features.get("duration_sec", video_batch.get("loaded_duration_sec", 0.0))))
         if duration <= 0:
             fps = float(video_batch.get("loaded_fps", video_batch.get("fps", 0.0)))
             frame_count = int(video_batch.get("frame_count", 0))
@@ -1550,17 +1258,30 @@ class AOGMusicPlan:
             ace_language = str(manual_ace_language)
             keyscale = str(manual_keyscale)
             info = {"provider": "human", "mode": "human"}
+        elif llm_provider == "qwenvl" and str(scene_analysis).strip():
+            plan, info = generate_music_plan(
+                enriched_features,
+                provider="local_qwen",
+                authoring_language=authoring_language,
+                lyrics_language=lyrics_language,
+            )
+            info["video_analysis_provider"] = "qwenvl"
+            info["drafting_provider"] = "local_qwen"
+            bpm = int(plan["bpm"])
+            timesignature = _normalize_timesignature(plan["timesignature"])
+            ace_language = _normalize_language_choice(plan["ace_language"])
+            keyscale = _normalize_keyscale_choice(plan["keyscale"])
         elif llm_provider == "qwenvl":
             if qwenvl_bundle is None:
                 raise ValueError("plan_mode=llm with llm_provider=qwenvl requires qwenvl_bundle.")
-            plan, info = _draft_music_plan_with_qwenvl(video_batch, video_features, qwenvl_bundle, authoring_language, lyrics_language)
+            plan, info = _draft_music_plan_with_qwenvl(video_batch, enriched_features, qwenvl_bundle, authoring_language, lyrics_language)
             bpm = int(plan["bpm"])
             timesignature = _normalize_timesignature(plan["timesignature"])
             ace_language = _normalize_language_choice(plan["ace_language"])
             keyscale = _normalize_keyscale_choice(plan["keyscale"])
         else:
             plan, info = generate_music_plan(
-                video_features,
+                enriched_features,
                 provider="local_qwen",
                 authoring_language=authoring_language,
                 lyrics_language=lyrics_language,
@@ -1586,14 +1307,69 @@ class AOGAceStepCompose:
     """ACE-Step을 호출해 최종 음악 오디오를 생성한다."""
     @classmethod
     def INPUT_TYPES(cls):
-        return {"required": {"model": ("MODEL",), "clip": ("CLIP",), "vae": ("VAE",), "video_features": ("AOG_VIDEO_FEATURES",), "prompt_text": ("STRING", {"multiline": True, "default": ""}), "lyrics_text": ("STRING", {"multiline": True, "default": ""}), "negative_tags": ("STRING", {"multiline": True, "default": "silence, clipping, distortion, noise"}), "seed": ("INT", {"default": 0, "min": 0, "max": 0xFFFFFFFFFFFFFFFF}), "bpm": ("INT", {"default": 120, "min": 10, "max": 300}), "duration": ("FLOAT", {"default": 8.0, "min": 0.1, "step": 0.1}), "timesignature": ("STRING", {"default": "4", "multiline": False}), "ace_language": ("STRING", {"default": "ja", "multiline": False}), "keyscale": ("STRING", {"default": "A minor", "multiline": False}), "steps": ("INT", {"default": 8, "min": 1, "max": 200}), "cfg": ("FLOAT", {"default": 1.0, "min": 0.0, "step": 0.1}), "text_cfg_scale": ("FLOAT", {"default": 5.0, "min": 0.0, "step": 0.1}), "sampler_name": (comfy.samplers.KSampler.SAMPLERS, {"default": "euler"}), "scheduler": (comfy.samplers.KSampler.SCHEDULERS, {"default": "simple"}), "denoise": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 1.0, "step": 0.01})}, "optional": {"reference_audio": ("AUDIO",), "stage_enabled": ("BOOLEAN",)}}
+        return {
+            "required": {
+                "model": ("MODEL",),
+                "clip": ("CLIP",),
+                "vae": ("VAE",),
+                "video_features": ("AOG_VIDEO_FEATURES",),
+                "prompt_text": ("STRING", {"multiline": True, "default": ""}),
+                "lyrics_text": ("STRING", {"multiline": True, "default": ""}),
+                "negative_tags": ("STRING", {"multiline": True, "default": "silence, clipping, distortion, noise"}),
+                "seed": ("INT", {"default": 0, "min": 0, "max": 0xFFFFFFFFFFFFFFFF}),
+                "bpm": ("INT", {"default": 120, "min": 10, "max": 300}),
+                "duration": ("FLOAT", {"default": 8.0, "min": 0.1, "step": 0.1}),
+                "timesignature": ("STRING", {"default": "4", "multiline": False}),
+                "ace_language": ("STRING", {"default": "ja", "multiline": False}),
+                "keyscale": ("STRING", {"default": "A minor", "multiline": False}),
+                "generate_audio_codes": ("BOOLEAN", {"default": True}),
+                "text_cfg_scale": ("FLOAT", {"default": 5.0, "min": 0.0, "step": 0.1}),
+                "temperature": ("FLOAT", {"default": 0.85, "min": 0.0, "max": 2.0, "step": 0.01}),
+                "top_p": ("FLOAT", {"default": 0.9, "min": 0.0, "max": 1.0, "step": 0.01}),
+                "top_k": ("INT", {"default": 0, "min": 0, "max": 1000}),
+                "min_p": ("FLOAT", {"default": 0.0, "min": 0.0, "max": 1.0, "step": 0.01}),
+                "steps": ("INT", {"default": 8, "min": 1, "max": 200}),
+                "cfg": ("FLOAT", {"default": 1.0, "min": 0.0, "step": 0.1}),
+                "sampler_name": (comfy.samplers.KSampler.SAMPLERS, {"default": "euler"}),
+                "scheduler": (comfy.samplers.KSampler.SCHEDULERS, {"default": "simple"}),
+                "denoise": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 1.0, "step": 0.01}),
+            },
+            "optional": {"reference_audio": ("AUDIO",)},
+        }
 
     RETURN_TYPES = ("AUDIO", "STRING")
     RETURN_NAMES = ("audio", "summary_json")
     FUNCTION = "compose"
     CATEGORY = "AOG/Audio"
 
-    def compose(self, model, clip, vae, video_features, prompt_text, lyrics_text, negative_tags, seed, bpm, duration, timesignature, ace_language, keyscale, steps, cfg, text_cfg_scale, sampler_name, scheduler, denoise, reference_audio=None, stage_enabled=None):
+    def compose(
+        self,
+        model,
+        clip,
+        vae,
+        video_features,
+        prompt_text,
+        lyrics_text,
+        negative_tags,
+        seed,
+        bpm,
+        duration,
+        timesignature,
+        ace_language,
+        keyscale,
+        generate_audio_codes,
+        text_cfg_scale,
+        temperature,
+        top_p,
+        top_k,
+        min_p,
+        steps,
+        cfg,
+        sampler_name,
+        scheduler,
+        denoise,
+        reference_audio=None,
+    ):
 
         """ACE-Step?? ??? ????.
 
@@ -1627,11 +1403,21 @@ class AOGAceStepCompose:
 
                     keyscale: ??? ??.
 
-                    steps: ??? ?? ?.
+                    generate_audio_codes: LM 오디오 코드 생성 사용 여부.
 
-                    cfg: ??? CFG.
+                    text_cfg_scale: 텍스트 인코더 CFG 스케일.
 
-                    text_cfg_scale: ??? CFG ???.
+                    temperature: 텍스트 인코더 temperature.
+
+                    top_p: 텍스트 인코더 top-p.
+
+                    top_k: 텍스트 인코더 top-k.
+
+                    min_p: 텍스트 인코더 min-p.
+
+                    steps: 샘플링 단계 수.
+
+                    cfg: 샘플러 CFG.
 
                     sampler_name: ??? ??.
 
@@ -1646,7 +1432,6 @@ class AOGAceStepCompose:
                 Returns:
 
                     `(audio, summary_json)` ??."""
-        enabled = True if stage_enabled is None else bool(stage_enabled)
         # 계획 노드에서 문자열로 전달된 값을 여기서 다시 검증해
         # 잘못된 워크플로우 연결을 명확한 에러로 드러낸다.
         actual_duration = float(video_features.get("source_duration_sec", video_features.get("duration_sec", duration)))
@@ -1659,16 +1444,13 @@ class AOGAceStepCompose:
             raise ValueError(f"Invalid ace_language: {ace_language}")
         if keyscale not in KEYSCALE_CHOICES:
             raise ValueError(f"Invalid keyscale: {keyscale}")
-        if not enabled:
-            audio = make_silent_audio(actual_duration)
-            return (audio, to_pretty_json({"enabled": False, "duration_sec": actual_duration, "ace_language": ace_language}))
         conditioning_summary = video_features.get("conditioning_summary", {})
         latent_cues = video_features.get("latent_structure_cues", [])
         augmented_tags = "\n".join(filter(None, [prompt_text.strip(), build_feature_prompt(video_features), "conditioning summary: " + ", ".join(f"{key}={value}" for key, value in conditioning_summary.items()) if conditioning_summary else "", "latent structure cues: " + ", ".join(latent_cues[:4]) if latent_cues else ""]))
-        use_audio_codes = reference_audio is None
-        positive_tokens = clip.tokenize(augmented_tags, lyrics=lyrics_text, bpm=bpm, duration=actual_duration, timesignature=int(timesignature), language=ace_language, keyscale=keyscale, seed=seed, generate_audio_codes=use_audio_codes, cfg_scale=text_cfg_scale, temperature=0.85, top_p=0.9, top_k=0, min_p=0.0)
+        use_audio_codes = bool(generate_audio_codes) and reference_audio is None
+        positive_tokens = clip.tokenize(augmented_tags, lyrics=lyrics_text, bpm=bpm, duration=actual_duration, timesignature=int(timesignature), language=ace_language, keyscale=keyscale, seed=seed, generate_audio_codes=use_audio_codes, cfg_scale=text_cfg_scale, temperature=temperature, top_p=top_p, top_k=top_k, min_p=min_p)
         positive = clip.encode_from_tokens_scheduled(positive_tokens)
-        negative_tokens = clip.tokenize(negative_tags, lyrics="", bpm=bpm, duration=actual_duration, timesignature=int(timesignature), language=ace_language, keyscale=keyscale, seed=seed, generate_audio_codes=use_audio_codes, cfg_scale=text_cfg_scale, temperature=0.85, top_p=0.9, top_k=0, min_p=0.0)
+        negative_tokens = clip.tokenize(negative_tags, lyrics="", bpm=bpm, duration=actual_duration, timesignature=int(timesignature), language=ace_language, keyscale=keyscale, seed=seed, generate_audio_codes=use_audio_codes, cfg_scale=text_cfg_scale, temperature=temperature, top_p=top_p, top_k=top_k, min_p=min_p)
         negative = clip.encode_from_tokens_scheduled(negative_tokens)
         latent_length = round((actual_duration * 48000 / 1920))
         latent = {"samples": torch.zeros([1, 64, latent_length], device=comfy.model_management.intermediate_device()), "type": "audio"}
@@ -1687,7 +1469,36 @@ class AOGAceStepCompose:
             torch.cuda.empty_cache()
         audio = nodes_audio.vae_decode_audio(vae, latent_result)
         audio = normalize_audio_duration(audio, actual_duration)
-        return (audio, to_pretty_json({"prompt_text": prompt_text, "augmented_tags": augmented_tags, "duration_sec": actual_duration, "ace_language": ace_language, "bpm": bpm, "text_cfg_scale": text_cfg_scale, "conditioning_contract": "text-conditioned ACE-Step with preserved video conditioning summary for future direct integration", "has_reference_audio": reference_audio is not None, "waveform_shape": list(audio["waveform"].shape), "sample_rate": audio["sample_rate"]}))
+        return (
+            audio,
+            to_pretty_json(
+                {
+                    "prompt_text": prompt_text,
+                    "lyrics_text": lyrics_text,
+                    "augmented_tags": augmented_tags,
+                    "duration_sec": actual_duration,
+                    "ace_language": ace_language,
+                    "bpm": bpm,
+                    "timesignature": timesignature,
+                    "keyscale": keyscale,
+                    "generate_audio_codes": use_audio_codes,
+                    "text_cfg_scale": text_cfg_scale,
+                    "temperature": temperature,
+                    "top_p": top_p,
+                    "top_k": top_k,
+                    "min_p": min_p,
+                    "steps": steps,
+                    "cfg": cfg,
+                    "sampler_name": sampler_name,
+                    "scheduler": scheduler,
+                    "denoise": denoise,
+                    "conditioning_contract": "text-conditioned ACE-Step with preserved video conditioning summary for future direct integration",
+                    "has_reference_audio": reference_audio is not None,
+                    "waveform_shape": list(audio["waveform"].shape),
+                    "sample_rate": audio["sample_rate"],
+                }
+            ),
+        )
 
 
 class AOGSFXCompose:
@@ -1706,15 +1517,15 @@ class AOGSFXCompose:
                 "seed": ("INT", {"default": 0, "min": 0, "max": 0xFFFFFFFFFFFFFFFF}),
                 "sfx_prompt": ("STRING", {"multiline": True, "default": "anime opening impact swells, whooshes, risers, accent hits"}),
                 "negative_prompt": ("STRING", {"multiline": True, "default": "spoken dialogue, vocals, muddy bass, clipping"}),
-                "steps": ("INT", {"default": 8, "min": 1, "max": 200}),
-                "cfg": ("FLOAT", {"default": 3.5, "min": 0.0, "step": 0.1}),
+                "steps": ("INT", {"default": 100, "min": 1, "max": 200}),
+                "cfg": ("FLOAT", {"default": 5.0, "min": 0.0, "step": 0.1}),
                 "gain": ("FLOAT", {"default": 0.25, "min": 0.0, "max": 1.0, "step": 0.01}),
                 "mask_away_clip": ("BOOLEAN", {"default": True}),
             },
             "optional": {
                 "mmaudio_model": ("MMAUDIO_MODEL",),
                 "qwenvl_bundle": ("AOG_QWENVL_BUNDLE",),
-                "stage_enabled": ("BOOLEAN",),
+                "scene_analysis": ("STRING", {"multiline": True, "default": ""}),
             },
         }
 
@@ -1741,7 +1552,7 @@ class AOGSFXCompose:
         mask_away_clip,
         mmaudio_model=None,
         qwenvl_bundle=None,
-        stage_enabled=None,
+        scene_analysis="",
     ):
         """MMAudio로 영상 대응 효과음 레이어를 생성한다.
 
@@ -1762,20 +1573,17 @@ class AOGSFXCompose:
             mask_away_clip: CLIP branch 마스킹 여부.
             mmaudio_model: 선택적 MMAudio SFX 모델.
             qwenvl_bundle: QwenVL 분석 번들.
-            stage_enabled: 상위 게이트가 전달하는 실행 여부.
 
         Returns:
             `(audio, summary_json)` 튜플.
         """
-        enabled = True if stage_enabled is None else bool(stage_enabled)
         duration = float(video_features.get("source_duration_sec", video_batch.get("source_duration_sec", video_batch.get("duration_sec", 0.0))))
-        if not enabled or sfx_mode == "off" or mmaudio_model is None:
+        if sfx_mode == "off" or mmaudio_model is None:
             audio = make_silent_audio(duration)
             return (
                 audio,
                 to_pretty_json(
                     {
-                        "enabled": enabled,
                         "sfx_mode": sfx_mode,
                         "sfx_prompt_mode": sfx_prompt_mode,
                         "generated": False,
@@ -1791,9 +1599,19 @@ class AOGSFXCompose:
         llm_info = {"provider": "none", "mode": sfx_prompt_mode}
         default_sfx_prompt = "anime opening impact swells, whooshes, risers, accent hits"
         resolved_sfx_prompt = sfx_prompt.strip() or default_sfx_prompt
+        enriched_features = _inject_scene_analysis(video_features, scene_analysis)
         if sfx_prompt_mode == "llm":
             if llm_provider == "qwenvl":
-                if qwenvl_bundle is None:
+                if str(scene_analysis).strip():
+                    resolved_sfx_prompt, llm_info = generate_sfx_prompt(
+                        enriched_features,
+                        sfx_prompt,
+                        provider="local_qwen",
+                        authoring_language=authoring_language,
+                    )
+                    llm_info["video_analysis_provider"] = "qwenvl"
+                    llm_info["drafting_provider"] = "local_qwen"
+                elif qwenvl_bundle is None:
                     llm_info = {
                         "provider": "qwenvl",
                         "mode": "degraded",
@@ -1802,13 +1620,13 @@ class AOGSFXCompose:
                 else:
                     resolved_sfx_prompt, llm_info = _draft_sfx_prompt_with_qwenvl(
                         video_batch,
-                        video_features,
+                        enriched_features,
                         qwenvl_bundle,
                         authoring_language,
                     )
             else:
                 resolved_sfx_prompt, llm_info = generate_sfx_prompt(
-                    video_features,
+                    enriched_features,
                     sfx_prompt,
                     provider="local_qwen",
                     authoring_language=authoring_language,
@@ -1819,7 +1637,7 @@ class AOGSFXCompose:
                 "mode": "degraded",
                 "warning": "empty sfx_prompt; used default SFX prompt.",
             }
-        prompt = build_sfx_prompt(video_features, resolved_sfx_prompt)
+        prompt = build_sfx_prompt(enriched_features, resolved_sfx_prompt)
         audio = mmaudio_nodes.MMAudioSampler().sample(mmaudio_model=mmaudio_model, seed=seed, feature_utils=mmaudio_featureutils, duration=duration, steps=steps, cfg=cfg, prompt=prompt, negative_prompt=negative_prompt, mask_away_clip=mask_away_clip, force_offload=True, images=video_batch["images"])[0]
         audio = normalize_audio_duration(audio, duration)
         return (
@@ -1852,17 +1670,14 @@ class AOGFinalAudioMix:
                 "sfx_mode": (["off", "auto"], {"default": "off"}),
                 "sfx_gain": ("FLOAT", {"default": 0.25, "min": 0.0, "max": 1.0, "step": 0.01}),
             },
-            "optional": {
-                "stage_enable_sfx": ("BOOLEAN",),
-            },
-        }
+                    }
 
     RETURN_TYPES = ("AUDIO", "STRING")
     RETURN_NAMES = ("final_audio", "summary_json")
     FUNCTION = "mix"
     CATEGORY = "AOG/Audio"
 
-    def mix(self, ace_audio, sfx_audio, sfx_mode, sfx_gain, stage_enable_sfx=None):
+    def mix(self, ace_audio, sfx_audio, sfx_mode, sfx_gain):
 
         """ACE-Step ???? SFX ???? ???.
 
@@ -1883,12 +1698,104 @@ class AOGFinalAudioMix:
                 Returns:
 
                     `(final_audio, summary_json)` ??."""
-        enable_sfx = True if stage_enable_sfx is None else bool(stage_enable_sfx)
-        if enable_sfx and sfx_mode == "auto":
+        if sfx_mode == "auto":
             # 음악 stem을 기준으로 SFX stem을 합성해 최종 오디오를 만든다.
             mixed = mix_audio_dicts(ace_audio, sfx_audio, gain_b=sfx_gain)
             return (mixed, to_pretty_json({"sfx_applied": True, "sfx_mode": sfx_mode, "sfx_gain": sfx_gain}))
         return (ensure_audio_dict(ace_audio), to_pretty_json({"sfx_applied": False, "sfx_mode": sfx_mode, "sfx_gain": sfx_gain}))
+
+
+class AOGMergeSummaryJSON:
+    """여러 단계의 JSON/텍스트 메타데이터를 하나의 최종 summary_json으로 합친다.
+
+    Returns:
+        병합된 summary_json 문자열을 담은 튜플.
+    """
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {},
+            "optional": {
+                "video_summary": ("STRING", {"multiline": True, "default": ""}),
+                "prompt_summary": ("STRING", {"multiline": True, "default": ""}),
+                "lyrics_summary": ("STRING", {"multiline": True, "default": ""}),
+                "music_plan_summary": ("STRING", {"multiline": True, "default": ""}),
+                "ace_summary": ("STRING", {"multiline": True, "default": ""}),
+                "sfx_summary": ("STRING", {"multiline": True, "default": ""}),
+                "final_mix_summary": ("STRING", {"multiline": True, "default": ""}),
+                "preview_summary": ("STRING", {"multiline": True, "default": ""}),
+                "scene_analysis": ("STRING", {"multiline": True, "default": ""}),
+                "prompt_text": ("STRING", {"multiline": True, "default": ""}),
+                "lyrics_text": ("STRING", {"multiline": True, "default": ""}),
+            },
+        }
+
+    RETURN_TYPES = ("STRING",)
+    RETURN_NAMES = ("summary_json",)
+    FUNCTION = "merge"
+    CATEGORY = "AOG/Debug"
+
+    @staticmethod
+    def _load_summary_payload(summary_text):
+        """비어 있지 않은 summary 문자열을 dict로 정규화한다.
+
+        Args:
+            summary_text: JSON 문자열 또는 일반 문자열.
+
+        Returns:
+            dict 또는 None.
+        """
+        raw = str(summary_text or "").strip()
+        if not raw:
+            return None
+        try:
+            return json.loads(raw)
+        except json.JSONDecodeError:
+            return {"raw_text": raw}
+
+    def merge(
+        self,
+        video_summary="",
+        prompt_summary="",
+        lyrics_summary="",
+        music_plan_summary="",
+        ace_summary="",
+        sfx_summary="",
+        final_mix_summary="",
+        preview_summary="",
+        scene_analysis="",
+        prompt_text="",
+        lyrics_text="",
+    ):
+
+        """여러 단계의 요약을 하나의 JSON으로 병합한다.
+
+        Returns:
+            `(summary_json,)` 튜플.
+        """
+        payload = {}
+        summary_map = {
+            "video_summary": video_summary,
+            "prompt_summary": prompt_summary,
+            "lyrics_summary": lyrics_summary,
+            "music_plan_summary": music_plan_summary,
+            "ace_summary": ace_summary,
+            "sfx_summary": sfx_summary,
+            "final_mix_summary": final_mix_summary,
+            "preview_summary": preview_summary,
+        }
+        for key, value in summary_map.items():
+            parsed = self._load_summary_payload(value)
+            if parsed is not None:
+                payload[key] = parsed
+        if str(scene_analysis or "").strip():
+            payload["scene_analysis"] = str(scene_analysis).strip()
+        if str(prompt_text or "").strip():
+            payload["prompt_text"] = str(prompt_text).strip()
+        if str(lyrics_text or "").strip():
+            payload["lyrics_text"] = str(lyrics_text).strip()
+        return (to_pretty_json(payload),)
 
 
 class AOGSaveSummaryJSON:
@@ -2096,212 +2003,11 @@ class AOGPreviewVideoCombine:
         return {"result": (filenames, to_pretty_json({"frame_rate": frame_rate, "duration_sec": duration, "format": resolved_format, "save_output": save_output, "source_path": str(video_batch.get("source_path", ""))}))}
 
 
-class AOGOpeningMusicPipeline:
-    """영상 분석부터 음악 생성, SFX, 요약 출력까지 한 번에 수행한다."""
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {"required": {"video_batch": ("AOG_VIDEO_BATCH",), "mmaudio_featureutils": ("MMAUDIO_FEATUREUTILS",), "model": ("MODEL",), "clip": ("CLIP",), "vae": ("VAE",), "quality_profile": (QUALITY_PRESET_CHOICES, {"default": "balanced"}), "apply_quality_profile": ("BOOLEAN", {"default": True}), "enable_mmaudio_features": ("BOOLEAN", {"default": True}), "enable_ace_step": ("BOOLEAN", {"default": True}), "enable_qwenvl_analysis": ("BOOLEAN", {"default": True}), "enable_prompt_authoring": ("BOOLEAN", {"default": True}), "enable_lyrics_authoring": ("BOOLEAN", {"default": True}), "enable_sfx": ("BOOLEAN", {"default": True}), "prompt_mode": (["human", "llm"], {"default": "human"}), "prompt_text": ("STRING", {"multiline": True, "default": ""}), "lyrics_mode": (["human", "llm"], {"default": "human"}), "lyrics_text": ("STRING", {"multiline": True, "default": ""}), "negative_tags": ("STRING", {"multiline": True, "default": "silence, clipping, distortion, noise"}), "seed": ("INT", {"default": 0, "min": 0, "max": 0xFFFFFFFFFFFFFFFF}), "bpm": ("INT", {"default": 120, "min": 10, "max": 300}), "timesignature": (["2", "3", "4", "6"], {"default": "4"}), "authoring_language": (LANGUAGE_CHOICES, {"default": "en"}), "lyrics_language": (LANGUAGE_CHOICES, {"default": "ja"}), "ace_language": (LANGUAGE_CHOICES, {"default": "ja"}), "keyscale": (KEYSCALE_CHOICES, {"default": "A minor"}), "steps": ("INT", {"default": 8, "min": 1, "max": 200}), "cfg": ("FLOAT", {"default": 1.0, "min": 0.0, "step": 0.1}), "text_cfg_scale": ("FLOAT", {"default": 5.0, "min": 0.0, "step": 0.1}), "sampler_name": (comfy.samplers.KSampler.SAMPLERS, {"default": "euler"}), "scheduler": (comfy.samplers.KSampler.SCHEDULERS, {"default": "simple"}), "denoise": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 1.0, "step": 0.01}), "mask_away_clip": ("BOOLEAN", {"default": False}), "llm_provider": (["qwenvl", "local_qwen"], {"default": "qwenvl"}), "sfx_mode": (["off", "auto"], {"default": "off"}), "sfx_prompt_mode": (["human", "llm"], {"default": "llm"}), "sfx_prompt": ("STRING", {"multiline": True, "default": "anime opening impact swells, whooshes, risers, accent hits"}), "sfx_negative_prompt": ("STRING", {"multiline": True, "default": "spoken dialogue, vocals, muddy bass, clipping"}), "sfx_steps": ("INT", {"default": 8, "min": 1, "max": 200}), "sfx_cfg": ("FLOAT", {"default": 3.5, "min": 0.0, "step": 0.1}), "sfx_gain": ("FLOAT", {"default": 0.25, "min": 0.0, "max": 1.0, "step": 0.01}), "sfx_mask_away_clip": ("BOOLEAN", {"default": True})}, "optional": {"reference_audio": ("AUDIO",), "mmaudio_model": ("MMAUDIO_MODEL",), "qwenvl_bundle": ("AOG_QWENVL_BUNDLE",), "qwenvl_analysis_prompt": ("STRING", {"multiline": True, "default": ""}), "pipeline_toggles": ("AOG_PIPELINE_TOGGLES",), "quality_settings": ("AOG_QUALITY_SETTINGS",)}}
-
-    RETURN_TYPES = ("AOG_VIDEO_FEATURES", "AUDIO", "AUDIO", "AUDIO", "STRING", "STRING", "STRING")
-    RETURN_NAMES = ("video_features", "final_audio", "ace_audio", "sfx_audio", "resolved_prompt", "resolved_lyrics", "summary_json")
-    FUNCTION = "run_pipeline"
-    CATEGORY = "AOG/Audio"
-
-    def run_pipeline(self, video_batch, mmaudio_featureutils, model, clip, vae, quality_profile, apply_quality_profile, enable_mmaudio_features, enable_ace_step, enable_qwenvl_analysis, enable_prompt_authoring, enable_lyrics_authoring, enable_sfx, prompt_mode, prompt_text, lyrics_mode, lyrics_text, negative_tags, seed, bpm, timesignature, authoring_language, lyrics_language, ace_language, keyscale, steps, cfg, text_cfg_scale, sampler_name, scheduler, denoise, mask_away_clip=False, llm_provider="qwenvl", sfx_mode="off", sfx_prompt_mode="llm", sfx_prompt="", sfx_negative_prompt="", sfx_steps=8, sfx_cfg=3.5, sfx_gain=0.35, sfx_mask_away_clip=True, reference_audio=None, mmaudio_model=None, qwenvl_bundle=None, qwenvl_analysis_prompt="", pipeline_toggles=None, quality_settings=None):
-
-        """?? ???? ??/SFX ???? ? ?? ????.
-
-        
-
-                Args:
-
-                    video_batch: ?? ??? ??.
-
-                    mmaudio_featureutils: MMAudio ?? ?? ????.
-
-                    model: ACE-Step ??.
-
-                    clip: ACE-Step ??? ???.
-
-                    vae: ACE-Step ??? VAE.
-
-                    quality_profile: ?? ??? ??.
-
-                    apply_quality_profile: ??? ?? ?? ??.
-
-                    enable_mmaudio_features: MMAudio ?? ?? ?? ??.
-
-                    enable_ace_step: ACE-Step ?? ??.
-
-                    enable_qwenvl_analysis: QwenVL ?? ?? ??.
-
-                    enable_prompt_authoring: ???? ?? ?? ??.
-
-                    enable_lyrics_authoring: ?? ?? ?? ??.
-
-                    enable_sfx: SFX ?? ??.
-
-                    prompt_mode: ???? ??.
-
-                    prompt_text: ?? ????.
-
-                    lyrics_mode: ?? ??.
-
-                    lyrics_text: ?? ??.
-
-                    negative_tags: ?? ??.
-
-                    seed: ?? ??.
-
-                    bpm: ?? BPM ???.
-
-                    timesignature: ?? ?? ???.
-
-                    authoring_language: authoring ??.
-
-                    lyrics_language: ?? ??.
-
-                    ace_language: ACE-Step ?? ???.
-
-                    keyscale: ?? ?? ???.
-
-                    steps: ACE-Step ?? ?.
-
-                    cfg: ACE-Step CFG.
-
-                    text_cfg_scale: ??? CFG ???.
-
-                    sampler_name: ??? ??.
-
-                    scheduler: ???? ??.
-
-                    denoise: denoise ?.
-
-                    mask_away_clip: MMAudio CLIP branch ???? ??.
-
-                    llm_provider: qwenvl ?? local_qwen.
-
-                    sfx_mode: SFX ??.
-
-                    sfx_prompt: SFX ????.
-
-                    sfx_negative_prompt: SFX ?? ????.
-
-                    sfx_steps: SFX ?? ?.
-
-                    sfx_cfg: SFX CFG.
-
-                    sfx_gain: SFX gain ?.
-
-                    sfx_mask_away_clip: SFX? CLIP branch ???? ??.
-
-                    reference_audio: ??? ?? ???.
-
-                    mmaudio_model: ??? MMAudio SFX ??.
-
-                    qwenvl_bundle: ??? QwenVL ?? ??.
-
-                    qwenvl_analysis_prompt: ??? QwenVL ?? ????.
-
-                    pipeline_toggles: ??? ?? payload.
-
-                    quality_settings: ??? ?? payload.
-
-        
-
-                Returns:
-
-                    `(video_features, final_audio, ace_audio, sfx_audio, resolved_prompt, resolved_lyrics, summary_json)` ??."""
-        if quality_settings is not None:
-            quality_profile = quality_settings.get("quality_profile", quality_profile)
-            apply_quality_profile = bool(quality_settings.get("apply_quality_profile", apply_quality_profile))
-        resolved_toggles = _resolve_toggle_settings(enable_mmaudio_features, enable_ace_step, enable_qwenvl_analysis, enable_prompt_authoring, enable_lyrics_authoring, enable_sfx, pipeline_toggles)
-        enable_mmaudio_features = resolved_toggles["enable_mmaudio_features"]
-        enable_ace_step = resolved_toggles["enable_ace_step"]
-        enable_qwenvl_analysis = resolved_toggles["enable_qwenvl_analysis"]
-        enable_prompt_authoring = resolved_toggles["enable_prompt_authoring"]
-        enable_lyrics_authoring = resolved_toggles["enable_lyrics_authoring"]
-        enable_sfx = resolved_toggles["enable_sfx"]
-        resolved_quality = _resolve_quality_settings(quality_profile, apply_quality_profile, steps, cfg, text_cfg_scale, sfx_steps, sfx_cfg, qwenvl_bundle)
-        steps = resolved_quality["steps"]
-        cfg = resolved_quality["cfg"]
-        text_cfg_scale = resolved_quality["text_cfg_scale"]
-        sfx_steps = resolved_quality["sfx_steps"]
-        sfx_cfg = resolved_quality["sfx_cfg"]
-        qwenvl_bundle = resolved_quality["qwenvl_bundle"]
-        # 1. 영상 특징 추출
-        print("[AOG] pipeline: extracting video features...", flush=True)
-        video_features, _ = AOGVideoFeatureExtract().extract_features(enable_mmaudio_features, video_batch, mmaudio_featureutils, mask_away_clip)
-        scene_analysis = ""
-        run_qwenvl = enable_ace_step and enable_qwenvl_analysis and qwenvl_bundle is not None
-        run_prompt_authoring = enable_ace_step and enable_prompt_authoring
-        run_lyrics_authoring = enable_ace_step and enable_lyrics_authoring
-        if run_qwenvl:
-            # 2. QwenVL 의미 분석
-            print("[AOG] pipeline: extracting QwenVL scene analysis...", flush=True)
-            scene_analysis, _ = AOGQwenVLSemanticExtract().extract(video_batch=video_batch, qwenvl_bundle=qwenvl_bundle, authoring_language=authoring_language, analysis_prompt=qwenvl_analysis_prompt)
-            video_features["qwenvl_scene_analysis"] = scene_analysis
-            video_features["qwenvl_analysis_language"] = authoring_language
-        # 3. 프롬프트와 가사 작성
-        print("[AOG] pipeline: resolving prompt...", flush=True)
-        resolved_prompt, prompt_json = AOGPromptDraft().draft(video_batch=video_batch, video_features=video_features, prompt_mode=(prompt_mode if run_prompt_authoring else "human"), user_prompt=prompt_text, llm_provider=llm_provider, authoring_language=authoring_language, qwenvl_bundle=qwenvl_bundle)
-        print("[AOG] pipeline: resolving lyrics...", flush=True)
-        resolved_lyrics, lyrics_json = AOGLyricsDraft().draft(video_batch=video_batch, video_features=video_features, lyrics_mode=(lyrics_mode if run_lyrics_authoring else "human"), user_lyrics=lyrics_text, lyrics_language=lyrics_language, llm_provider=llm_provider, authoring_language=authoring_language, qwenvl_bundle=qwenvl_bundle)
-        # 4. BPM, 박자, 조성, 언어 같은 음악 계획 수립
-        print("[AOG] pipeline: planning music metadata...", flush=True)
-        planned_bpm, planned_duration, planned_timesignature, planned_ace_language, planned_keyscale, plan_json = AOGMusicPlan().plan(
-            video_batch=video_batch,
-            video_features=video_features,
-            plan_mode="llm" if enable_ace_step else "human",
-            llm_provider=llm_provider,
-            authoring_language=authoring_language,
-            lyrics_language=lyrics_language,
-            manual_bpm=bpm,
-            manual_timesignature=timesignature,
-            manual_keyscale=keyscale,
-            manual_ace_language=ace_language,
-            qwenvl_bundle=qwenvl_bundle,
-        )
-        # 5. ACE-Step 음악 생성
-        print("[AOG] pipeline: composing ACE-Step audio...", flush=True)
-        ace_audio, ace_json = AOGAceStepCompose().compose(stage_enabled=enable_ace_step, model=model, clip=clip, vae=vae, video_features=video_features, prompt_text=resolved_prompt, lyrics_text=resolved_lyrics, negative_tags=negative_tags, seed=seed, bpm=planned_bpm, duration=planned_duration, timesignature=planned_timesignature, ace_language=planned_ace_language, keyscale=planned_keyscale, steps=steps, cfg=cfg, text_cfg_scale=text_cfg_scale, sampler_name=sampler_name, scheduler=scheduler, denoise=denoise, reference_audio=reference_audio)
-        # 6. 선택적 SFX 생성
-        print("[AOG] pipeline: composing SFX layer...", flush=True)
-        sfx_audio, sfx_json = AOGSFXCompose().compose(
-            video_batch=video_batch,
-            video_features=video_features,
-            mmaudio_featureutils=mmaudio_featureutils,
-            sfx_mode=sfx_mode,
-            sfx_prompt_mode=sfx_prompt_mode,
-            llm_provider=llm_provider,
-            authoring_language=authoring_language,
-            seed=seed + 1,
-            sfx_prompt=sfx_prompt,
-            negative_prompt=sfx_negative_prompt,
-            steps=sfx_steps,
-            cfg=sfx_cfg,
-            gain=sfx_gain,
-            mask_away_clip=sfx_mask_away_clip,
-            mmaudio_model=mmaudio_model,
-            qwenvl_bundle=qwenvl_bundle,
-            stage_enabled=enable_sfx,
-        )
-        # 7. 음악과 SFX를 최종 믹스로 합친다.
-        final_audio = mix_audio_dicts(ace_audio, sfx_audio, gain_b=sfx_gain) if enable_sfx and sfx_mode == "auto" else ace_audio
-        summary_json = to_pretty_json({"video_summary": video_features["summary"], "timeline": video_features["timeline"], "semantic_cues": video_features["semantic_cues"], "qwenvl_scene_analysis": video_features.get("qwenvl_scene_analysis", ""), "qwenvl_analysis_language": video_features.get("qwenvl_analysis_language", ""), "conditioning_summary": video_features["conditioning_summary"], "latent_structure_cues": video_features["latent_structure_cues"], "prompt_mode": prompt_mode, "lyrics_mode": lyrics_mode, "authoring_language": authoring_language, "lyrics_language": lyrics_language, "ace_language": planned_ace_language, "llm_provider": llm_provider if prompt_mode == "llm" or lyrics_mode == "llm" or sfx_prompt_mode == "llm" else "human", "quality_profile": quality_profile, "apply_quality_profile": apply_quality_profile, "resolved_quality": resolved_quality, "resolved_toggles": resolved_toggles, "enable_mmaudio_features": enable_mmaudio_features, "enable_qwenvl_analysis": enable_qwenvl_analysis, "effective_qwenvl_analysis": run_qwenvl, "enable_prompt_authoring": enable_prompt_authoring, "effective_prompt_authoring": run_prompt_authoring, "enable_lyrics_authoring": enable_lyrics_authoring, "effective_lyrics_authoring": run_lyrics_authoring, "enable_ace_step": enable_ace_step, "enable_sfx": enable_sfx, "sfx_mode": sfx_mode, "sfx_prompt_mode": sfx_prompt_mode, "planned_music": json.loads(plan_json), "implementation_note": "ACE-Step currently receives text plus derived video cues; raw conditioning payload is preserved for future direct integration.", "prompt_summary": prompt_json, "lyrics_summary": lyrics_json, "ace_summary": ace_json, "sfx_summary": sfx_json})
-        return (video_features, final_audio, ace_audio, sfx_audio, resolved_prompt, resolved_lyrics, summary_json)
-
 
 NODE_CLASS_MAPPINGS = {
     "AOG MMAudio Feature Bundle": AOGMMAudioFeatureBundle,
     "AOG MMAudio SFX Bundle": AOGMMAudioSFXBundle,
     "AOG QwenVL Bundle": AOGQwenVLBundle,
-    "AOG QwenVL Branch Gate": AOGQwenVLBranchGate,
-    "AOG Prompt Stage Gate": AOGPromptStageGate,
-    "AOG Lyrics Stage Gate": AOGLyricsStageGate,
-    "AOG ACE Stage Gate": AOGACEStageGate,
-    "AOG SFX Stage Gate": AOGSFXStageGate,
-    "AOG Pipeline Toggles": AOGPipelineToggles,
     "AOG Quality Preset": AOGQualityPreset,
     "AOG Load Video Frames": AOGLoadVideoFrames,
     "AOG Workflow Video Batch Adapter": AOGWorkflowVideoBatchAdapter,
@@ -2314,10 +2020,10 @@ NODE_CLASS_MAPPINGS = {
     "AOG ACE-Step Compose": AOGAceStepCompose,
     "AOG SFX Compose": AOGSFXCompose,
     "AOG Final Audio Mix": AOGFinalAudioMix,
+    "AOG Merge Summary JSON": AOGMergeSummaryJSON,
     "AOG Save Summary JSON": AOGSaveSummaryJSON,
     "AOG Mux Video Audio": AOGMuxVideoAudio,
     "AOG Preview Video Combine": AOGPreviewVideoCombine,
-    "AOG Opening Music Pipeline": AOGOpeningMusicPipeline,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {name: name for name in NODE_CLASS_MAPPINGS}

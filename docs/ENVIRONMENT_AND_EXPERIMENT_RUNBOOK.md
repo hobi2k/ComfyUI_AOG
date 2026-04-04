@@ -170,18 +170,20 @@ The following bugs were found and corrected:
 - `keep_model_loaded` in the QwenVL bundle was respecting `--qwenvl-keep-model-loaded` (default False), causing the QwenVL model to reload three times during a single run (scene analysis, prompt, lyrics), each taking approximately 3.5 minutes.
   Fixed by forcing `keep_model_loaded=True` in the CLI bundle. The existing `unload_all_models()` call before ACE-Step loading handles VRAM cleanup.
 
-### All three workflow JSON files
+### Shipped workflow JSON files
 
 - `AOGLyricsDraft` (`AOG Lyrics Draft` node) had `qwenvl_bundle` connected to input slot 7.
   The correct slot is 8, because `authoring_language` occupies slot 7 ahead of the optional `qwenvl_bundle`.
-  Fixed in `AOG_ACE_Music_Only.json`, `AOG_QwenVL_Authoring.json`, and `AOG_Full_Music_SFX_Mux.json`.
+  Fixed in the shipped workflow JSON files.
 
-### `AOG_Full_Music_SFX_Mux.json` only
+### Example workflow UX direction
 
-- `AOG SFX Stage Gate` (node 22) had stale link references for `pipeline_toggles` (link 34) and `mmaudio_featureutils` (link 35).
-  The actual `links` array had link 34 going from `UNETLoader` to `AOG ACE Stage Gate` (MODEL), and link 35 going from `DualCLIPLoader` to `AOG ACE Stage Gate` (CLIP).
-  The SFX Stage Gate was effectively disconnected for both required inputs.
-  Fixed by adding link 48 (`AOG_PIPELINE_TOGGLES` from Pipeline Toggles to SFX Stage Gate slot 0) and link 49 (`MMAUDIO_FEATUREUTILS` from MMAudio Feature Bundle to SFX Stage Gate slot 1).
+- Shipped example workflows now use `rgthree` for workflow-level muting and bypass.
+- `AOG` remains responsible for feature extraction, authoring, music planning, composition, summary saving, and preview saving.
+- Example workflow set:
+  - `AOG_ACE_Music_Only.json`
+  - `AOG_Full_Music_SFX_Mux.json`
+  - `AOG_MMAudio_SFX_Only.json`
 
 ## Bug Fixes Applied (2026-04-02)
 
@@ -217,7 +219,7 @@ Run from the ComfyUI root directory.
 
 ```powershell
 python '.\custom_nodes\ComfyUI_AOG\run_aog_audio_pipeline.py' `
-  --video 'D:\Stable Diffusion\StabilityMatrix-win-x64\Data\Packages\ComfyUI\output\WAN\04-01\120752-01_00001.webm' `
+  --video '.\output\WAN\04-01\120752-01_00001.webm' `
   --output-dir '.\custom_nodes\ComfyUI_AOG\outputs\run_04-01' `
   --prompt-mode llm `
   --lyrics-mode llm `

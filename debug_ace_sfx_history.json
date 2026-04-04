@@ -1,0 +1,112 @@
+[
+  {
+    "name": "ace_only",
+    "prompt_id": "0de1472a-630b-44e4-8a53-6f34b7c5c47a",
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "0de1472a-630b-44e4-8a53-6f34b7c5c47a",
+            "timestamp": 1775309568502
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [],
+            "prompt_id": "0de1472a-630b-44e4-8a53-6f34b7c5c47a",
+            "timestamp": 1775309568879
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "0de1472a-630b-44e4-8a53-6f34b7c5c47a",
+            "timestamp": 1775310091753
+          }
+        ]
+      ]
+    },
+    "outputs": {
+      "8": {
+        "text": [
+          "[Verse]\nピンクの光に包まれて、黒いドレスを纏う  \nカードが舞い散る中、瞳は輝く  \n\n[Pre-Chorus]\n手にはチップ、心は鼓動  \nこのゲームで勝ち取る未来を  \n\n[Chorus]\nああ、賭けたのは夢と希望  \n今、君と戦う！  \n光の中で、我らは王座を掴む  \nすべての牌、私の手に！\n\n[Outro]\n静かに、風が吹き抜ける  \n次の一手、待つだけ…"
+        ],
+        "aog_lyrics": [
+          "[Verse]\nピンクの光に包まれて、黒いドレスを纏う  \nカードが舞い散る中、瞳は輝く  \n\n[Pre-Chorus]\n手にはチップ、心は鼓動  \nこのゲームで勝ち取る未来を  \n\n[Chorus]\nああ、賭けたのは夢と希望  \n今、君と戦う！  \n光の中で、我らは王座を掴む  \nすべての牌、私の手に！\n\n[Outro]\n静かに、風が吹き抜ける  \n次の一手、待つだけ…"
+        ]
+      },
+      "7": {
+        "text": [
+          "Energetic synth-pop with driving bassline and pulsating hi-hats, building intensity from a crisp intro to a soaring climax at 2.5s, then dropping into a sharp, rhythmic outro. Hook emerges mid-section with layered vocal chops and glittering arpeggios, punctuated by sudden staccato percussion bursts. Tempo accelerates slightly as motion peaks, maintaining high energy without losing clarity. Emotional arc: confident, playful, then triumphant—perfect for an anime opening with bold visuals."
+        ],
+        "aog_prompt": [
+          "Energetic synth-pop with driving bassline and pulsating hi-hats, building intensity from a crisp intro to a soaring climax at 2.5s, then dropping into a sharp, rhythmic outro. Hook emerges mid-section with layered vocal chops and glittering arpeggios, punctuated by sudden staccato percussion bursts. Tempo accelerates slightly as motion peaks, maintaining high energy without losing clarity. Emotional arc: confident, playful, then triumphant—perfect for an anime opening with bold visuals."
+        ]
+      },
+      "15": {
+        "gifs": [
+          {
+            "filename": "ace_only_preview_api_00001-audio.mp4",
+            "subfolder": "AOG",
+            "type": "output",
+            "format": "video/h264-mp4",
+            "frame_rate": 8.0,
+            "workflow": "ace_only_preview_api_00001.png",
+            "fullpath": "D:\\Stable Diffusion\\StabilityMatrix-win-x64\\Data\\Packages\\ComfyUI\\output\\AOG\\ace_only_preview_api_00001-audio.mp4"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "name": "sfx_only",
+    "prompt_id": "29f35301-fc2b-467f-882d-a9ad4d85b5de",
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "29f35301-fc2b-467f-882d-a9ad4d85b5de",
+            "timestamp": 1775310093255
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [],
+            "prompt_id": "29f35301-fc2b-467f-882d-a9ad4d85b5de",
+            "timestamp": 1775310093258
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "29f35301-fc2b-467f-882d-a9ad4d85b5de",
+            "timestamp": 1775310409130
+          }
+        ]
+      ]
+    },
+    "outputs": {
+      "10": {
+        "gifs": [
+          {
+            "filename": "sfx_only_preview_api_00001-audio.mp4",
+            "subfolder": "AOG",
+            "type": "output",
+            "format": "video/h264-mp4",
+            "frame_rate": 8.0,
+            "workflow": "sfx_only_preview_api_00001.png",
+            "fullpath": "D:\\Stable Diffusion\\StabilityMatrix-win-x64\\Data\\Packages\\ComfyUI\\output\\AOG\\sfx_only_preview_api_00001-audio.mp4"
+          }
+        ]
+      }
+    }
+  }
+]

@@ -203,8 +203,8 @@ The following must be true before a full-length validation is meaningful:
 
 - Review loop 4:
   - diagnosed and corrected six bugs in `run_aog_audio_pipeline.py` where node method calls were missing the `enabled` argument and passing nonexistent keyword arguments (`llm_model`, `title`, `theme`) to draft nodes
-  - corrected `qwenvl_bundle` input slot index from 7 to 8 in `AOGLyricsDraft` across all three workflow JSON files
-  - diagnosed and corrected a disconnected-input bug in `AOG_Full_Music_SFX_Mux.json` where `AOG SFX Stage Gate` received stale link references for `pipeline_toggles` and `mmaudio_featureutils`; both inputs were effectively unconnected at runtime
+  - corrected `qwenvl_bundle` input slot index from 7 to 8 in `AOGLyricsDraft` across the shipped workflow JSON files
+  - removed AOG-specific stage-gate dependence from the shipped example workflows and moved workflow-level toggle UX responsibility to `rgthree`
 
 ## Present Outcome
 
