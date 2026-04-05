@@ -1,1 +1,1431 @@
-{"version":0.4,"state":{"name":"AOG ACE Music Only"},"nodes":[{"id":1,"type":"MarkdownNote","pos":[-1600,-300],"size":[700,240],"order":0,"mode":0,"title":"Workflow Guide","widgets_values":["Upload a video and queue. This workflow runs video feature extraction, QwenVL prompt/lyrics authoring, music planning, ACE-Step composition, summary save, and preview output."],"color":"#432","bgcolor":"#653"},{"id":2,"type":"MarkdownNote","pos":[-900,-320],"size":[820,240],"order":1,"mode":0,"title":"Option Meaning","widgets_values":["Tune ACE-Step quality directly on Compose Music. Use rgthree only for mute/bypass control; AOG nodes handle analysis, composition, saving, and preview."],"color":"#234","bgcolor":"#456"},{"id":3,"type":"VHS_LoadVideo","title":"1. Load Source Video","pos":[-1540,40],"size":[280,460],"order":2,"mode":0,"inputs":[{"name":"meta_batch","type":"VHS_BatchManager","link":null},{"name":"vae","type":"VAE","link":null}],"outputs":[{"name":"IMAGE","type":"IMAGE","links":[1],"slot_index":0,"shape":3},{"name":"frame_count","type":"INT","links":[2],"shape":3},{"name":"audio","type":"VHS_AUDIO","links":null,"shape":3},{"name":"video_info","type":"VHS_VIDEOINFO","links":[3],"shape":3}],"properties":{"Node name for S&R":"VHS_LoadVideo"},"widgets_values":{"video":"","force_rate":8,"force_size":"Disabled","custom_width":0,"custom_height":0,"frame_load_cap":0,"skip_first_frames":0,"select_every_nth":1,"choose video to upload":"image","videopreview":{"hidden":false,"paused":false,"params":{"frame_load_cap":0,"skip_first_frames":0,"force_rate":0,"filename":"","type":"input","format":"video/mp4","force_size":"Disabled","select_every_nth":1}}}},{"id":4,"type":"AOG VHS Video Batch Adapter","title":"2. Build Video Batch","pos":[-1180,120],"size":[320,150],"order":3,"mode":0,"inputs":[{"name":"images","type":"IMAGE","link":1},{"name":"frame_count","type":"INT","link":2},{"name":"video_info","type":"VHS_VIDEOINFO","link":3}],"outputs":[{"name":"video_batch","type":"AOG_VIDEO_BATCH","links":[4,6,9,12,29]},{"name":"summary_json","type":"STRING","links":null}],"properties":{"Node name for S&R":"AOG VHS Video Batch Adapter"}},{"id":7,"type":"AOG MMAudio Feature Bundle","title":"4. MMAudio Feature Bundle","pos":[-1180,380],"size":[360,160],"order":6,"mode":0,"outputs":[{"name":"mmaudio_featureutils","type":"MMAUDIO_FEATUREUTILS","links":[5]}],"properties":{"Node name for S&R":"AOG MMAudio Feature Bundle"},"widgets_values":["mmaudio_vae_44k_fp16.safetensors","mmaudio_synchformer_fp16.safetensors","apple_DFN5B-CLIP-ViT-H-14-384_fp16.safetensors","44k","fp16"]},{"id":8,"type":"AOG QwenVL Bundle","title":"5. QwenVL Bundle","pos":[-1180,600],"size":[360,220],"order":7,"mode":0,"outputs":[{"name":"qwenvl_bundle","type":"AOG_QWENVL_BUNDLE","links":[8,11,14]}],"properties":{"Node name for S&R":"AOG QwenVL Bundle"},"widgets_values":["Qwen3-VL-4B-Instruct","None (FP16)","auto",8,512,0.4,0.9,1,true,false,1]},{"id":9,"type":"AOG Video Feature Extract","title":"6. Extract Video Features","pos":[-800,260],"size":[400,240],"order":8,"mode":0,"inputs":[{"name":"video_batch","type":"AOG_VIDEO_BATCH","link":4},{"name":"mmaudio_featureutils","type":"MMAUDIO_FEATUREUTILS","link":5}],"outputs":[{"name":"video_features","type":"AOG_VIDEO_FEATURES","links":[7,10,13,18]},{"name":"summary_json","type":"STRING","links":[32]}],"properties":{"Node name for S&R":"AOG Video Feature Extract"},"widgets_values":[true,false]},{"id":13,"type":"AOG Prompt Draft","title":"7. Draft Prompt","pos":[-360,200],"size":[560,330],"order":12,"mode":0,"inputs":[{"name":"video_batch","type":"AOG_VIDEO_BATCH","link":6},{"name":"video_features","type":"AOG_VIDEO_FEATURES","link":7},{"name":"qwenvl_bundle","type":"AOG_QWENVL_BUNDLE","link":8}],"outputs":[{"name":"prompt_text","type":"STRING","links":[19,38]},{"name":"summary_json","type":"STRING","links":[33]}],"properties":{"Node name for S&R":"AOG Prompt Draft"},"widgets_values":["llm","","qwenvl","en"]},{"id":15,"type":"AOG Lyrics Draft","title":"8. Draft Lyrics","pos":[-360,600],"size":[560,360],"order":14,"mode":0,"inputs":[{"name":"video_batch","type":"AOG_VIDEO_BATCH","link":9},{"name":"video_features","type":"AOG_VIDEO_FEATURES","link":10},{"name":"qwenvl_bundle","type":"AOG_QWENVL_BUNDLE","link":11}],"outputs":[{"name":"lyrics_text","type":"STRING","links":[20,39]},{"name":"summary_json","type":"STRING","links":[34]}],"properties":{"Node name for S&R":"AOG Lyrics Draft"},"widgets_values":["llm","","ja","qwenvl","en"]},{"id":16,"type":"UNETLoader","title":"10A. ACE UNET","pos":[700,80],"size":[300,80],"order":15,"mode":0,"outputs":[{"name":"MODEL","type":"MODEL","links":[15]}],"properties":{"Node name for S&R":"UNETLoader"},"widgets_values":["acestep_v1.5_turbo.safetensors","default"]},{"id":17,"type":"DualCLIPLoader","title":"10B. ACE Text Encoders","pos":[700,200],"size":[320,90],"order":16,"mode":0,"outputs":[{"name":"CLIP","type":"CLIP","links":[16]}],"properties":{"Node name for S&R":"DualCLIPLoader"},"widgets_values":["qwen_0.6b_ace15.safetensors","qwen_4b_ace15.safetensors","ace","default"]},{"id":18,"type":"VAELoader","title":"10C. ACE VAE","pos":[700,330],"size":[300,80],"order":17,"mode":0,"outputs":[{"name":"VAE","type":"VAE","links":[17]}],"properties":{"Node name for S&R":"VAELoader"},"widgets_values":["ace_1.5_vae.safetensors"]},{"id":20,"type":"AOG ACE-Step Compose","title":"11. Compose Music","pos":[1080,120],"size":[560,560],"order":19,"mode":0,"inputs":[{"name":"model","type":"MODEL","link":15},{"name":"clip","type":"CLIP","link":16},{"name":"vae","type":"VAE","link":17},{"name":"video_features","type":"AOG_VIDEO_FEATURES","link":18},{"name":"prompt_text","type":"STRING","link":19},{"name":"lyrics_text","type":"STRING","link":20},{"name":"bpm","type":"","link":24},{"name":"duration","type":"","link":25},{"name":"timesignature","type":"","link":26},{"name":"ace_language","type":"","link":27},{"name":"keyscale","type":"","link":28},{"name":"text_cfg_scale","type":"FLOAT","link":null},{"name":"steps","type":"INT","link":null},{"name":"cfg","type":"FLOAT","link":null}],"outputs":[{"name":"audio","type":"AUDIO","links":[30]},{"name":"summary_json","type":"STRING","links":[36]}],"properties":{"Node name for S&R":"AOG ACE-Step Compose"},"widgets_values":["","","silence, clipping, distortion, noise",0,"fixed",120,0,"4","ja","A minor",true,5,0.85,0.9,0,0,8,1,"euler","simple",1]},{"id":21,"type":"AOG Preview Video Combine","title":"12. Preview & Save Video","pos":[2220,220],"size":[520,260],"order":20,"mode":0,"inputs":[{"name":"video_batch","type":"AOG_VIDEO_BATCH","link":29},{"name":"audio","type":"AUDIO","link":30}],"outputs":[{"name":"filenames","type":"VHS_FILENAMES","links":null},{"name":"summary_json","type":"STRING","links":[37]}],"properties":{"Node name for S&R":"AOG Preview Video Combine"},"widgets_values":["AOG/music_only_preview","video/mp4",true,false,0]},{"id":23,"type":"AOG Music Plan","title":"9. Plan Music","pos":[260,220],"size":[460,300],"order":18,"mode":0,"inputs":[{"name":"video_batch","type":"AOG_VIDEO_BATCH","link":12},{"name":"video_features","type":"AOG_VIDEO_FEATURES","link":13},{"name":"qwenvl_bundle","type":"AOG_QWENVL_BUNDLE","link":14}],"outputs":[{"name":"bpm","type":"INT","links":[24]},{"name":"duration","type":"FLOAT","links":[25]},{"name":"timesignature","type":"STRING","links":[26]},{"name":"ace_language","type":"STRING","links":[27]},{"name":"keyscale","type":"STRING","links":[28]},{"name":"summary_json","type":"STRING","links":[35]}],"properties":{"Node name for S&R":"AOG Music Plan"},"widgets_values":["llm","qwenvl","en","ja",120,"4","A minor","ja"]},{"id":24,"type":"AOG Save Summary JSON","title":"14. Save Summary JSON","pos":[2220,760],"size":[420,140],"order":50,"mode":0,"inputs":[{"name":"summary_json","type":"STRING","link":40}],"outputs":[{"name":"saved_path","type":"STRING","links":null},{"name":"summary_json","type":"STRING","links":null}],"properties":{"Node name for S&R":"AOG Save Summary JSON"},"widgets_values":["{}","AOG/music_only_summary"]},{"id":2001,"type":"Fast Groups Muter (rgthree)","title":"rgthree / Group Toggle","pos":[-1520,-220],"size":[340,120],"flags":{},"order":1,"mode":0,"inputs":[],"outputs":[{"name":"OPT_CONNECTION","type":"*","links":null,"slot_index":0}],"properties":{"Node name for S&R":"Fast Groups Muter (rgthree)","matchColors":"","matchTitle":"AOG /","showNav":true,"showAllGraphs":true,"sort":"position","customSortAlphabet":"","toggleRestriction":"default"}},{"id":25,"type":"AOG Merge Summary JSON","title":"13. Merge Summary JSON","pos":[1680,620],"size":[500,280],"order":49,"mode":0,"inputs":[{"name":"video_summary","type":"STRING","link":32},{"name":"prompt_summary","type":"STRING","link":37},{"name":"lyrics_summary","type":"STRING","link":38},{"name":"music_plan_summary","type":"STRING","link":35},{"name":"ace_summary","type":"STRING","link":36},{"name":"sfx_summary","type":"STRING","link":null},{"name":"final_mix_summary","type":"STRING","link":null},{"name":"preview_summary","type":"STRING","link":37},{"name":"scene_analysis","type":"STRING","link":null},{"name":"prompt_text","type":"STRING","link":38},{"name":"lyrics_text","type":"STRING","link":39}],"outputs":[{"name":"summary_json","type":"STRING","links":[40]}],"properties":{"Node name for S&R":"AOG Merge Summary JSON"},"widgets_values":[]}],"links":[[1,3,0,4,0,"IMAGE"],[2,3,1,4,1,"INT"],[3,3,3,4,2,"VHS_VIDEOINFO"],[4,4,0,9,0,"AOG_VIDEO_BATCH"],[5,7,0,9,1,"MMAUDIO_FEATUREUTILS"],[6,4,0,13,0,"AOG_VIDEO_BATCH"],[7,9,0,13,1,"AOG_VIDEO_FEATURES"],[8,8,0,13,2,"AOG_QWENVL_BUNDLE"],[9,4,0,15,0,"AOG_VIDEO_BATCH"],[10,9,0,15,1,"AOG_VIDEO_FEATURES"],[11,8,0,15,2,"AOG_QWENVL_BUNDLE"],[12,4,0,23,0,"AOG_VIDEO_BATCH"],[13,9,0,23,1,"AOG_VIDEO_FEATURES"],[14,8,0,23,2,"AOG_QWENVL_BUNDLE"],[15,16,0,20,0,"MODEL"],[16,17,0,20,1,"CLIP"],[17,18,0,20,2,"VAE"],[18,9,0,20,3,"AOG_VIDEO_FEATURES"],[19,13,0,20,4,"STRING"],[20,15,0,20,5,"STRING"],[24,23,0,20,9,"INT"],[25,23,1,20,10,"FLOAT"],[26,23,2,20,11,"STRING"],[27,23,3,20,12,"STRING"],[28,23,4,20,13,"STRING"],[29,4,0,21,0,"AOG_VIDEO_BATCH"],[30,20,0,21,1,"AUDIO"],[32,9,1,25,0,"STRING"],[35,23,5,25,3,"STRING"],[36,20,1,25,4,"STRING"],[37,21,1,25,7,"STRING"],[38,13,0,25,9,"STRING"],[39,15,0,25,10,"STRING"],[40,25,0,24,0,"STRING"]],"groups":[{"title":"AOG / Input","bounding":[-1600,-20,500,580],"color":"#653","font_size":24},{"title":"AOG / Analysis","bounding":[-1220,220,900,760],"color":"#456","font_size":24},{"title":"AOG / Planning + ACE-Step","bounding":[160,20,1380,540],"color":"#654","font_size":24},{"title":"AOG / Output","bounding":[1040,140,1100,780],"color":"#546","font_size":24}],"last_link_id":40,"last_node_id":2001}
+{
+    "version": 0.4,
+    "state": {
+        "name": "AOG ACE Music Only"
+    },
+    "nodes": [
+        {
+            "id": 1,
+            "type": "MarkdownNote",
+            "pos": [
+                -1600,
+                -300
+            ],
+            "size": [
+                700,
+                240
+            ],
+            "order": 0,
+            "mode": 0,
+            "title": "Workflow Guide",
+            "widgets_values": [
+                "Upload a video and queue. This workflow runs video feature extraction, QwenVL prompt/lyrics authoring, music planning, ACE-Step composition, summary save, and preview output."
+            ],
+            "color": "#432",
+            "bgcolor": "#653"
+        },
+        {
+            "id": 2,
+            "type": "MarkdownNote",
+            "pos": [
+                -900,
+                -320
+            ],
+            "size": [
+                820,
+                240
+            ],
+            "order": 1,
+            "mode": 0,
+            "title": "Option Meaning",
+            "widgets_values": [
+                "Tune ACE-Step quality directly on Compose Music. Use rgthree only for mute/bypass control; AOG nodes handle analysis, composition, saving, and preview."
+            ],
+            "color": "#234",
+            "bgcolor": "#456"
+        },
+        {
+            "id": 3,
+            "type": "VHS_LoadVideo",
+            "title": "1. Load Source Video",
+            "pos": [
+                -1540,
+                40
+            ],
+            "size": [
+                280,
+                460
+            ],
+            "order": 2,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "meta_batch",
+                    "type": "VHS_BatchManager",
+                    "link": null
+                },
+                {
+                    "name": "vae",
+                    "type": "VAE",
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "IMAGE",
+                    "type": "IMAGE",
+                    "links": [
+                        1,
+                        43
+                    ],
+                    "slot_index": 0,
+                    "shape": 3
+                },
+                {
+                    "name": "frame_count",
+                    "type": "INT",
+                    "links": [
+                        2
+                    ],
+                    "shape": 3
+                },
+                {
+                    "name": "audio",
+                    "type": "VHS_AUDIO",
+                    "links": null,
+                    "shape": 3
+                },
+                {
+                    "name": "video_info",
+                    "type": "VHS_VIDEOINFO",
+                    "links": [
+                        3
+                    ],
+                    "shape": 3
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "VHS_LoadVideo"
+            },
+            "widgets_values": {
+                "video": "",
+                "force_rate": 8,
+                "force_size": "Disabled",
+                "custom_width": 0,
+                "custom_height": 0,
+                "frame_load_cap": 0,
+                "skip_first_frames": 0,
+                "select_every_nth": 1,
+                "choose video to upload": "image",
+                "videopreview": {
+                    "hidden": false,
+                    "paused": false,
+                    "params": {
+                        "frame_load_cap": 0,
+                        "skip_first_frames": 0,
+                        "force_rate": 0,
+                        "filename": "",
+                        "type": "input",
+                        "format": "video/mp4",
+                        "force_size": "Disabled",
+                        "select_every_nth": 1
+                    }
+                }
+            }
+        },
+        {
+            "id": 4,
+            "type": "AOG VHS Video Batch Adapter",
+            "title": "2. Build Video Batch",
+            "pos": [
+                -1180,
+                120
+            ],
+            "size": [
+                320,
+                150
+            ],
+            "order": 3,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "images",
+                    "type": "IMAGE",
+                    "link": 1
+                },
+                {
+                    "name": "frame_count",
+                    "type": "INT",
+                    "link": 2
+                },
+                {
+                    "name": "video_info",
+                    "type": "VHS_VIDEOINFO",
+                    "link": 3
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "video_batch",
+                    "type": "AOG_VIDEO_BATCH",
+                    "links": [
+                        4,
+                        6,
+                        9,
+                        12,
+                        29
+                    ]
+                },
+                {
+                    "name": "summary_json",
+                    "type": "STRING",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "AOG VHS Video Batch Adapter"
+            }
+        },
+        {
+            "id": 7,
+            "type": "AOG MMAudio Feature Bundle",
+            "title": "4. MMAudio Feature Bundle",
+            "pos": [
+                -1180,
+                380
+            ],
+            "size": [
+                360,
+                160
+            ],
+            "order": 6,
+            "mode": 0,
+            "outputs": [
+                {
+                    "name": "mmaudio_featureutils",
+                    "type": "MMAUDIO_FEATUREUTILS",
+                    "links": [
+                        5
+                    ]
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "AOG MMAudio Feature Bundle"
+            },
+            "widgets_values": [
+                "mmaudio_vae_44k_fp16.safetensors",
+                "mmaudio_synchformer_fp16.safetensors",
+                "apple_DFN5B-CLIP-ViT-H-14-384_fp16.safetensors",
+                "44k",
+                "fp16"
+            ]
+        },
+        {
+            "id": 8,
+            "type": "AOG QwenVL Bundle",
+            "title": "5. QwenVL Bundle",
+            "pos": [
+                -1180,
+                600
+            ],
+            "size": [
+                360,
+                220
+            ],
+            "order": 7,
+            "mode": 0,
+            "outputs": [
+                {
+                    "name": "qwenvl_bundle",
+                    "type": "AOG_QWENVL_BUNDLE",
+                    "links": [
+                        8,
+                        11,
+                        14
+                    ]
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "AOG QwenVL Bundle"
+            },
+            "widgets_values": [
+                "Qwen3-VL-4B-Instruct",
+                "None (FP16)",
+                "auto",
+                8,
+                512,
+                0.4,
+                0.9,
+                1,
+                true,
+                false,
+                1
+            ]
+        },
+        {
+            "id": 9,
+            "type": "AOG Video Feature Extract",
+            "title": "6. Extract Video Features",
+            "pos": [
+                -800,
+                260
+            ],
+            "size": [
+                400,
+                240
+            ],
+            "order": 8,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "video_batch",
+                    "type": "AOG_VIDEO_BATCH",
+                    "link": 4
+                },
+                {
+                    "name": "mmaudio_featureutils",
+                    "type": "MMAUDIO_FEATUREUTILS",
+                    "link": 5
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "video_features",
+                    "type": "AOG_VIDEO_FEATURES",
+                    "links": [
+                        7,
+                        10,
+                        13,
+                        18
+                    ]
+                },
+                {
+                    "name": "summary_json",
+                    "type": "STRING",
+                    "links": [
+                        32
+                    ]
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "AOG Video Feature Extract"
+            },
+            "widgets_values": [
+                true,
+                false
+            ]
+        },
+        {
+            "id": 13,
+            "type": "AOG Prompt Draft",
+            "title": "7. Draft Prompt",
+            "pos": [
+                -360,
+                200
+            ],
+            "size": [
+                560,
+                330
+            ],
+            "order": 12,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "video_batch",
+                    "type": "AOG_VIDEO_BATCH",
+                    "link": 6
+                },
+                {
+                    "name": "video_features",
+                    "type": "AOG_VIDEO_FEATURES",
+                    "link": 7
+                },
+                {
+                    "name": "qwenvl_bundle",
+                    "type": "AOG_QWENVL_BUNDLE",
+                    "link": 8
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "prompt_text",
+                    "type": "STRING",
+                    "links": [
+                        19,
+                        38,
+                        41
+                    ]
+                },
+                {
+                    "name": "summary_json",
+                    "type": "STRING",
+                    "links": [
+                        33
+                    ]
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "AOG Prompt Draft"
+            },
+            "widgets_values": [
+                "llm",
+                "",
+                "qwenvl",
+                "en"
+            ]
+        },
+        {
+            "id": 15,
+            "type": "AOG Lyrics Draft",
+            "title": "8. Draft Lyrics",
+            "pos": [
+                -360,
+                600
+            ],
+            "size": [
+                560,
+                360
+            ],
+            "order": 14,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "video_batch",
+                    "type": "AOG_VIDEO_BATCH",
+                    "link": 9
+                },
+                {
+                    "name": "video_features",
+                    "type": "AOG_VIDEO_FEATURES",
+                    "link": 10
+                },
+                {
+                    "name": "qwenvl_bundle",
+                    "type": "AOG_QWENVL_BUNDLE",
+                    "link": 11
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "lyrics_text",
+                    "type": "STRING",
+                    "links": [
+                        20,
+                        39,
+                        42
+                    ]
+                },
+                {
+                    "name": "summary_json",
+                    "type": "STRING",
+                    "links": [
+                        34
+                    ]
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "AOG Lyrics Draft"
+            },
+            "widgets_values": [
+                "llm",
+                "",
+                "ja",
+                "qwenvl",
+                "en"
+            ]
+        },
+        {
+            "id": 16,
+            "type": "UNETLoader",
+            "title": "10A. ACE UNET",
+            "pos": [
+                700,
+                80
+            ],
+            "size": [
+                300,
+                80
+            ],
+            "order": 15,
+            "mode": 0,
+            "outputs": [
+                {
+                    "name": "MODEL",
+                    "type": "MODEL",
+                    "links": [
+                        15
+                    ]
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "UNETLoader"
+            },
+            "widgets_values": [
+                "acestep_v1.5_turbo.safetensors",
+                "default"
+            ]
+        },
+        {
+            "id": 17,
+            "type": "DualCLIPLoader",
+            "title": "10B. ACE Text Encoders",
+            "pos": [
+                700,
+                200
+            ],
+            "size": [
+                320,
+                90
+            ],
+            "order": 16,
+            "mode": 0,
+            "outputs": [
+                {
+                    "name": "CLIP",
+                    "type": "CLIP",
+                    "links": [
+                        16
+                    ]
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "DualCLIPLoader"
+            },
+            "widgets_values": [
+                "qwen_0.6b_ace15.safetensors",
+                "qwen_4b_ace15.safetensors",
+                "ace",
+                "default"
+            ]
+        },
+        {
+            "id": 18,
+            "type": "VAELoader",
+            "title": "10C. ACE VAE",
+            "pos": [
+                700,
+                330
+            ],
+            "size": [
+                300,
+                80
+            ],
+            "order": 17,
+            "mode": 0,
+            "outputs": [
+                {
+                    "name": "VAE",
+                    "type": "VAE",
+                    "links": [
+                        17
+                    ]
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "VAELoader"
+            },
+            "widgets_values": [
+                "ace_1.5_vae.safetensors"
+            ]
+        },
+        {
+            "id": 20,
+            "type": "AOG ACE-Step Compose",
+            "title": "11. Compose Music",
+            "pos": [
+                1080,
+                120
+            ],
+            "size": [
+                560,
+                560
+            ],
+            "order": 19,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "model",
+                    "type": "MODEL",
+                    "link": 15
+                },
+                {
+                    "name": "clip",
+                    "type": "CLIP",
+                    "link": 16
+                },
+                {
+                    "name": "vae",
+                    "type": "VAE",
+                    "link": 17
+                },
+                {
+                    "name": "video_features",
+                    "type": "AOG_VIDEO_FEATURES",
+                    "link": 18
+                },
+                {
+                    "name": "prompt_text",
+                    "type": "STRING",
+                    "link": 19
+                },
+                {
+                    "name": "lyrics_text",
+                    "type": "STRING",
+                    "link": 20
+                },
+                {
+                    "name": "bpm",
+                    "type": "",
+                    "link": 24
+                },
+                {
+                    "name": "duration",
+                    "type": "",
+                    "link": 25
+                },
+                {
+                    "name": "timesignature",
+                    "type": "",
+                    "link": 26
+                },
+                {
+                    "name": "ace_language",
+                    "type": "",
+                    "link": 27
+                },
+                {
+                    "name": "keyscale",
+                    "type": "",
+                    "link": 28
+                },
+                {
+                    "name": "text_cfg_scale",
+                    "type": "FLOAT",
+                    "link": null
+                },
+                {
+                    "name": "steps",
+                    "type": "INT",
+                    "link": null
+                },
+                {
+                    "name": "cfg",
+                    "type": "FLOAT",
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "audio",
+                    "type": "AUDIO",
+                    "links": [
+                        30,
+                        44
+                    ]
+                },
+                {
+                    "name": "summary_json",
+                    "type": "STRING",
+                    "links": [
+                        36
+                    ]
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "AOG ACE-Step Compose"
+            },
+            "widgets_values": [
+                "",
+                "",
+                "silence, clipping, distortion, noise",
+                0,
+                "fixed",
+                120,
+                0,
+                "4",
+                "ja",
+                "A minor",
+                true,
+                5,
+                0.85,
+                0.9,
+                0,
+                0,
+                8,
+                1,
+                "euler",
+                "simple",
+                1
+            ]
+        },
+        {
+            "id": 21,
+            "type": "AOG Preview Video Combine",
+            "title": "12. Preview & Save Video",
+            "pos": [
+                2220,
+                220
+            ],
+            "size": [
+                520,
+                260
+            ],
+            "order": 20,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "video_batch",
+                    "type": "AOG_VIDEO_BATCH",
+                    "link": 29
+                },
+                {
+                    "name": "audio",
+                    "type": "AUDIO",
+                    "link": 30
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "filenames",
+                    "type": "VHS_FILENAMES",
+                    "links": null
+                },
+                {
+                    "name": "summary_json",
+                    "type": "STRING",
+                    "links": [
+                        37
+                    ]
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "AOG Preview Video Combine"
+            },
+            "widgets_values": [
+                "AOG/music_only_preview",
+                "video/mp4",
+                true,
+                false,
+                0
+            ]
+        },
+        {
+            "id": 23,
+            "type": "AOG Music Plan",
+            "title": "9. Plan Music",
+            "pos": [
+                260,
+                220
+            ],
+            "size": [
+                460,
+                300
+            ],
+            "order": 18,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "video_batch",
+                    "type": "AOG_VIDEO_BATCH",
+                    "link": 12
+                },
+                {
+                    "name": "video_features",
+                    "type": "AOG_VIDEO_FEATURES",
+                    "link": 13
+                },
+                {
+                    "name": "qwenvl_bundle",
+                    "type": "AOG_QWENVL_BUNDLE",
+                    "link": 14
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "bpm",
+                    "type": "INT",
+                    "links": [
+                        24
+                    ]
+                },
+                {
+                    "name": "duration",
+                    "type": "FLOAT",
+                    "links": [
+                        25
+                    ]
+                },
+                {
+                    "name": "timesignature",
+                    "type": "STRING",
+                    "links": [
+                        26
+                    ]
+                },
+                {
+                    "name": "ace_language",
+                    "type": "STRING",
+                    "links": [
+                        27
+                    ]
+                },
+                {
+                    "name": "keyscale",
+                    "type": "STRING",
+                    "links": [
+                        28
+                    ]
+                },
+                {
+                    "name": "summary_json",
+                    "type": "STRING",
+                    "links": [
+                        35
+                    ]
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "AOG Music Plan"
+            },
+            "widgets_values": [
+                "llm",
+                "qwenvl",
+                "en",
+                "ja",
+                120,
+                "4",
+                "A minor",
+                "ja"
+            ]
+        },
+        {
+            "id": 24,
+            "type": "AOG Save Summary JSON",
+            "title": "14. Save Summary JSON",
+            "pos": [
+                2220,
+                760
+            ],
+            "size": [
+                420,
+                140
+            ],
+            "order": 50,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "summary_json",
+                    "type": "STRING",
+                    "link": 40
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "saved_path",
+                    "type": "STRING",
+                    "links": null
+                },
+                {
+                    "name": "summary_json",
+                    "type": "STRING",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "AOG Save Summary JSON"
+            },
+            "widgets_values": [
+                "{}",
+                "AOG/music_only_summary"
+            ]
+        },
+        {
+            "id": 2001,
+            "type": "Fast Groups Muter (rgthree)",
+            "title": "rgthree / Group Toggle",
+            "pos": [
+                -1520,
+                -220
+            ],
+            "size": [
+                340,
+                120
+            ],
+            "flags": {},
+            "order": 1,
+            "mode": 0,
+            "inputs": [],
+            "outputs": [
+                {
+                    "name": "OPT_CONNECTION",
+                    "type": "*",
+                    "links": null,
+                    "slot_index": 0
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "Fast Groups Muter (rgthree)",
+                "matchColors": "",
+                "matchTitle": "AOG /",
+                "showNav": true,
+                "showAllGraphs": true,
+                "sort": "position",
+                "customSortAlphabet": "",
+                "toggleRestriction": "default"
+            }
+        },
+        {
+            "id": 25,
+            "type": "AOG Merge Summary JSON",
+            "title": "13. Merge Summary JSON",
+            "pos": [
+                1680,
+                620
+            ],
+            "size": [
+                500,
+                280
+            ],
+            "order": 49,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "video_summary",
+                    "type": "STRING",
+                    "link": 32
+                },
+                {
+                    "name": "prompt_summary",
+                    "type": "STRING",
+                    "link": 37
+                },
+                {
+                    "name": "lyrics_summary",
+                    "type": "STRING",
+                    "link": 38
+                },
+                {
+                    "name": "music_plan_summary",
+                    "type": "STRING",
+                    "link": 35
+                },
+                {
+                    "name": "ace_summary",
+                    "type": "STRING",
+                    "link": 36
+                },
+                {
+                    "name": "sfx_summary",
+                    "type": "STRING",
+                    "link": null
+                },
+                {
+                    "name": "final_mix_summary",
+                    "type": "STRING",
+                    "link": null
+                },
+                {
+                    "name": "preview_summary",
+                    "type": "STRING",
+                    "link": 37
+                },
+                {
+                    "name": "scene_analysis",
+                    "type": "STRING",
+                    "link": null
+                },
+                {
+                    "name": "prompt_text",
+                    "type": "STRING",
+                    "link": 38
+                },
+                {
+                    "name": "lyrics_text",
+                    "type": "STRING",
+                    "link": 39
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "summary_json",
+                    "type": "STRING",
+                    "links": [
+                        40
+                    ]
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "AOG Merge Summary JSON"
+            },
+            "widgets_values": []
+        },
+        {
+            "id": 3001,
+            "type": "PreviewAny",
+            "title": "7A. Prompt Preview",
+            "pos": [
+                260,
+                10
+            ],
+            "size": [
+                420,
+                260
+            ],
+            "flags": {},
+            "order": 999,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "source",
+                    "type": "*",
+                    "link": 41
+                }
+            ],
+            "outputs": [],
+            "properties": {
+                "Node name for S&R": "PreviewAny"
+            },
+            "widgets_values": [
+                null,
+                null,
+                null
+            ]
+        },
+        {
+            "id": 3002,
+            "type": "PreviewAny",
+            "title": "8A. Lyrics Preview",
+            "pos": [
+                260,
+                630
+            ],
+            "size": [
+                420,
+                260
+            ],
+            "flags": {},
+            "order": 999,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "source",
+                    "type": "*",
+                    "link": 42
+                }
+            ],
+            "outputs": [],
+            "properties": {
+                "Node name for S&R": "PreviewAny"
+            },
+            "widgets_values": [
+                null,
+                null,
+                null
+            ]
+        },
+        {
+            "id": 3003,
+            "type": "VHS_VideoCombine",
+            "title": "12A. Final Video Preview",
+            "pos": [
+                2220,
+                -80
+            ],
+            "size": [
+                560,
+                260
+            ],
+            "flags": {},
+            "order": 999,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "images",
+                    "type": "IMAGE",
+                    "link": 43
+                },
+                {
+                    "name": "audio",
+                    "type": "AUDIO",
+                    "link": 44
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "Filenames",
+                    "type": "VHS_FILENAMES",
+                    "links": null
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "VHS_VideoCombine"
+            },
+            "widgets_values": [
+                8,
+                0,
+                "AOG/music_only_preview_gui",
+                "video/webm",
+                false,
+                false,
+                "yuv420p",
+                20,
+                true,
+                false
+            ]
+        }
+    ],
+    "links": [
+        [
+            1,
+            3,
+            0,
+            4,
+            0,
+            "IMAGE"
+        ],
+        [
+            2,
+            3,
+            1,
+            4,
+            1,
+            "INT"
+        ],
+        [
+            3,
+            3,
+            3,
+            4,
+            2,
+            "VHS_VIDEOINFO"
+        ],
+        [
+            4,
+            4,
+            0,
+            9,
+            0,
+            "AOG_VIDEO_BATCH"
+        ],
+        [
+            5,
+            7,
+            0,
+            9,
+            1,
+            "MMAUDIO_FEATUREUTILS"
+        ],
+        [
+            6,
+            4,
+            0,
+            13,
+            0,
+            "AOG_VIDEO_BATCH"
+        ],
+        [
+            7,
+            9,
+            0,
+            13,
+            1,
+            "AOG_VIDEO_FEATURES"
+        ],
+        [
+            8,
+            8,
+            0,
+            13,
+            2,
+            "AOG_QWENVL_BUNDLE"
+        ],
+        [
+            9,
+            4,
+            0,
+            15,
+            0,
+            "AOG_VIDEO_BATCH"
+        ],
+        [
+            10,
+            9,
+            0,
+            15,
+            1,
+            "AOG_VIDEO_FEATURES"
+        ],
+        [
+            11,
+            8,
+            0,
+            15,
+            2,
+            "AOG_QWENVL_BUNDLE"
+        ],
+        [
+            12,
+            4,
+            0,
+            23,
+            0,
+            "AOG_VIDEO_BATCH"
+        ],
+        [
+            13,
+            9,
+            0,
+            23,
+            1,
+            "AOG_VIDEO_FEATURES"
+        ],
+        [
+            14,
+            8,
+            0,
+            23,
+            2,
+            "AOG_QWENVL_BUNDLE"
+        ],
+        [
+            15,
+            16,
+            0,
+            20,
+            0,
+            "MODEL"
+        ],
+        [
+            16,
+            17,
+            0,
+            20,
+            1,
+            "CLIP"
+        ],
+        [
+            17,
+            18,
+            0,
+            20,
+            2,
+            "VAE"
+        ],
+        [
+            18,
+            9,
+            0,
+            20,
+            3,
+            "AOG_VIDEO_FEATURES"
+        ],
+        [
+            19,
+            13,
+            0,
+            20,
+            4,
+            "STRING"
+        ],
+        [
+            20,
+            15,
+            0,
+            20,
+            5,
+            "STRING"
+        ],
+        [
+            24,
+            23,
+            0,
+            20,
+            9,
+            "INT"
+        ],
+        [
+            25,
+            23,
+            1,
+            20,
+            10,
+            "FLOAT"
+        ],
+        [
+            26,
+            23,
+            2,
+            20,
+            11,
+            "STRING"
+        ],
+        [
+            27,
+            23,
+            3,
+            20,
+            12,
+            "STRING"
+        ],
+        [
+            28,
+            23,
+            4,
+            20,
+            13,
+            "STRING"
+        ],
+        [
+            29,
+            4,
+            0,
+            21,
+            0,
+            "AOG_VIDEO_BATCH"
+        ],
+        [
+            30,
+            20,
+            0,
+            21,
+            1,
+            "AUDIO"
+        ],
+        [
+            32,
+            9,
+            1,
+            25,
+            0,
+            "STRING"
+        ],
+        [
+            35,
+            23,
+            5,
+            25,
+            3,
+            "STRING"
+        ],
+        [
+            36,
+            20,
+            1,
+            25,
+            4,
+            "STRING"
+        ],
+        [
+            37,
+            21,
+            1,
+            25,
+            7,
+            "STRING"
+        ],
+        [
+            38,
+            13,
+            0,
+            25,
+            9,
+            "STRING"
+        ],
+        [
+            39,
+            15,
+            0,
+            25,
+            10,
+            "STRING"
+        ],
+        [
+            40,
+            25,
+            0,
+            24,
+            0,
+            "STRING"
+        ],
+        [
+            41,
+            13,
+            0,
+            3001,
+            0,
+            "STRING"
+        ],
+        [
+            42,
+            15,
+            0,
+            3002,
+            0,
+            "STRING"
+        ],
+        [
+            43,
+            3,
+            0,
+            3003,
+            0,
+            "IMAGE"
+        ],
+        [
+            44,
+            20,
+            0,
+            3003,
+            7,
+            "AUDIO"
+        ]
+    ],
+    "groups": [
+        {
+            "title": "AOG / Input",
+            "bounding": [
+                -1600,
+                -20,
+                500,
+                580
+            ],
+            "color": "#653",
+            "font_size": 24
+        },
+        {
+            "title": "AOG / Analysis",
+            "bounding": [
+                -1220,
+                220,
+                900,
+                760
+            ],
+            "color": "#456",
+            "font_size": 24
+        },
+        {
+            "title": "AOG / Planning + ACE-Step",
+            "bounding": [
+                160,
+                20,
+                1380,
+                540
+            ],
+            "color": "#654",
+            "font_size": 24
+        },
+        {
+            "title": "AOG / Output",
+            "bounding": [
+                1040,
+                140,
+                1100,
+                780
+            ],
+            "color": "#546",
+            "font_size": 24
+        }
+    ],
+    "last_link_id": 44,
+    "last_node_id": 3003
+}

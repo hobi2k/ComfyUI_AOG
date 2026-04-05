@@ -2,6 +2,8 @@
 
 Korean documentation: [README.ko.md](./README.ko.md)
 
+Cookbook: [docs/cookbook/INDEX.md](./docs/cookbook/INDEX.md)
+
 `ComfyUI_AOG` is a ComfyUI custom-node pack for turning an already rendered opening video into matching music, optional SFX, saved summary metadata, and a previewable final video.
 
 ## Scope
@@ -206,6 +208,8 @@ This repo ships three runnable example workflows in [workflows](./workflows):
 - `AOG_ACE_Music_Only.json`
 - `AOG_Full_Music_SFX_Mux.json`
 - `AOG_MMAudio_SFX_Only.json`
+
+For node-by-node standalone usage, recipes, and input/output contracts, see the [cookbook](./docs/cookbook/INDEX.md).
 
 Workflow intent:
 

@@ -1,5 +1,7 @@
 # ComfyUI_AOG
 
+Cookbook: [docs/cookbook/INDEX.md](./docs/cookbook/INDEX.md)
+
 `ComfyUI_AOG`는 완성된 오프닝 영상을 입력으로 받아, 영상에 맞는 음악과 선택적 SFX, 요약 JSON, 미리보기 가능한 최종 비디오를 만드는 ComfyUI 커스텀 노드 팩입니다.
 
 ## 범위
@@ -207,6 +209,8 @@ bash ./custom_nodes/ComfyUI_AOG/install_dependencies.sh
 - `AOG_ACE_Music_Only.json`
 - `AOG_Full_Music_SFX_Mux.json`
 - `AOG_MMAudio_SFX_Only.json`
+
+노드를 독립적으로 조립해서 쓰는 방법, 입출력 계약, 실전 레시피는 [cookbook](./docs/cookbook/INDEX.md)에서 볼 수 있습니다.
 
 설명:
 
